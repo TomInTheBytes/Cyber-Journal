@@ -71,7 +71,10 @@ markdown_extensions:
   - tables
 nav:
   - Welcome: index.md
-  - CTF Writeups: 
+  - CTF write-ups: 
     - pages/writeups/writeups.md
-  - Research:
+    - pages/writeups/hhc.md
+  - Research projects:
     - pages/research/research.md
+    - Security lab:
+      - pages/research/security_lab/security_lab.md
