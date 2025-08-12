@@ -3,5 +3,5 @@ The SANS training institute organizes an annual CTF during the winter holiday se
 
 I have completed this CTF on multiple occassions. For some of them, I have created a write-up.
 
-- **2022**: no writeup available.
-- **2024**: [complete write-up](https://tominthebytes.github.io/SANS-HHC-2024/) (my submission was [selected](https://www.sans.org/cyber-ranges/holiday-hack-challenge/winners-and-answers) as 'super-honorable mention' by SANS).
+- **2022**: completed but no writeup available.
+- **2024**: [complete write-up](https://tominthebytes.github.io/SANS-HHC-2024/). My submission was [selected](https://www.sans.org/cyber-ranges/holiday-hack-challenge/winners-and-answers) as 'super-honorable mention' by SANS.

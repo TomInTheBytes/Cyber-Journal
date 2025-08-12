@@ -74,6 +74,7 @@ nav:
   - CTF write-ups: 
     - pages/writeups/writeups.md
     - pages/writeups/hhc.md
+    - pages/writeups/splunk_bots.md
   - Research projects:
     - pages/research/research.md
     - Security lab:
