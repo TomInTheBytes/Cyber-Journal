@@ -7,6 +7,9 @@ Since most CTFs have an offensive focus, Splunk BOTS is a refreshing alternative
 
 I first learned about Splunk BOTS during a FIRST Technical Colloquium talk given by ex-employees and decided to give it a go myself. 
 
+!!! info
+    The queries used follow Splunk tips and tricks as listed on my [Splunk cheatsheet](../cheatsheets/splunk.md).
+
 ## BOTS V1
 
 ### Scenario 1: Web site defacement
@@ -100,7 +103,7 @@ I first learned about Splunk BOTS during a FIRST Technical Colloquium talk given
     !!! question 
         How many unique passwords were attempted in the brute force attempt?
 
-###x Scenario 2: Ransomware
+### Scenario 2: Ransomware
 
 !!! info "Context"
     After the excitement of yesterday, Alice has started to settle into her new job. Sadly, she realizes her new colleagues may not be the crack cybersecurity team that she was led to believe before she joined. Looking through her incident ticketing queue she notices a “critical” ticket that was never addressed. Shaking her head, she begins to investigate. Apparently on August 24th Bob Smith (using a Windows 10 workstation named we8105desk) came back to his desk after working-out and found his speakers blaring (click below to listen), his desktop image changed (see below) and his files inaccessible.
@@ -111,10 +114,10 @@ I first learned about Splunk BOTS during a FIRST Technical Colloquium talk given
 ??? success "Question 200"  
     
     !!! question 
-        What was the most likely IPv4 address of we8105desk on 24AUG2016?
+        What was the most likely IPv4 address of we8105desk on 24AUG2016? 
 
     ``` query title="Query"
-    index="botsv1" hostname="we8105desk.waynecorpinc.local"
+    index="botsv1" host="we8105desk.waynecorpinc.local"
     ```
 
     Filter for the hostname and look for the most frequent source IP in the sidebar. This will be **192.168.250.100**.

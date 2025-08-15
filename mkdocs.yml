@@ -71,6 +71,8 @@ markdown_extensions:
   - tables
 nav:
   - Welcome: index.md
+  - Cheatsheets:
+    - pages/cheatsheets/splunk.md
   - CTF write-ups: 
     - pages/writeups/writeups.md
     - pages/writeups/hhc.md
