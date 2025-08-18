@@ -10,7 +10,7 @@ Located in:
 
 Activate with:
 
-    "source .venv/bin/activate"
+    source .venv/bin/activate
 
 
 ## MkDocs
