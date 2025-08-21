@@ -1,9 +1,14 @@
-# Automation Workflow: AI Threat Intelligence
-This page showcases an automation workflow built for the tool [n8n](https://n8n.io/). 
+# Automation Workflow: Create Daily Digest & Identify Viral Topics with AI
+This page showcases an automation workflow built for the tool [n8n](https://n8n.io/). This n8n workflow template simplifies the process of digesting cybersecurity reports by summarizing, deduplicating, organizing, and identifying viral topics of interest into daily emails.
 
 !!! info
-    The workflow has been submitted to n8n and is currently [under review](https://creators.n8n.io/workflows/7608). A JSON copy can be downloaded the repository this information is hosted on under the 'projects' folder.
+    The workflow was submitted to n8n for review and is available as [template](https://n8n.io/workflows/7608-cybersecurity-intelligence-create-daily-digest-and-viral-topics-with-gemini-ai/). A JSON copy can also be downloaded the repository this information is hosted on under the 'projects' folder.
+    
 
+![n8n template](../../media//n8n_cti_digest_template.png){ align=left }
+/// caption
+The template was published on the n8n website and can be found [here](https://creators.n8n.io/workflows/7608). 
+///
 
 ## Workflow - AI Threat Intelligence: Compose Daily Digest & Viral Topics Reports
 

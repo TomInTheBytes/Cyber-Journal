@@ -3,6 +3,11 @@ Repository containing cybersecurity related projects, research, write-ups, etc
 
 
 ## Python virtual environment
+Create virtual environment:
+
+    python3 -m venv venv
+
+
 Located in:
 
     .venv
@@ -11,6 +16,11 @@ Located in:
 Activate with:
 
     source .venv/bin/activate
+
+
+Generate requirements.txt
+
+    pip3 freeze > requirements.txt
 
 
 ## MkDocs

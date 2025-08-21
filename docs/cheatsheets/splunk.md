@@ -1,4 +1,4 @@
-# Splunk
+# Splunk Cheatsheet
 
 This page is a personal collection of useful Splunk queries and tips for analyzing data.
 
