@@ -1,5 +1,5 @@
 # Cyber Journal
-Repository containing cybersecurity related projects, research, write-ups, etc
+Repository containing personal cybersecurity related projects, research, write-ups, etc
 
 
 ## Python virtual environment
