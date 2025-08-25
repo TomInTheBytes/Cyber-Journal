@@ -1,4 +1,4 @@
-# Generative AI threat intelligence research into RAGS and automated threat actor assessment
+# Generative AI Threat Intelligence Research Into RAGs and Automated Threat Actor Assessment
 This project (see [repository](https://github.com/TomInTheBytes/GenAI-Threat-Intelligence-Research)) explores proof-of-concepts to integrate generative AI with threat intelligence. It is heavily inspired by the excellent [research](https://github.com/OTRF/GenAI-Security-Adventures) of Roberto Rodriguez ([@Cyb3rWard0g](https://github.com/Cyb3rWard0g)). It follows a similar structure with small alterations. It contains various Jupyter Notebooks that explore the different topics. Every notebook is documented and has various improvement ideas. It explores the following areas:
 
 - **Threat Actor RAG:** Building a retrieval-augmented generation (RAG) system using unstructured sources such as the ETDA Cyber Threat Actor Encyclopedia. 
