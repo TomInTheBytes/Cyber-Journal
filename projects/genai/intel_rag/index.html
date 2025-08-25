@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.17">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.18">
     
     
       
@@ -33,39 +33,63 @@
   
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
     
+      
+      
     
   
   
@@ -122,7 +146,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#generative-ai-threat-intelligence-research-into-automated-threat-actor-assessment" class="md-skip">
+        <a href="#generative-ai-threat-intelligence-research-into-rags-and-automated-threat-actor-assessment" class="md-skip">
           Skip to content
         </a>
       
@@ -748,6 +772,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#threat-actor-rag" class="md-nav__link">
     <span class="md-ellipsis">
       Threat Actor RAG
@@ -825,6 +858,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#overview" class="md-nav__link">
+    <span class="md-ellipsis">
+      Overview
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#threat-actor-rag" class="md-nav__link">
     <span class="md-ellipsis">
       Threat Actor RAG
@@ -870,13 +912,28 @@
   
 
 
-<h1 id="generative-ai-threat-intelligence-research-into-automated-threat-actor-assessment">Generative AI threat intelligence research into automated threat actor assessment<a class="headerlink" href="#generative-ai-threat-intelligence-research-into-automated-threat-actor-assessment" title="Permanent link">&para;</a></h1>
+<h1 id="generative-ai-threat-intelligence-research-into-rags-and-automated-threat-actor-assessment">Generative AI threat intelligence research into RAGS and automated threat actor assessment<a class="headerlink" href="#generative-ai-threat-intelligence-research-into-rags-and-automated-threat-actor-assessment" title="Permanent link">&para;</a></h1>
 <p>This project (see <a href="https://github.com/TomInTheBytes/GenAI-Threat-Intelligence-Research">repository</a>) explores proof-of-concepts to integrate generative AI with threat intelligence. It is heavily inspired by the excellent <a href="https://github.com/OTRF/GenAI-Security-Adventures">research</a> of Roberto Rodriguez (<a href="https://github.com/Cyb3rWard0g">@Cyb3rWard0g</a>). It follows a similar structure with small alterations. It contains various Jupyter Notebooks that explore the different topics. Every notebook is documented and has various improvement ideas. It explores the following areas:</p>
 <ul>
 <li><strong>Threat Actor RAG:</strong> Building a retrieval-augmented generation (RAG) system using unstructured sources such as the ETDA Cyber Threat Actor Encyclopedia. </li>
 <li><strong>Report Summarizer:</strong> Normalizing reports on threat actors by generating concise summaries for further usage by GenAI.</li>
 <li><strong>Threat Actor Assessment:</strong> Automating evaluations of threat actors’ relevance and risk to organizations using generative models and the threat box framework, aiming for consistency and reduced manual effort.</li>
 </ul>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p>This project contains four Jupyter Notebooks:</p>
+<ul>
+<li><strong><a href="https://github.com/TomInTheBytes/GenAI-Threat-Intelligence-Research/blob/main/knowledge/threat_actor_knowledge_builder.ipynb">threat_actor_knowledge_builder.ipynb:</a></strong> this notebook demonstrates how to build a threat actor source knowledge vector database based on the ETDA threat actor database and its linked reports. The output can be found in the <a href="https://github.com/TomInTheBytes/GenAI-Threat-Intelligence-Research/tree/main/knowledge/documents/reports">GitHub repository</a> or on <a href="https://huggingface.co/datasets/TomTheAnalyst/ETDA-Threat-Actors">Huggingface</a> to skip this step.</li>
+<li><strong><a href="https://github.com/TomInTheBytes/GenAI-Threat-Intelligence-Research/blob/main/knowledge/threat_actor_report_summarizer.ipynb">threat_actor_report_summarizer.ipynb:</a></strong> this notebook summarizes all threat actor reports that were scraped and combines them into one file per threat actor. The output can be found in the <a href="https://github.com/TomInTheBytes/GenAI-Threat-Intelligence-Research/tree/main/knowledge/documents/summaries">GitHub repository</a>.</li>
+<li><strong><a href="https://github.com/TomInTheBytes/GenAI-Threat-Intelligence-Research/blob/main/threat_actor_QA.ipynb">threat_actor_QA.ipynb:</a></strong> this notebook demonstrates how to query a vector database in QA fashion using Langchain and OpenAI.</li>
+<li><strong><a href="https://github.com/TomInTheBytes/GenAI-Threat-Intelligence-Research/blob/main/threat_actor_assessment.ipynb">threat_actor_assessment.ipynb:</a></strong> this notebook experiments with leveraging the threat actor report summaries to assess their threat according to a specific victim profile using the threat box model.</li>
+</ul>
+<p>This diagram describes the relationships between the previously mentioned components:</p>
+<figure>
+<p><a class="glightbox" href="../../../media/threat_actor_rag.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img align="left" alt="notebooks" src="../../../media/threat_actor_rag.png" /></a></p>
+<figcaption>
+<p>Overview of Jupyter Notbooks.</p>
+</figcaption>
+</figure>
 <h2 id="threat-actor-rag">Threat Actor RAG<a class="headerlink" href="#threat-actor-rag" title="Permanent link">&para;</a></h2>
 <p>Retrieval Augmented Generation (RAG) is a method to retrieve context relevant for a chatbot prompt from a vector database. This way you can build a knowledge base and not be dependant on the LLMs context coverage and timeliness. You also have influence on what information the chatbot should work with and can prevent hallucinations. For more information see <a href="https://blog.openthreatresearch.com/demystifying-generative-ai-a-security-researchers-notes/">this</a> great summary.</p>
 <p>@Cyb3rWard0g already experimented with using MITRE's threat actor database as knowledge for a RAG. This database contains very structured and consistent documents. I was curious to see how other, less controlled threat actor information sources would perform. I decided to do a simple scrape of the <a href="https://apt.etda.or.th/cgi-bin/aptgroups.cgi">ETDA Threat Actor Encyclopedia</a>. This database contains over 450 threat actors and provides various hyperlinks to reports about operations and information about these threat actors. See "threat-actor-knowledge-builder.ipynb" and "threat-actor-QA.ipynb" for the experiment.</p>
@@ -904,7 +961,7 @@
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"/></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 21, 2025 19:23:28 UTC">August 21, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 25, 2025 20:05:07 UTC">August 25, 2025</span>
   </span>
 
     
