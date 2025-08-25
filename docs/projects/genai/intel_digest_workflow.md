@@ -7,7 +7,7 @@ This page showcases an automation workflow built for the tool [n8n](https://n8n.
 
 ![n8n template](../../media//n8n_cti_digest_template.png){ align=left }
 /// caption
-The template was published on the n8n website and can be found [here](https://creators.n8n.io/workflows/7608). 
+The template was published on the n8n website and can be found [here](https://n8n.io/workflows/7608-cybersecurity-intelligence-create-daily-digest-and-viral-topics-with-gemini-ai/). 
 ///
 
 ## Workflow - AI Threat Intelligence: Compose Daily Digest & Viral Topics Reports
@@ -46,3 +46,16 @@ The workflow follows the threat intelligence lifecycle as labelled by the colour
 ## Requirements
 - The workflow leverages Gemini (free tier) for email content generation and Baserow for storing generated reports. The viral topic identification relies on the Gemini Pro model because of a higher data quantity and more complex task.
 - An SMTP email account must be provided to send the emails with. This can be through Gmail. 
+
+## Examples
+See an example both types of emails below.
+
+![n8n template](../../media/n8n_cti_digest_example.png){ align=left }
+/// caption
+Example of a daily digest email.
+///
+
+![n8n template](../../media/n8n_cti_digest_viral_example.png){ align=left }
+/// caption
+Example of a daily viral topic digest email.
+///
