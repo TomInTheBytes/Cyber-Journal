@@ -86,6 +86,8 @@ nav:
     - projects/index.md
     - Security lab:
       - projects/security_lab/index.md
-    - GenAI:
+      - Architecture: projects/security_lab/architecture.md
+      - Security Onion: projects/security_lab/sec_onion.md
+    - Generative AI:
       - Daily Intelligence Digest Automation (n8n): projects/genai/intel_digest_workflow.md
       - Threat Actor RAG and Assessment: projects/genai/intel_rag.md
