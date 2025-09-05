@@ -44,7 +44,6 @@ markdown_extensions:
   # Python Markdown
   - toc:
       permalink: true
-
   # Python Markdown Extensions
   - pymdownx.highlight:
       anchor_linenums: true
@@ -88,6 +87,7 @@ nav:
       - projects/security_lab/index.md
       - Architecture: projects/security_lab/architecture.md
       - Security Onion: projects/security_lab/sec_onion.md
+      - ClickFix: projects/security_lab/clickfix.md
     - Generative AI:
       - Daily Intelligence Digest Automation (n8n): projects/genai/intel_digest_workflow.md
       - Threat Actor RAG and Assessment: projects/genai/intel_rag.md
