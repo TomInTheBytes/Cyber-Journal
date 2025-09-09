@@ -1,3 +1,6 @@
 # Architecture
 
-https://diagrams.mingrammer.com/docs/nodes/generic
+![architecture](../../media/lab/lab_network_architecture.png){ align=left }
+/// caption
+Security lab network architecture.
+///
