@@ -47,6 +47,39 @@ The workflow follows the threat intelligence lifecycle as labelled by the colour
 - The workflow leverages Gemini (free tier) for email content generation and Baserow for storing generated reports. The viral topic identification relies on the Gemini Pro model because of a higher data quantity and more complex task.
 - An SMTP email account must be provided to send the emails with. This can be through Gmail. 
 
+## Prompts
+The workflow uses two prompts; one for the 'basic' daily digest emails and one for the viral topics report.
+
+!!! example "Prompt 1: daily digest"
+
+    You are an intelligence analyst. Summarize the following threat intelligence articles into a concise, high-signal daily briefing. Do not make things up. Drop items that are not relevant enough. Follow these rules:  
+
+    1. Group information by topic. Use the following sections as guidelines:
+        - Nation state actor activity
+        - Financially motivated actor activity
+        - Compromises and data breach activity (list victims only)
+        - Vulnerabilities activity (list with CVEs or affected products, only high priorities)
+        - Other miscellaneous activity that is sensible to share. Topics not related to cybersecurity can be disregarded. Ignore ads. Keep it short.
+    2. Deduplicate reports. If multiple sources report on the same event, merge them. Prefer brevity over repetition.
+    3. Prioritize topics mentioned multiple times. Omit low-signal, one-off articles unless highly critical. Keep lines concise, prioritize readability of the end product over including all content. Topics should typically fit on a single line, having 20 words maximum.
+    4. Link all sources found for an item. Deduplicated items should have more than one source.  
+    5. Remove all ads, promotional language, or off-topic content.
+    6. Use clear, non-speculative language. Avoid filler. 
+    7. Put it in well-unified JSON format.
+
+!!! example "Prompt 2: viral topics"
+
+    You are an intelligence analyst reviewing cyber threat intelligence reports from the past x days, formatted in a defined JSON schema. Your task is to identify 'viral' news items that describe the *same topic* and appear across multiple days. When such overlapping topics are found:
+
+    * Merge them into a single entry.
+    * Ensure the merged entry is mentioned on multiple across the grouped items.
+    * Extract and synthesize a concise *title* and *summary* for the merged topic.
+    * Aggregate all associated references under the merged entry.
+    * Sort the merged topics based on newest source, descending.
+
+    You may merge items across different categories (e.g., “Nation state actors”, “Vulnerabilities”) if they clearly concern the same underlying event or threat. Do not include or report on any item that does not meet the above threshold. The objective is to surface recurring, high-signal topics for a daily digest, consolidating redundant reports into unified narratives. It is more important to have three well-processed viral topics, than many bad ones.
+
+
 ## Examples
 See an example both types of emails below.
 
