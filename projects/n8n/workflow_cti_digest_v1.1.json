@@ -1,0 +1,774 @@
+{
+  "name": "CTI Digest (prod) - V2",
+  "nodes": [
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"activity_nation_state_actors\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"news_item\": { \"type\": \"string\" },\n          \"references\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"link\": { \"type\": \"string\" },\n                \"website_name\": { \"type\": \"string\" },\n                \"publish_date\": { \"type\": \"string\", \"format\": \"date-time\" }\n              },\n              \"required\": [\"link\", \"website_name\", \"publish_date\"]\n            }\n          }\n        },\n        \"required\": [\"news_item\", \"references\"]\n      }\n    },\n    \"activity_financially_motivated_actors\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"news_item\": { \"type\": \"string\" },\n          \"references\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"link\": { \"type\": \"string\" },\n                \"website_name\": { \"type\": \"string\" },\n                \"publish_date\": { \"type\": \"string\", \"format\": \"date-time\" }\n              },\n              \"required\": [\"link\", \"website_name\", \"publish_date\"]\n            }\n          }\n        },\n        \"required\": [\"news_item\", \"references\"]\n      }\n    },\n    \"activity_compromises_and_data_breaches\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"news_item\": { \"type\": \"string\" },\n          \"references\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"link\": { \"type\": \"string\" },\n                \"website_name\": { \"type\": \"string\" },\n                \"publish_date\": { \"type\": \"string\", \"format\": \"date-time\" }\n              },\n              \"required\": [\"link\", \"website_name\", \"publish_date\"]\n            }\n          }\n        },\n        \"required\": [\"news_item\", \"references\"]\n      }\n    },\n    \"activity_vulnerabilities\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"news_item\": { \"type\": \"string\" },\n          \"references\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"link\": { \"type\": \"string\" },\n                \"website_name\": { \"type\": \"string\" },\n                \"publish_date\": { \"type\": \"string\", \"format\": \"date-time\" }\n              },\n              \"required\": [\"link\", \"website_name\", \"publish_date\"]\n            }\n          }\n        },\n        \"required\": [\"news_item\", \"references\"]\n      }\n    },\n    \"activity_miscellaneous\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"news_item\": { \"type\": \"string\" },\n          \"references\": {\n            \"type\": \"array\",\n            \"items\": {\n              \"type\": \"object\",\n              \"properties\": {\n                \"link\": { \"type\": \"string\" },\n                \"website_name\": { \"type\": \"string\" },\n                \"publish_date\": { \"type\": \"string\", \"format\": \"date-time\" }\n              },\n              \"required\": [\"link\", \"website_name\", \"publish_date\"]\n            }\n          }\n        },\n        \"required\": [\"news_item\", \"references\"]\n      }\n    }\n  },\n  \"required\": [\n    \"activity_nation_state_actors\",\n    \"activity_financially_motivated_actors\",\n    \"activity_compromises_and_data_breaches\",\n    \"activity_vulnerabilities\",\n    \"activity_miscellaneous\"\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        1104,
+        2512
+      ],
+      "id": "2e223b06-6c9a-48ca-a585-17cf5f85c0f1",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "jsCode": "function convertToHTML(data) {\n  const categoryMap = {\n    activity_nation_state_actors: \"Nation State Actors\",\n    activity_financially_motivated_actors: \"Financially Motivated Actors\",\n    activity_compromises_and_data_breaches: \"Compromises and Data Breaches\",\n    activity_vulnerabilities: \"Vulnerabilities\",\n    activity_miscellaneous: \"Miscellaneous\"\n  };\n\n  const input = data[0]?.json?.output;\n  if (!input) return [{ htmlOutput: '' }];\n\n  let html = '';\n\n  Object.keys(categoryMap).forEach((key) => {\n    const entries = input[key];\n    if (!Array.isArray(entries) || entries.length === 0) return;\n\n    html += `<h4>${categoryMap[key]}</h4>`;\n\n    entries.forEach((item) => {\n      html += `- ${item.news_item}`;\n\n      if (Array.isArray(item.references) && item.references.length > 0) {\n        const sources = item.references.map((ref, idx) => {\n          const date = new Date(ref.publish_date);\n          const formattedDate = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${String(date.getFullYear()).slice(-2)}`;\n          return `<a href=\"${ref.link}\" target=\"_blank\" rel=\"noopener\">${ref.website_name} (${formattedDate})</a>`;\n        }).join(', ');\n        html += ` (${sources})`;\n      }\n\n      html += '<br />';\n    });\n  });\n\n  return [{ htmlOutput: html }];\n}\n\nreturn convertToHTML($input.all());\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1376,
+        2384
+      ],
+      "id": "5b3ef98e-57f8-412b-a0e6-a14cc39b6dac",
+      "name": "Process output into HTML"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "databaseId": 236879,
+        "tableId": 562928,
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 4515701,
+              "fieldValue": "={{ JSON.stringify($json.output) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1376,
+        2192
+      ],
+      "id": "637fe9dc-eab6-4444-9a8a-9faffdb9bb0c",
+      "name": "Baserow Push Data",
+      "credentials": {
+        "baserowApi": {
+          "id": "S0JbjUsfZA9NtGxj",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9974ba68-9f3b-420c-8676-38de8c6d1292",
+              "name": "daily_report",
+              "value": "={{ $json.Description }}",
+              "type": "string"
+            },
+            {
+              "id": "aac39345-a8e6-4b8c-ac09-7452fe584040",
+              "name": "created_on",
+              "value": "={{ $json[\"Created on\"] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2048,
+        2192
+      ],
+      "id": "a5aa2a1a-3279-4a38-93f1-c8c4ee0ac708",
+      "name": "Filter summaries and created date"
+    },
+    {
+      "parameters": {
+        "databaseId": 236879,
+        "tableId": 562928,
+        "additionalOptions": {
+          "filters": {
+            "fields": [
+              {
+                "field": 4515726,
+                "operator": "date_after",
+                "value": "={{ $json.previous_days }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        1824,
+        2192
+      ],
+      "id": "eedb7998-2973-4531-9307-ad54ffd3cbe7",
+      "name": "Get data of previous days",
+      "credentials": {
+        "baserowApi": {
+          "id": "S0JbjUsfZA9NtGxj",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2512,
+        2416
+      ],
+      "id": "44656dd3-1da6-49ac-acad-021dd08ed547",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "XEg77k9lHATjmxBY",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const merged = items.map(e => e.json);\nreturn [{\n  json: {\n    merged_reports: merged\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2272,
+        2192
+      ],
+      "id": "0c3b4ae6-1fd6-4d68-92a1-7b140f21630f",
+      "name": "Flatten"
+    },
+    {
+      "parameters": {
+        "jsCode": "const reports = items[0].json.output;\n\nconst filtered = reports.filter(report => report.references.length >= 3);\n\nconst html = filtered.map(report => {\n  const references = report.references.map(ref => {\n    const date = ref.publish_date ? new Date(ref.publish_date).toISOString().split('T')[0] : 'N/A';\n    return `<li><a href=\"${ref.link}\">${ref.website_name}</a> (${date})</li>`;\n  }).join('');\n\n  return `\n    <section style=\"margin-bottom:2em;\">\n      <h2>${report.title}</h2>\n      <p>${report.content}</p>\n      <ul>${references}</ul>\n    </section>\n  `;\n}).join('');\n\nreturn [{\n  json: {\n    html: `<div>${html}</div>`\n  }\n}];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2848,
+        2096
+      ],
+      "id": "3672961b-435f-4a7a-bf89-f22113b98ea9",
+      "name": "Process output into HTML1"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "databaseId": 236879,
+        "tableId": 628338,
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": 5118199,
+              "fieldValue": "={{ JSON.stringify($json.output) }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.baserow",
+      "typeVersion": 1,
+      "position": [
+        2848,
+        2288
+      ],
+      "id": "37476baa-e9bd-47f8-af3a-b05209a1516a",
+      "name": "Baserow Push Data1",
+      "credentials": {
+        "baserowApi": {
+          "id": "S0JbjUsfZA9NtGxj",
+          "name": "Baserow account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 7
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        80,
+        2256
+      ],
+      "id": "5a6b62c4-a6d4-4e99-b200-8d911c7880f1",
+      "name": "Daily trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.articlesText }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are an intelligence analyst. Summarize the following threat intelligence articles into a concise, high-signal daily briefing. Do not make things up. Drop items that are not relevant enough. Follow these rules:  \n1. Group information by topic. Use the following sections as guidelines:\n    - Nation state actor activity\n    - Financially motivated actor activity\n    - Compromises and data breach activity (list victims only)\n    - Vulnerabilities activity (list with CVEs or affected products, only high priorities)\n    - Other miscellaneous activity that is sensible to share. Topics not related to cybersecurity can be disregarded. Ignore ads. Keep it short.\n2. Deduplicate reports. If multiple sources report on the same event, merge them. Prefer brevity over repetition.\n3. Prioritize topics mentioned multiple times. Omit low-signal, one-off articles unless highly critical. Keep lines concise, prioritize readability of the end product over including all content. Topics should typically fit on a single line, having 20 words maximum.\n4. Link all sources found for an item. Deduplicated items should have more than one source.  \n5. Remove all ads, promotional language, or off-topic content.\n6. Use clear, non-speculative language. Avoid filler. \n7. Put it in well-unified JSON format."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1024,
+        2288
+      ],
+      "id": "f3d805a6-7386-454b-a73f-aea92de20688",
+      "name": "Write basic digest for today"
+    },
+    {
+      "parameters": {
+        "fromEmail": "Threat Intelligence Digest <CTI@notification.com>",
+        "toEmail": "velden.tom@linkmet.me",
+        "subject": "=CTI Digest - {{ $now.format('yyyy-MM-dd') }}",
+        "html": "={{ $json.htmlOutput }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1600,
+        2384
+      ],
+      "id": "513b82ba-7451-4e09-b26f-7a974840104d",
+      "name": "Send daily digest email",
+      "webhookId": "90efcf88-3807-4042-a81c-8e4c4103a163",
+      "credentials": {
+        "smtp": {
+          "id": "aglx8Z4I6eejlFRD",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "Threat Intelligence Digest <CTI@notification.com>",
+        "toEmail": "velden.tom@linkmet.me",
+        "subject": "=CTI Digest (Viral Topics) - {{ $now.format('yyyy-MM-dd') }}",
+        "html": "={{ $json.html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        3072,
+        2096
+      ],
+      "id": "bcb3dc89-a5bd-45d4-a5b7-9f395996a89a",
+      "name": "Send viral topics email",
+      "webhookId": "b6d14d2a-e054-4a15-885a-c4f7566da747",
+      "credentials": {
+        "smtp": {
+          "id": "aglx8Z4I6eejlFRD",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"title\": { \"type\": \"string\" },\n      \"content\": { \"type\": \"string\" },\n      \"references\": {\n        \"type\": \"array\",\n        \"items\": {\n          \"type\": \"object\",\n          \"properties\": {\n            \"link\": { \"type\": \"string\" },\n            \"website_name\": { \"type\": \"string\" },\n            \"publish_date\": { \"type\": \"string\", \"format\": \"date-time\" }\n          }\n        }\n      }\n    }\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        2640,
+        2416
+      ],
+      "id": "4a14cbc4-b7ea-41ba-a375-ce922de5470f",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "You are an intelligence analyst reviewing cyber threat intelligence reports from the past x days, formatted in a defined JSON schema. Your task is to identify 'viral' news items that describe the *same topic* and appear across multiple days. When such overlapping topics are found:\n\n* Merge them into a single entry.\n* Ensure the merged entry is mentioned on multiple across the grouped items.\n* Extract and synthesize a concise *title* and *summary* for the merged topic.\n* Aggregate all associated references under the merged entry.\n* Sort the merged topics based on newest source, descending.\n\nYou may merge items across different categories (e.g., “Nation state actors”, “Vulnerabilities”) if they clearly concern the same underlying event or threat. Do not include or report on any item that does not meet the above threshold. The objective is to surface recurring, high-signal topics for a daily digest, consolidating redundant reports into unified narratives. It is more important to have three well-processed viral topics, than many bad ones.\n"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        2496,
+        2192
+      ],
+      "id": "1db95f1e-79cd-49a7-88f4-3448634f5b03",
+      "name": "Identify viral topics and write digest",
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "content": "# Collection\n## Ingest intelligence from RSS feeds, every morning on 7am.",
+        "height": 2064,
+        "width": 416
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        80,
+        1296
+      ],
+      "typeVersion": 1,
+      "id": "dfb08fad-4576-4017-81ac-ad6e6beed8de",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# Processing\n## Process the ingested data for further analysis by merging it into a single data block. Filter articles older than 24h and irrelevant fields.",
+        "height": 2064,
+        "width": 416,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        528,
+        1296
+      ],
+      "typeVersion": 1,
+      "id": "068701e2-b873-4059-96d0-c64f4e5e574d",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "# Analysis\n## Leverage AI to deduplicate, organize, and summarize the information for a daily digest email.",
+        "height": 2064,
+        "width": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        976,
+        1296
+      ],
+      "typeVersion": 1,
+      "id": "5e588fcc-c300-43f7-a6dc-07d8604e9da3",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Analysis\n## Leverage AI to identity viral topics in reporting from the previous week and organize it into a viral topics threat brief.",
+        "height": 2064,
+        "width": 320,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2448,
+        1296
+      ],
+      "typeVersion": 1,
+      "id": "e38624e0-629e-4e8c-a97c-79140191b000",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [{\n  json: {\n    previous_days: new Date(Date.now() - 604800000).toISOString().split('T')[0]\n  }\n}];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1600,
+        2192
+      ],
+      "id": "a27c5ba0-58ec-48a7-9d46-41c97d836980",
+      "name": "7 days ago date"
+    },
+    {
+      "parameters": {
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Dissemination\n## Disseminate the report over email.",
+        "height": 1008,
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        2352
+      ],
+      "typeVersion": 1,
+      "id": "fe6226c7-84d3-4588-8be7-3036e2a67937",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "# Processing\n## Save the output in a database and collect the data of the last 7 days for viral topic identification. Filter out only the needed data and flatten the array for better AI consumption.",
+        "height": 1024,
+        "width": 1088,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1328,
+        1296
+      ],
+      "typeVersion": 1,
+      "id": "413be037-4098-4111-88bf-9f617b577f7a",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "# Dissemination\n## Disseminate the report over email and save it in a database for future usage.",
+        "height": 2064,
+        "width": 416,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2800,
+        1296
+      ],
+      "typeVersion": 1,
+      "id": "8a54ff65-4b0c-4d5f-b478-8007f0fe2d10",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "# AI Threat Intelligence: Compose Daily Digest & Viral Topics Reports \n## Process cybersecurity reports into an AI-generated daily threat intelligence digest and viral topic report.\nThis n8n workflow simplifies the process of digesting cybersecurity reports by summarizing, deduplicating, organizing, and identifying viral topics of interest into daily emails. \n\nIt will generate two types of emails:\n- A daily digest with summaries of deduplicated cybersecurity reports organized into various topics.\n- A daily viral topic report with summaries of recurring topics that have been identified over the last seven days. \n\n\n**This workflow template supports threat intelligence analysts digest the high number of cybersecurity reports they must analyse daily by decreasing the noise and tracking topics of importance with additional care, while providing customizability with regards to sources and output format.**\n\n## How it works\nThe workflow follows the threat intelligence lifecycle as labelled by the coloured notes.\n- Every morning, collect news articles from a set of RSS feeds.\n- Merge the feeds output and prepare them for LLM consumption.\n- Task an LLM with writing an intelligence briefing that summarizes, deduplicates, and organizes the topics.\n- Generate and send an email with the daily digest.\n- Collect the daily digests of the last seven days and prepare them for LLM consumption.\n- Task an LLM with writing a report that covers 'viral' topics that have appeared prominently in the news. \n- Store this report and send out over email.\n\n## How to use & customization\n- The workflow will trigger daily at 7am. \n- The workflow can be reused for other types of news as well. The RSS feeds can be swapped out and the AI prompts can easily be altered. \n- The parameters used for the viral topic identification process can easily be changed (number of previous days considered, requirements for a topic to be 'viral').\n\n## Requirements\n- The workflow leverages Gemini (free tier) for email content generation and Baserow for storing generated reports. The viral topic identification relies on the Gemini Pro model because of a higher data quantity and more complex task.\n- An SMTP email account must be provided to send the emails with. This can be through Gmail. ",
+        "height": 1120,
+        "width": 640,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -592,
+        1296
+      ],
+      "typeVersion": 1,
+      "id": "82ac586b-d3c2-485f-83a0-31bf77b6a5b3",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        320,
+        2464
+      ],
+      "id": "ce0d17b1-d192-44d4-b449-f4482f0f09a4",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "ignoreSSL": true
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        2608
+      ],
+      "id": "042c2933-6c53-4748-8049-2caf28ef9190",
+      "name": "RSS Read",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        592,
+        2256
+      ],
+      "id": "35376aee-610a-4f8c-992a-2e8f8ea89694",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n\t{\n\t\t// BleepingComputer\n\t\tjson: {\n\t\t\turl: 'https://www.bleepingcomputer.com/feed/',\n\t\t}\n\t},\n\t{\n\t\t// SecurityWeek\n\t\tjson: {\n\t\t\turl: 'http://feeds.feedburner.com/Securityweek',\n\t\t}\n\t},\n\t{\n\t\t// The Hacker News\n\t\tjson: {\n\t\t\turl: 'https://feeds.feedburner.com/TheHackersNews',\n\t\t}\n\t},\n\t{\n\t\t// Schneier on Security\n\t\tjson: {\n\t\t\turl: 'https://www.schneier.com/feed/atom/',\n\t\t}\n\t},\n\t{\n\t\t// Dark Reading\n\t\tjson: {\n\t\t\turl: 'https://www.darkreading.com/rss.xml',\n\t\t}\n\t},\n\t{\n\t\t// Kaspersky Securelist\n\t\tjson: {\n\t\t\turl: 'http://www.securelist.com/en/rss/allupdates',\n\t\t}\n\t},\n\t{\n\t\t// Mandiant Blog\n\t\tjson: {\n\t\t\turl: 'https://www.mandiant.com/resources/blog/rss.xml',\n\t\t}\n\t},\n\t{\n\t\t// Microsoft Security Blog\n\t\tjson: {\n\t\t\turl: 'https://www.microsoft.com/en-us/security/blog/feed/',\n\t\t}\n\t},\n\t{\n\t\t// Trend Micro Simply Security\n\t\tjson: {\n\t\t\turl: 'http://feeds.trendmicro.com/TrendMicroSimplySecurity',\n\t\t}\n\t},\n\t{\n\t\t// Recorded Future\n\t\tjson: {\n\t\t\turl: 'https://www.recordedfuture.com/feed/',\n\t\t}\n\t},\n\t{\n\t\t// The DFIR Report\n\t\tjson: {\n\t\t\turl: 'https://thedfirreport.com/feed/',\n\t\t}\n\t},\n\t{\n\t\t// Sophos News\n\t\tjson: {\n\t\t\turl: 'https://news.sophos.com/en-us/feed',\n\t\t}\n\t},\n\t{\n\t\t// Check Point Research\n\t\tjson: {\n\t\t\turl: 'https://research.checkpoint.com/feed',\n\t\t}\n\t},\n\t{\n\t\t// Cisco Talos (Sourcefire VRT blog)\n\t\tjson: {\n\t\t\turl: 'https://blog.talosintelligence.com/rss/',\n\t\t}\n\t},\n\t{\n\t\t// CloudSEK Blog\n\t\tjson: {\n\t\t\turl: 'https://www.cloudsek.com/blog/rss.xml',\n\t\t}\n\t},\n\t{\n\t\t// Coveware Blog\n\t\tjson: {\n\t\t\turl: 'https://www.coveware.com/blog?format=RSS',\n\t\t}\n\t},\n\t{\n\t\t// ESET Blog\n\t\tjson: {\n\t\t\turl: 'https://feeds.feedburner.com/eset/blog?format=xml',\n\t\t}\n\t},\n\t{\n\t\t// Eye Security Blog\n\t\tjson: {\n\t\t\turl: 'https://www.eye.security/blog/rss.xml',\n\t\t}\n\t},\n\t{\n\t\t// Fox-IT Blog\n\t\tjson: {\n\t\t\turl: 'http://blog.fox-it.com/feed/',\n\t\t}\n\t},\n\t{\n\t\t// Google Project Zero\n\t\tjson: {\n\t\t\turl: 'http://googleprojectzero.blogspot.com/feeds/posts/default',\n\t\t}\n\t},\n\t{\n\t\t// Google Threat Analysis Group\n\t\tjson: {\n\t\t\turl: 'https://blog.google/threat-analysis-group/rss',\n\t\t}\n\t},\n\t{\n\t\t// Huntress Blog\n\t\tjson: {\n\t\t\turl: 'https://www.huntress.com/blog/rss.xml',\n\t\t}\n\t},\n\t{\n\t\t// DoublePulsar\n\t\tjson: {\n\t\t\turl: 'https://doublepulsar.com/feed',\n\t\t}\n\t},\n\t{\n\t\t// Proofpoint Threat Insight\n\t\tjson: {\n\t\t\turl: 'https://www.proofpoint.com/us/threat-insight-blog.xml',\n\t\t}\n\t},\n\t{\n\t\t// Rapid7 Detection and Response\n\t\tjson: {\n\t\t\turl: 'https://blog.rapid7.com/tag/detection-and-response/rss/',\n\t\t}\n\t},\n\t{\n\t\t// SentinelOne Labs\n\t\tjson: {\n\t\t\turl: 'https://labs.sentinelone.com/feed/',\n\t\t}\n\t},\n\t{\n\t\t// Unit42 (Palo Alto Networks)\n\t\tjson: {\n\t\t\turl: 'http://feeds.feedburner.com/Unit42',\n\t\t}\n\t},\n\t{\n\t\t// WatchTowr Labs\n\t\tjson: {\n\t\t\turl: 'https://labs.watchtowr.com/rss/',\n\t\t}\n\t},\n\t{\n\t\t// Wiz Blog\n\t\tjson: {\n\t\t\turl: 'https://blog.wiz.io/rss/',\n\t\t}\n\t},\n\t{\n\t\t// Zscaler Research\n\t\tjson: {\n\t\t\turl: 'http://research.zscaler.com/feeds/posts/default',\n\t\t}\n\t},\n    {\n\t\t// Crowdstrike\n\t\tjson: {\n\t\t\turl: 'https://www.crowdstrike.com/blog/feed',\n\t\t}\n\t},\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        2256
+      ],
+      "id": "175164cb-4d88-482e-852d-24d0134577be",
+      "name": "RSS feeds"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the current date and time\nconst now = new Date();\n\n// Combine the output from all RSS feed nodes into one array\n// Input structure: [ { \"data\": [ { RSS feed item } ] } ]\nconst allArticles = items.flatMap(item => item.json.data);\n\n// Filter out articles older than 24 hours\nconst filteredArticles = allArticles.filter(item => {\n    const pubDate = new Date(item.pubDate);\n    const diff = (now - pubDate) / (1000 * 60 * 60);\n    return diff <= 24;\n});\n\n// Extract key fields including publish date\nconst articlesText = filteredArticles.map(item => {\n    return `\\nTitle: ${item.title}\\nLink: ${item.link}\\nPublished: ${item.pubDate}\\nText snippet: ${item.contentSnippet}\\n---\\n`;\n}).join('');\n\n// Return the filtered and formatted articles\nreturn [{ json: { articlesText } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        2256
+      ],
+      "id": "9a6b4056-9167-4e4c-8053-25cf5779cf17",
+      "name": "Precook data"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Write basic digest for today",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process output into HTML": {
+      "main": [
+        [
+          {
+            "node": "Send daily digest email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Baserow Push Data": {
+      "main": [
+        [
+          {
+            "node": "7 days ago date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter summaries and created date": {
+      "main": [
+        [
+          {
+            "node": "Flatten",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get data of previous days": {
+      "main": [
+        [
+          {
+            "node": "Filter summaries and created date",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Identify viral topics and write digest",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Write basic digest for today",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Flatten": {
+      "main": [
+        [
+          {
+            "node": "Identify viral topics and write digest",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Process output into HTML1": {
+      "main": [
+        [
+          {
+            "node": "Send viral topics email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daily trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS feeds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write basic digest for today": {
+      "main": [
+        [
+          {
+            "node": "Process output into HTML",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Baserow Push Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send daily digest email": {
+      "main": [
+        []
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Identify viral topics and write digest",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Identify viral topics and write digest": {
+      "main": [
+        [
+          {
+            "node": "Process output into HTML1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Baserow Push Data1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "7 days ago date": {
+      "main": [
+        [
+          {
+            "node": "Get data of previous days",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Precook data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS feeds": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Precook data": {
+      "main": [
+        [
+          {
+            "node": "Write basic digest for today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "edfb2b0b-d01e-4065-9dd8-e1f56db981b3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c47b2be6e94e56f3895047f8e71284fea9b7ba290222599b4ab91232f7a20d1f"
+  },
+  "id": "mcWOpz1rYqOgEAgt",
+  "tags": []
+}
