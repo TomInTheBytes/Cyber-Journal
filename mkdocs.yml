@@ -3,6 +3,7 @@ site_url: https://tominthebytes.github.io/Cyber-Journal
 repo_url: https://github.com/TomInTheBytes/Cyber-Journal
 theme:
   name: material
+  custom_dir: overrides
   palette:
     scheme: slate
     primary: amber
