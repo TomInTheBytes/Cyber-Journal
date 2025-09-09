@@ -2,7 +2,7 @@
 This page showcases an automation workflow built for the tool [n8n](https://n8n.io/). This n8n workflow template simplifies the process of digesting cybersecurity reports by summarizing, deduplicating, organizing, and identifying viral topics of interest into daily emails.
 
 !!! info
-    The workflow was submitted to n8n for review and is available as [template](https://n8n.io/workflows/7608-cybersecurity-intelligence-create-daily-digest-and-viral-topics-with-gemini-ai/). A JSON copy can also be downloaded the repository this information is hosted on under the 'projects' folder.
+    The workflow was submitted to n8n for review and is available as [template](https://n8n.io/workflows/7608-cybersecurity-intelligence-create-daily-digest-and-viral-topics-with-gemini-ai/). A JSON copy can also be downloaded from the repository under the 'projects' folder. This folder will contain the newest versions of the template.
     
 
 ![n8n template](../../media//n8n_cti_digest_template.png){ align=left }
