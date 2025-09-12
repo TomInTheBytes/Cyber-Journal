@@ -8,23 +8,15 @@ https://github.com/elastic/protections-artifacts/blob/main/behavior/rules/window
 https://github.com/redcanaryco/atomic-red-team/blob/f745504cf0393d8334375d34d30b27e182574fb2/atomics/T1204.002/T1204.002.md#atomic-test-12---clickfix-campaign---abuse-runmru-to-launch-mshta-via-powershell
 https://mrd0x.com/filefix-clickfix-alternative/
 
+# Clickfix
+This page is a deep dive into the Clickfix threat and its variations.
+
+## Threat Intelligence
+
+## Attack Simulation
 
 
-walk over elastic pages, process, alerts, rules, etc
-use clickfix as example
-
-AMSI bypass
-
-what do we see with ClickFix
-- Command execution (Elastic agent, Symon, Powershell)
-- DNS request (Symon)
-- Registry RunMRU value set (Sysmon)
-
-TODO
-- Powershell logs detection
-- Create fake Clickfix page in Kali VM
-
-!!! info "Atomic Test #12 - ClickFix Campaign - Abuse RunMRU to Launch mshta via PowerShell"
+!!! info "Atomic Red Team T1204.002 Test #12 - ClickFix Campaign - Abuse RunMRU to Launch mshta via PowerShell"
     [Simulates](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1204.002/T1204.002.md#atomic-test-12---clickfix-campaign---abuse-runmru-to-launch-mshta-via-powershell) a ClickFix-style campaign by adding a malicious entry to the RunMRU registry key that launches mshta.exe with a remote payload.
 
     ``` ps1
@@ -38,21 +30,35 @@ TODO
     powershell Invoke-RestMethod -Uri "https://www.cloudflare.com" -Method GET  # ✅ I am not a robot - Verification ID: 123456 - Press OK
     ```
 
+
+## Logs
+
+what do we see with ClickFix
+- Command execution (Elastic agent, Symon, Powershell)
+- DNS request (Symon)
+- Registry RunMRU value set (Sysmon)
+
+TODO
+- Powershell logs detection
+
+
+## Detection & Hunting
+
 from Github page, ext thread removed because not populated fields (not sure why)
 
-``` sql linenums="1" title="[Elastic Defend + Symon] Suspicious command shell execution via Windows run"
+``` sql linenums="1" title="[EQL] [Elastic Defend + Symon] Suspicious command shell execution via Windows run"
 /* (1)! */ process where (event.action == "start" or event.action == "Process creation") and
 /* (2)! */ process.name : ("cmd.exe", "powershell.exe", "curl.exe", "msiexec.exe", "mshta.exe", "wscript.exe", "cscript.exe") and
 /* (3)! */ process.parent.name : "explorer.exe" and 
 /* (4)! */ process.args_count >= 2 and
-/* (5)! */ not (process.name : "cmd.exe" and process.args : ("*.bat*", "*.cmd", "dir", "ipconfig", "C:\\WINDOWS\\system32\\sconfig.cmd ", "Code\\bin\\code.cmd ")) 
-/* (6)! */ and not (process.name : "powershell.exe" and process.args : ("Start-Process powershell -Verb RunAs", "C:\\*.ps1", "-SPLAGroup", "\\\\*\\netlogon\\*.ps1"))
-/* (7)! */ and not (process.name : "msiexec.exe" and process.args : "?:\\*.msi")
-/* (8)! */ and not process.command_line : ("\"C:\\WINDOWS\\system32\\cmd.exe\" /k net use",
+/* (5)! */ not (process.name : "cmd.exe" and process.args : ("*.bat*", "*.cmd", "dir", "ipconfig", "C:\\WINDOWS\\system32\\sconfig.cmd ", "Code\\bin\\code.cmd ")) and
+/* (6)! */  not (process.name : "powershell.exe" and process.args : ("Start-Process powershell -Verb RunAs", "C:\\*.ps1", "-SPLAGroup", "\\\\*\\netlogon\\*.ps1")) and
+/* (7)! */ not (process.name : "msiexec.exe" and process.args : "?:\\*.msi") and
+/* (8)! */ not process.command_line : ("\"C:\\WINDOWS\\system32\\cmd.exe\" /k net use",
                                 "\"C:\\WINDOWS\\system32\\cmd.exe\" -a",
                                 "\"C:\\Windows\\system32\\msiexec.exe\" /regserver",
-                                "\"C:\\windows\\system32\\WindowsPowerShell\\v1.0\\PowerShell.exe\" -ep bypass")
-/* (9)! */ and not (process.name : ("wscript.exe", "cscript.exe") and process.args : ("\\\\*\\MapNetworkDrives.vbs", "?:\\*.js", "?:\\*.vbs"))
+                                "\"C:\\windows\\system32\\WindowsPowerShell\\v1.0\\PowerShell.exe\" -ep bypass") and
+/* (9)! */ not (process.name : ("wscript.exe", "cscript.exe") and process.args : ("\\\\*\\MapNetworkDrives.vbs", "?:\\*.js", "?:\\*.vbs"))
 ```
 
 1. **Event action filter:** Only include process creation events (Elastic Defend and Symon respectively).
@@ -66,7 +72,8 @@ from Github page, ext thread removed because not populated fields (not sure why)
 9. **wscript/cscript exclusion**: Ignores standard Windows Script Host scripts such as network drive mapping.
 
 
-explorer variant
+
+
 
 
 

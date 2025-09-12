@@ -7,6 +7,9 @@ This page describes the virtual machines that are part of the lab environment an
 Security lab network architecture.
 ///
 
+## Hypervisor: Hyper-V
+TBD
+
 ## Routing: OPNsense
 *[OPNsense](https://opnsense.org/) is an open source, feature rich firewall and routing platform, offering cutting-edge network protection.*
 
