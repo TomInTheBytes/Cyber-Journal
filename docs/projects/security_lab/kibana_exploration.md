@@ -6,20 +6,9 @@ https://github.com/SigmaHQ/sigma/blob/1751ef8673365444ae44eb38887d3025982f4794/r
 https://www.picussecurity.com/resource/blog/interlock-clickfix-ransomware-healthcare-attack
 https://github.com/elastic/protections-artifacts/blob/main/behavior/rules/windows/execution_suspicious_command_shell_execution_via_windows_run.toml
 https://github.com/redcanaryco/atomic-red-team/blob/f745504cf0393d8334375d34d30b27e182574fb2/atomics/T1204.002/T1204.002.md#atomic-test-12---clickfix-campaign---abuse-runmru-to-launch-mshta-via-powershell
+https://mrd0x.com/filefix-clickfix-alternative/
 
 
-# Windows VM
-Windows evaluation VM (WinDev2407).
-
-!!! info "Replace MDE with Elastic Defend"
-    You can replace Microsoft Defender for Endpoint with Elastic Defend as antivirus solution after deploying the agent by doing the following in Kibana:
-
-    `Elastic Kibana -> Security (sidebar) -> Manage -> Policies -> choose policy -> scroll to bottom and select 'Enabled' under 'Register as antivirus'`
-
-    ![mde_replacement](../../media/lab/mde_elastic_av.png){ align=left }
-    /// caption
-    The Windows security settings should display this after the change.
-    ///
 
 walk over elastic pages, process, alerts, rules, etc
 use clickfix as example
@@ -29,7 +18,7 @@ AMSI bypass
 what do we see with ClickFix
 - Command execution (Elastic agent, Symon, Powershell)
 - DNS request (Symon)
-- Registry value set (Sysmon)
+- Registry RunMRU value set (Sysmon)
 
 TODO
 - Powershell logs detection
@@ -80,24 +69,6 @@ from Github page, ext thread removed because not populated fields (not sure why)
 explorer variant
 
 
-what we see
-
-- RunMRU registry key created (sysmon)
 
 
-!!! info "KQL vs EQL"
-    KQL is a filter query language. It matches documents based on field values, supports full-text search, and logical operators. It does not provide sequence or temporal correlation.
 
-    EQL is an event correlation language. It is designed for ordered event sequences, temporal relationships, and patterns over time. It can express constructs like sequence, until, and time windows, which KQL cannot. EQL is less flexible for free-form search but more powerful for behavioral detection.
-
-    ### KQL use cases
-    - Ad-hoc searching in Discover for field values and text  
-    - Dashboards and visualizations that need fast filtering  
-    - Alerts or rules based only on static conditions like `process.name: "powershell.exe"` and `process.args_count > 2`  
-    - Investigations requiring flexible wildcard and fuzzy matching across multiple fields  
-
-    ### EQL use cases
-    - Detection of process chains such as `explorer.exe → powershell.exe → rundll32.exe`  
-    - Sequenced file and network events, e.g. a file write followed within 30s by an outbound connection  
-    - Behavioral rules that require temporal correlation (process A starts, then within X seconds process B starts)  
-    - Threat hunting patterns like persistence followed by privilege escalation  

@@ -85,9 +85,9 @@ nav:
     - projects/index.md
     - Security lab:
       - projects/security_lab/index.md
-      - Architecture: projects/security_lab/architecture.md
-      - Security Onion: projects/security_lab/sec_onion.md
-      - Kibana Exploration: projects/security_lab/kibana_exploration.md
+      - Lab Architecture: projects/security_lab/architecture.md
+      - Security Onion Overview: projects/security_lab/sec_onion.md
+      - Clickfix: projects/security_lab/kibana_exploration.md
     - Generative AI:
       - Daily Intelligence Digest Automation (n8n): projects/genai/intel_digest_workflow.md
       - Threat Actor RAG and Assessment: projects/genai/intel_rag.md

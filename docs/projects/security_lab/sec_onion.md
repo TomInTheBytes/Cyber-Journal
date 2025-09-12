@@ -54,14 +54,45 @@ Suricata functions as a network intrusion detection system (NIDS).
 
 Strelka will automatically analyze files extracted by Zeek and Suricata. Alerts can be generated based on this analysis.
 
-## Security Information and Event Management (SIEM)
-Accessible through Elastic Kibana. 
+## Analysis
+Security Onion provides tools for the analyst through its [Security Onion Console (SOC)](https://docs.securityonion.net/en/2.4/soc.html). This consists of a combination of custom and existing tools for analysts to analyze what Security Onion has captured and detected. 
 
-### Analytics
+![endpoint_policy](../../media/lab/soc.webp){ align=left }
+/// caption
+Overview of the [Security Onion Console (SOC)](https://docs.securityonion.net/en/2.4/soc.html).
+///
 
-### Elastic Defend
+### Kibana
+Elastic Kibana acts as the Security Information and Event Management (SIEM) of the ELK stack. While Security Onion offers custom tools, the preferred tool for log analysis is Kibana because of its completeness. 
+
+#### Analytics
+Kibana Analytics contains the pages used for searching logs with KQL queries. Logs are part of indices and data streams. Both can be used in queries, but data streams are more convenient. An index is rotated automatically when reaching a certain size and therefore the same type of data can be spread over multiple indices. Wildcards in your query can take care of this but [data streams](https://www.elastic.co/docs/manage-data/data-store/data-streams) fix this issue as they provide a single named resource that acts as a front door to multiple indices. Therefore, data streams are more convenient to use.
+
+#### Elastic Defend
 *[Elastic Defend](https://www.elastic.co/docs/reference/integrations/endpoint) provides organizations with prevention, detection, and response capabilities with deep visibility for EPP, EDR, SIEM, and Security Analytics use cases across Windows, macOS, and Linux operating systems running on both traditional endpoints and public cloud environments.*
 
-The out-of-the-box configuration of Elastic Defend only enables about 25 alerts. We enabled all 1260 to have full coverage.
+Kibana contains a special integration for Elastic Defend. Here, security rules and their alerts can be managed. The out-of-the-box configuration of Elastic Defend only enables about 25 alerts. We enabled all 1260 to have full coverage. This can be done through `Kibana -> Security -> Rules -> Detection rules (SIEM) -> Select all x rules -> Bulk actions -> Enable. The queries for the rules will now run on a schedule. This does not severely impact performance.
 
+More information for all available open-source Elastic Security rules ([GitHub](https://github.com/elastic/detection-rules/tree/main)) can be found and searched for on [this](https://elastic.github.io/detection-rules-explorer/) page. 
+
+!!! info "KQL vs EQL"
+    Kibana offers multiple query languages that can be used for searching logs and building alerts.
+
+    KQL is a filter query language. It matches documents based on field values, supports full-text search, and logical operators. It does not provide sequence or temporal correlation.
+
+    EQL is an event correlation language. It is designed for ordered event sequences, temporal relationships, and patterns over time. It can express constructs like sequence, until, and time windows, which KQL cannot. EQL is less flexible for free-form search but more powerful for behavioral detection.
+
+    **KQL use cases**
+
+    - Ad-hoc searching in Discover for field values and text  
+    - Dashboards and visualizations that need fast filtering  
+    - Alerts or rules based only on static conditions like `process.name: "powershell.exe"` and `process.args_count > 2`  
+    - Investigations requiring flexible wildcard and fuzzy matching across multiple fields  
+
+    **EQL use cases**
+    
+    - Detection of process chains such as `explorer.exe → powershell.exe → rundll32.exe`  
+    - Sequenced file and network events, e.g. a file write followed within 30s by an outbound connection  
+    - Behavioral rules that require temporal correlation (process A starts, then within X seconds process B starts)  
+    - Threat hunting patterns like persistence followed by privilege escalation  
 

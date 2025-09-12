@@ -7,6 +7,9 @@ from diagrams.custom import Custom
 
 with Diagram("Lab Network Architecture", show=False):
     
+    graph_attr = {
+    "bgcolor": "transparent"
+    }
 
     with Cluster("Hyper-V Environment"):
         hyperv = Custom("Hyper-V\nManager", "./logo-hyperv.png")
