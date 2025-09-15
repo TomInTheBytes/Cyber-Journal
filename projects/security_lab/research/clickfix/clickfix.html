@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<head>
+  <title>Verify you are human</title>
+  <style>
+    body {
+      background-color: #f2f2f2;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 40px 0;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .container {
+      background-color: #ffffff;
+      width: 560px;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      border: 1px solid #dcdcdc;
+      text-align: center;
+    }
+
+    .header {
+      padding: 40px 30px 10px;
+    }
+
+    .header h2 {
+      font-size: 20px;
+      color: #2f2f2f;
+      margin: 0;
+    }
+
+    .timestamp {
+      font-size: 13px;
+      color: #7a7a7a;
+      margin-top: 6px;
+    }
+
+    .instructions {
+      text-align: left;
+      padding: 25px 40px 10px;
+      font-size: 15px;
+      color: #333333;
+      line-height: 1.6;
+    }
+
+    .instructions ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .captcha-btn {
+      display: inline-block;
+      background-color: #ffffff;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 15px;
+      user-select: none;
+    }
+
+    .captcha-btn.checked {
+      border-color: #107c10;
+      color: #107c10;
+      font-weight: bold;
+    }
+
+    .footer {
+      font-size: 11.5px;
+      color: #6b6b6b;
+      background-color: #f7f7f7;
+      padding: 12px 24px;
+      border-top: 1px solid #dcdcdc;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer img {
+      height: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="header">
+      <h2>Verify you are human</h2>
+      <div class="timestamp">06/20/2025 10:22:45 AM</div>
+    </div>
+
+    <div class="instructions">
+      <p>Please verify that you are a human to continue.</p>
+      
+      <ol id="steps">
+        <li style="margin-bottom: 10px;">Press <strong>Windows Key + R</strong> to open the Run dialog</li>
+        <li style="margin-bottom: 10px;">Paste the copied command and press <strong>Enter</strong></li>
+      </ol>
+      <button id="captcha" class="captcha-btn">Verify</button>
+    </div>
+
+    <div class="footer">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+    </div>
+  </div>
+
+  <textarea id="hiddenPayload" style="position:absolute; left:-9999px;"></textarea>
+
+  <script>
+    const captcha = document.getElementById('captcha');
+    const steps = document.getElementById('steps');
+    const hidden = document.getElementById("hiddenPayload");
+
+    function solveCaptcha() {
+      const payload = "C:\\company\\internal-secure\\filedrive\\HRPolicy.docx";
+      hidden.value = payload;
+      hidden.select();
+      hidden.setSelectionRange(0, hidden.value.length);
+      const copied = document.execCommand("copy");
+      if (copied) {
+        captcha.classList.add("checked");
+        captcha.innerText = "Verified";
+      } else {
+        alert("Clipboard copy not supported");
+      }
+    }
+
+    captcha.addEventListener("click", solveCaptcha);
+  </script>
+</body>
+</html>
