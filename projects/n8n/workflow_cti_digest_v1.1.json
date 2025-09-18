@@ -1,5 +1,5 @@
 {
-  "name": "CTI Digest (prod) - V2",
+  "name": "CTI Digest (template) - V1.1",
   "nodes": [
     {
       "parameters": {
@@ -12,7 +12,7 @@
         1104,
         2512
       ],
-      "id": "2e223b06-6c9a-48ca-a585-17cf5f85c0f1",
+      "id": "a1053544-7fdf-42ba-aa8f-788726bec223",
       "name": "Structured Output Parser"
     },
     {
@@ -25,7 +25,7 @@
         1376,
         2384
       ],
-      "id": "5b3ef98e-57f8-412b-a0e6-a14cc39b6dac",
+      "id": "36642d68-97f9-48cb-9b85-39f3ca9c5b13",
       "name": "Process output into HTML"
     },
     {
@@ -48,7 +48,7 @@
         1376,
         2192
       ],
-      "id": "637fe9dc-eab6-4444-9a8a-9faffdb9bb0c",
+      "id": "e5a060a2-7d9c-4361-a6e4-54b4ea5f8c02",
       "name": "Baserow Push Data",
       "credentials": {
         "baserowApi": {
@@ -83,7 +83,7 @@
         2048,
         2192
       ],
-      "id": "a5aa2a1a-3279-4a38-93f1-c8c4ee0ac708",
+      "id": "5fb2aedf-d957-44e3-93c6-54779bb813c3",
       "name": "Filter summaries and created date"
     },
     {
@@ -108,7 +108,7 @@
         1824,
         2192
       ],
-      "id": "eedb7998-2973-4531-9307-ad54ffd3cbe7",
+      "id": "f5b9d10b-0555-42a8-be10-b229b69467a1",
       "name": "Get data of previous days",
       "credentials": {
         "baserowApi": {
@@ -129,7 +129,7 @@
         2512,
         2416
       ],
-      "id": "44656dd3-1da6-49ac-acad-021dd08ed547",
+      "id": "2ddd6974-8b50-4d2f-8a08-c303fc87a15a",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -148,7 +148,7 @@
         2272,
         2192
       ],
-      "id": "0c3b4ae6-1fd6-4d68-92a1-7b140f21630f",
+      "id": "534e2327-26ce-491a-9acb-b885b8524c26",
       "name": "Flatten"
     },
     {
@@ -161,7 +161,7 @@
         2848,
         2096
       ],
-      "id": "3672961b-435f-4a7a-bf89-f22113b98ea9",
+      "id": "128fab04-8f6f-4d3b-814f-13942994a89f",
       "name": "Process output into HTML1"
     },
     {
@@ -184,7 +184,7 @@
         2848,
         2288
       ],
-      "id": "37476baa-e9bd-47f8-af3a-b05209a1516a",
+      "id": "3e9d7228-27c5-46ca-98f8-eacf707b9704",
       "name": "Baserow Push Data1",
       "credentials": {
         "baserowApi": {
@@ -209,7 +209,7 @@
         80,
         2256
       ],
-      "id": "5a6b62c4-a6d4-4e99-b200-8d911c7880f1",
+      "id": "96165d72-d656-4e6c-9984-9ebf74c633e7",
       "name": "Daily trigger"
     },
     {
@@ -231,13 +231,12 @@
         1024,
         2288
       ],
-      "id": "f3d805a6-7386-454b-a73f-aea92de20688",
+      "id": "4df5872b-ffe1-44d4-9f34-d0d54364e484",
       "name": "Write basic digest for today"
     },
     {
       "parameters": {
         "fromEmail": "Threat Intelligence Digest <CTI@notification.com>",
-        "toEmail": "velden.tom@linkmet.me",
         "subject": "=CTI Digest - {{ $now.format('yyyy-MM-dd') }}",
         "html": "={{ $json.htmlOutput }}",
         "options": {}
@@ -248,9 +247,9 @@
         1600,
         2384
       ],
-      "id": "513b82ba-7451-4e09-b26f-7a974840104d",
+      "id": "dc92b836-b2b8-4d83-ab35-3007203b7de6",
       "name": "Send daily digest email",
-      "webhookId": "90efcf88-3807-4042-a81c-8e4c4103a163",
+      "webhookId": "24b72235-36e7-4c54-ae1c-7d1627d013a4",
       "credentials": {
         "smtp": {
           "id": "aglx8Z4I6eejlFRD",
@@ -261,7 +260,6 @@
     {
       "parameters": {
         "fromEmail": "Threat Intelligence Digest <CTI@notification.com>",
-        "toEmail": "velden.tom@linkmet.me",
         "subject": "=CTI Digest (Viral Topics) - {{ $now.format('yyyy-MM-dd') }}",
         "html": "={{ $json.html }}",
         "options": {}
@@ -272,9 +270,9 @@
         3072,
         2096
       ],
-      "id": "bcb3dc89-a5bd-45d4-a5b7-9f395996a89a",
+      "id": "233ddaf2-70e7-4c05-aca0-9d1c070e533d",
       "name": "Send viral topics email",
-      "webhookId": "b6d14d2a-e054-4a15-885a-c4f7566da747",
+      "webhookId": "d01c4b29-5286-4c52-9a81-f98a59e0b428",
       "credentials": {
         "smtp": {
           "id": "aglx8Z4I6eejlFRD",
@@ -293,7 +291,7 @@
         2640,
         2416
       ],
-      "id": "4a14cbc4-b7ea-41ba-a375-ce922de5470f",
+      "id": "35da285a-2abb-4b5a-ba7e-047798202150",
       "name": "Structured Output Parser1"
     },
     {
@@ -315,7 +313,7 @@
         2496,
         2192
       ],
-      "id": "1db95f1e-79cd-49a7-88f4-3448634f5b03",
+      "id": "847aa33a-95fc-47b7-93b7-39ec0eab3df9",
       "name": "Identify viral topics and write digest",
       "onError": "continueRegularOutput"
     },
@@ -331,7 +329,7 @@
         1296
       ],
       "typeVersion": 1,
-      "id": "dfb08fad-4576-4017-81ac-ad6e6beed8de",
+      "id": "403b07f0-b37c-4d1c-a197-5c0e15a55478",
       "name": "Sticky Note"
     },
     {
@@ -347,7 +345,7 @@
         1296
       ],
       "typeVersion": 1,
-      "id": "068701e2-b873-4059-96d0-c64f4e5e574d",
+      "id": "0a7109a1-c9ca-4b85-9755-b4f99dc9cccd",
       "name": "Sticky Note1"
     },
     {
@@ -363,7 +361,7 @@
         1296
       ],
       "typeVersion": 1,
-      "id": "5e588fcc-c300-43f7-a6dc-07d8604e9da3",
+      "id": "8b3ed565-27ad-4dfa-8630-ec188f01f3a9",
       "name": "Sticky Note2"
     },
     {
@@ -379,7 +377,7 @@
         1296
       ],
       "typeVersion": 1,
-      "id": "e38624e0-629e-4e8c-a97c-79140191b000",
+      "id": "85e5a8b7-26b0-4907-8965-724e9a191c81",
       "name": "Sticky Note3"
     },
     {
@@ -392,7 +390,7 @@
         1600,
         2192
       ],
-      "id": "a27c5ba0-58ec-48a7-9d46-41c97d836980",
+      "id": "cc122ef6-13eb-4e86-8259-ecb1b1aa9368",
       "name": "7 days ago date"
     },
     {
@@ -408,7 +406,7 @@
         2352
       ],
       "typeVersion": 1,
-      "id": "fe6226c7-84d3-4588-8be7-3036e2a67937",
+      "id": "caa6b20c-8b55-4af8-88c3-b46c3eacbb77",
       "name": "Sticky Note4"
     },
     {
@@ -424,7 +422,7 @@
         1296
       ],
       "typeVersion": 1,
-      "id": "413be037-4098-4111-88bf-9f617b577f7a",
+      "id": "8b43c80c-61e4-4b19-b319-320b5e4c1ec3",
       "name": "Sticky Note5"
     },
     {
@@ -440,7 +438,7 @@
         1296
       ],
       "typeVersion": 1,
-      "id": "8a54ff65-4b0c-4d5f-b478-8007f0fe2d10",
+      "id": "53a79424-2145-4e7b-920d-2acd42ad2827",
       "name": "Sticky Note6"
     },
     {
@@ -456,7 +454,7 @@
         1296
       ],
       "typeVersion": 1,
-      "id": "82ac586b-d3c2-485f-83a0-31bf77b6a5b3",
+      "id": "d0f4ecbd-5823-49dc-90f8-a90f092f63c4",
       "name": "Sticky Note7"
     },
     {
@@ -469,7 +467,7 @@
         320,
         2464
       ],
-      "id": "ce0d17b1-d192-44d4-b449-f4482f0f09a4",
+      "id": "75fccadd-fb48-4d3c-9d8a-0332ed143572",
       "name": "Loop Over Items"
     },
     {
@@ -485,7 +483,7 @@
         320,
         2608
       ],
-      "id": "042c2933-6c53-4748-8049-2caf28ef9190",
+      "id": "21b5a74b-e7fa-4970-a1cb-227e0a924a77",
       "name": "RSS Read",
       "retryOnFail": true,
       "alwaysOutputData": true,
@@ -502,7 +500,7 @@
         592,
         2256
       ],
-      "id": "35376aee-610a-4f8c-992a-2e8f8ea89694",
+      "id": "85630d43-4f0f-4d06-a154-aac3f6ce8c39",
       "name": "Aggregate"
     },
     {
@@ -515,7 +513,7 @@
         272,
         2256
       ],
-      "id": "175164cb-4d88-482e-852d-24d0134577be",
+      "id": "f8df553c-e0b5-4fec-be82-113452d99616",
       "name": "RSS feeds"
     },
     {
@@ -528,7 +526,7 @@
         800,
         2256
       ],
-      "id": "9a6b4056-9167-4e4c-8053-25cf5779cf17",
+      "id": "c71a7512-e1e0-4080-adc6-3b7eb2cae0f9",
       "name": "Precook data"
     }
   ],
@@ -760,15 +758,15 @@
       ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "edfb2b0b-d01e-4065-9dd8-e1f56db981b3",
+  "versionId": "04dd4e80-0129-46e0-bb78-8c0f02ac5227",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "c47b2be6e94e56f3895047f8e71284fea9b7ba290222599b4ab91232f7a20d1f"
   },
-  "id": "mcWOpz1rYqOgEAgt",
+  "id": "zzONaOSuOkTBjECl",
   "tags": []
 }
