@@ -1,101 +1,6 @@
 {
-  "name": "CTI Digest (prod)",
+  "name": "CTI Digest (template) - V1.1",
   "nodes": [
-    {
-      "parameters": {
-        "url": "https://www.bleepingcomputer.com/feed/",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        352,
-        1424
-      ],
-      "id": "798d5678-dce4-4942-8fc7-e96f26b4ff75",
-      "name": "Bleepingcomputer",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "https://www.securityweek.com/feed",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        352,
-        1616
-      ],
-      "id": "dedfc0c2-443b-491e-a9d3-631e85072ed5",
-      "name": "Securityweek",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "https://www.schneier.com/feed/atom/",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        352,
-        2000
-      ],
-      "id": "d61a714c-a12f-4112-b52f-daa5d55865c3",
-      "name": "Schneier on Security",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "https://feeds.feedburner.com/TheHackersNews",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        352,
-        1808
-      ],
-      "id": "ad13d476-4780-4ed5-9ce8-8ab707116fe7",
-      "name": "The Hacker News",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "https://www.darkreading.com/rss.xml",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        352,
-        2192
-      ],
-      "id": "0eccdac4-22eb-4f7e-94b1-af0fc1cb22a6",
-      "name": "Darkreading",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
     {
       "parameters": {
         "schemaType": "manual",
@@ -107,21 +12,8 @@
         1104,
         2512
       ],
-      "id": "889c9692-1474-4d04-9621-7aa02e0c571b",
+      "id": "a1053544-7fdf-42ba-aa8f-788726bec223",
       "name": "Structured Output Parser"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Get the current date and time\nconst now = new Date();\n\n// Combine the output from all RSS feed nodes into one array\nconst allArticles = items.flatMap(item => item.json);\n\n// Filter out articles older than 24 hours\nconst filteredArticles = allArticles.filter(item => {\n    const pubDate = new Date(item.pubDate);\n    const diff = (now - pubDate) / (1000 * 60 * 60);\n    return diff <= 24;\n});\n\n// Extract key fields including publish date\nconst articlesText = filteredArticles.map(item => {\n    return `\\nTitle: ${item.title}\\nLink: ${item.link}\\nPublished: ${item.pubDate}\\nText snippet: ${item.contentSnippet}\\n---\\n`;\n}).join('');\n\n// Return the filtered and formatted articles\nreturn [{ json: { articlesText } }];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        800,
-        2288
-      ],
-      "id": "a2c0e161-ea80-42b3-b081-6b7ec6a93b6c",
-      "name": "Precook data"
     },
     {
       "parameters": {
@@ -133,7 +25,7 @@
         1376,
         2384
       ],
-      "id": "e2c5b770-f147-4f7b-a295-717fbc3fc26b",
+      "id": "36642d68-97f9-48cb-9b85-39f3ca9c5b13",
       "name": "Process output into HTML"
     },
     {
@@ -156,7 +48,7 @@
         1376,
         2192
       ],
-      "id": "48bcffbc-2bdc-4395-92cc-8d631580650b",
+      "id": "e5a060a2-7d9c-4361-a6e4-54b4ea5f8c02",
       "name": "Baserow Push Data",
       "credentials": {
         "baserowApi": {
@@ -164,158 +56,6 @@
           "name": "Baserow account"
         }
       }
-    },
-    {
-      "parameters": {
-        "url": "http://www.securelist.com/en/rss/allupdates",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        352,
-        2384
-      ],
-      "id": "b418c1a0-15e0-40ba-8e21-aee998d3a447",
-      "name": "Kaspersky Securelist",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "https://www.mandiant.com/resources/blog/rss.xml",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        352,
-        2576
-      ],
-      "id": "2c8b84d6-abc0-4c82-8ee3-a0a2ce4ab3fd",
-      "name": "Google (Mandiant)",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "https://www.microsoft.com/en-us/security/blog/feed/",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        352,
-        2768
-      ],
-      "id": "c11f98ac-9680-4c1f-a374-4308e4059ece",
-      "name": "Microsoft Security",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "https://www.proofpoint.com/us/threat-insight-blog.xml",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        -592,
-        3840
-      ],
-      "id": "443e3f7a-b465-4b2e-ac83-0ef249f180ee",
-      "name": "Proofpoint Threat Insight",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "https://www.recordedfuture.com/feed/",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        352,
-        3152
-      ],
-      "id": "c6fad442-8ffc-4e1c-ba50-fb87e03fa5bf",
-      "name": "Recorded Future",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "https://blog.google/threat-analysis-group/rss",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        -592,
-        4064
-      ],
-      "id": "13f82226-90de-4bbd-8e37-430cb83b98dc",
-      "name": "Google TAG",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "http://feeds.trendmicro.com/TrendMicroSimplySecurity",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        352,
-        2960
-      ],
-      "id": "d0d0b83f-e0de-4c3a-b36a-23ede75b19f7",
-      "name": "Trend Micro",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
-    },
-    {
-      "parameters": {
-        "url": "https://news.sophos.com/en-us/feed",
-        "options": {
-          "ignoreSSL": true
-        }
-      },
-      "type": "n8n-nodes-base.rssFeedRead",
-      "typeVersion": 1.1,
-      "position": [
-        -592,
-        3616
-      ],
-      "id": "f03baefc-21c8-4898-9db7-107255eaf34d",
-      "name": "Sophos",
-      "alwaysOutputData": false,
-      "executeOnce": false,
-      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
@@ -343,7 +83,7 @@
         2048,
         2192
       ],
-      "id": "1a2089ee-d4b6-4afc-a877-bad51563fd44",
+      "id": "5fb2aedf-d957-44e3-93c6-54779bb813c3",
       "name": "Filter summaries and created date"
     },
     {
@@ -368,7 +108,7 @@
         1824,
         2192
       ],
-      "id": "c3ad7a1b-c3c8-4127-8bbc-268b8589ef30",
+      "id": "f5b9d10b-0555-42a8-be10-b229b69467a1",
       "name": "Get data of previous days",
       "credentials": {
         "baserowApi": {
@@ -389,7 +129,7 @@
         2512,
         2416
       ],
-      "id": "9c6e7f25-c8de-4ddd-b5ac-eeb20f3e6662",
+      "id": "2ddd6974-8b50-4d2f-8a08-c303fc87a15a",
       "name": "Google Gemini Chat Model",
       "credentials": {
         "googlePalmApi": {
@@ -408,7 +148,7 @@
         2272,
         2192
       ],
-      "id": "a780f816-8837-4c28-9d5f-412887203159",
+      "id": "534e2327-26ce-491a-9acb-b885b8524c26",
       "name": "Flatten"
     },
     {
@@ -421,7 +161,7 @@
         2848,
         2096
       ],
-      "id": "a66f1c65-a6e4-4fea-9516-46ec0d539df9",
+      "id": "128fab04-8f6f-4d3b-814f-13942994a89f",
       "name": "Process output into HTML1"
     },
     {
@@ -444,7 +184,7 @@
         2848,
         2288
       ],
-      "id": "d80708b7-e1a5-45cb-b126-08f82b07ea60",
+      "id": "3e9d7228-27c5-46ca-98f8-eacf707b9704",
       "name": "Baserow Push Data1",
       "credentials": {
         "baserowApi": {
@@ -466,24 +206,11 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.2,
       "position": [
-        128,
-        2288
+        80,
+        2256
       ],
-      "id": "2356acbc-2759-4ba8-bbf9-0d9e3c7d7a04",
+      "id": "96165d72-d656-4e6c-9984-9ebf74c633e7",
       "name": "Daily trigger"
-    },
-    {
-      "parameters": {
-        "numberInputs": 10
-      },
-      "type": "n8n-nodes-base.merge",
-      "typeVersion": 3.1,
-      "position": [
-        576,
-        2160
-      ],
-      "id": "6f2637dc-9ad6-4d45-837e-db882c5a142a",
-      "name": "Merge collected articles"
     },
     {
       "parameters": {
@@ -504,13 +231,12 @@
         1024,
         2288
       ],
-      "id": "8352ef4c-4c9e-4d14-a665-aa25dd03c4c7",
+      "id": "4df5872b-ffe1-44d4-9f34-d0d54364e484",
       "name": "Write basic digest for today"
     },
     {
       "parameters": {
         "fromEmail": "Threat Intelligence Digest <CTI@notification.com>",
-        "toEmail": "velden.tom@linkmet.me",
         "subject": "=CTI Digest - {{ $now.format('yyyy-MM-dd') }}",
         "html": "={{ $json.htmlOutput }}",
         "options": {}
@@ -521,9 +247,9 @@
         1600,
         2384
       ],
-      "id": "516904af-b6d2-4a32-9620-cbdd20fd0431",
+      "id": "dc92b836-b2b8-4d83-ab35-3007203b7de6",
       "name": "Send daily digest email",
-      "webhookId": "b10ab568-4d98-41d8-b431-6a2fbeb0a04c",
+      "webhookId": "24b72235-36e7-4c54-ae1c-7d1627d013a4",
       "credentials": {
         "smtp": {
           "id": "aglx8Z4I6eejlFRD",
@@ -534,7 +260,6 @@
     {
       "parameters": {
         "fromEmail": "Threat Intelligence Digest <CTI@notification.com>",
-        "toEmail": "velden.tom@linkmet.me",
         "subject": "=CTI Digest (Viral Topics) - {{ $now.format('yyyy-MM-dd') }}",
         "html": "={{ $json.html }}",
         "options": {}
@@ -545,9 +270,9 @@
         3072,
         2096
       ],
-      "id": "4a72735e-69aa-4442-a9d9-66482b3bff21",
+      "id": "233ddaf2-70e7-4c05-aca0-9d1c070e533d",
       "name": "Send viral topics email",
-      "webhookId": "b10ab568-4d98-41d8-b431-6a2fbeb0a04c",
+      "webhookId": "d01c4b29-5286-4c52-9a81-f98a59e0b428",
       "credentials": {
         "smtp": {
           "id": "aglx8Z4I6eejlFRD",
@@ -566,7 +291,7 @@
         2640,
         2416
       ],
-      "id": "01d3e5d9-794d-4941-9a48-57e9b024634e",
+      "id": "35da285a-2abb-4b5a-ba7e-047798202150",
       "name": "Structured Output Parser1"
     },
     {
@@ -588,71 +313,71 @@
         2496,
         2192
       ],
-      "id": "bd26af2e-0ffd-476b-acbe-cbfdcca91f4e",
+      "id": "847aa33a-95fc-47b7-93b7-39ec0eab3df9",
       "name": "Identify viral topics and write digest",
       "onError": "continueRegularOutput"
     },
     {
       "parameters": {
-        "content": "## Collection\nIngest intelligence from RSS feeds, every morning on 7am.",
-        "height": 2016,
+        "content": "# Collection\n## Ingest intelligence from RSS feeds, every morning on 7am.",
+        "height": 2064,
         "width": 416
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         80,
-        1344
+        1296
       ],
       "typeVersion": 1,
-      "id": "573f1261-b2be-48b5-ad2e-e01a03e64ce3",
+      "id": "403b07f0-b37c-4d1c-a197-5c0e15a55478",
       "name": "Sticky Note"
     },
     {
       "parameters": {
-        "content": "## Processing\nProcess the ingested data for further analysis by merging it into a single data block. Filter articles older than 24h and irrelevant fields.",
-        "height": 2016,
+        "content": "# Processing\n## Process the ingested data for further analysis by merging it into a single data block. Filter articles older than 24h and irrelevant fields.",
+        "height": 2064,
         "width": 416,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         528,
-        1344
+        1296
       ],
       "typeVersion": 1,
-      "id": "ab97c5ee-648b-46ac-961c-641948cf58b7",
+      "id": "0a7109a1-c9ca-4b85-9755-b4f99dc9cccd",
       "name": "Sticky Note1"
     },
     {
       "parameters": {
-        "content": "## Analysis\nLeverage AI to deduplicate, organize, and summarize the information for a daily digest email.",
-        "height": 2016,
+        "content": "# Analysis\n## Leverage AI to deduplicate, organize, and summarize the information for a daily digest email.",
+        "height": 2064,
         "width": 320,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         976,
-        1344
+        1296
       ],
       "typeVersion": 1,
-      "id": "d57fe9a7-4b7e-4409-af19-0b8b0ac71fa5",
+      "id": "8b3ed565-27ad-4dfa-8630-ec188f01f3a9",
       "name": "Sticky Note2"
     },
     {
       "parameters": {
-        "content": "## Analysis\nLeverage AI to identity viral topics in reporting from the previous week and organize it into a viral topics threat brief.",
-        "height": 2016,
+        "content": "# Analysis\n## Leverage AI to identity viral topics in reporting from the previous week and organize it into a viral topics threat brief.",
+        "height": 2064,
         "width": 320,
         "color": 4
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         2448,
-        1344
+        1296
       ],
       "typeVersion": 1,
-      "id": "32e4c1c4-349f-42ac-ae19-44996f6962fb",
+      "id": "85e5a8b7-26b0-4907-8965-724e9a191c81",
       "name": "Sticky Note3"
     },
     {
@@ -665,12 +390,12 @@
         1600,
         2192
       ],
-      "id": "4aec27b9-16c4-486f-95be-e59342055366",
+      "id": "cc122ef6-13eb-4e86-8259-ecb1b1aa9368",
       "name": "7 days ago date"
     },
     {
       "parameters": {
-        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n## Dissemination\nDisseminate the report over email.",
+        "content": "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n# Dissemination\n## Disseminate the report over email.",
         "height": 1008,
         "width": 416,
         "color": 5
@@ -681,132 +406,138 @@
         2352
       ],
       "typeVersion": 1,
-      "id": "4dce20d6-456e-4133-80fe-f94f897f3089",
+      "id": "caa6b20c-8b55-4af8-88c3-b46c3eacbb77",
       "name": "Sticky Note4"
     },
     {
       "parameters": {
-        "content": "## Processing\nSave the output in a database and collect the data of the last 7 days for viral topic identification. Filter out only the needed data and flatten the array for better AI consumption.",
-        "height": 976,
+        "content": "# Processing\n## Save the output in a database and collect the data of the last 7 days for viral topic identification. Filter out only the needed data and flatten the array for better AI consumption.",
+        "height": 1024,
         "width": 1088,
         "color": 3
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         1328,
-        1344
+        1296
       ],
       "typeVersion": 1,
-      "id": "7155a07d-ab5e-4b79-9a81-3ea09c48b073",
+      "id": "8b43c80c-61e4-4b19-b319-320b5e4c1ec3",
       "name": "Sticky Note5"
     },
     {
       "parameters": {
-        "content": "## Dissemination\nDisseminate the report over email and save it in a database for future usage.",
-        "height": 2016,
+        "content": "# Dissemination\n## Disseminate the report over email and save it in a database for future usage.",
+        "height": 2064,
         "width": 416,
         "color": 5
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         2800,
-        1344
+        1296
       ],
       "typeVersion": 1,
-      "id": "dc30ac83-874b-4660-873b-ee9f3f5646c6",
+      "id": "53a79424-2145-4e7b-920d-2acd42ad2827",
       "name": "Sticky Note6"
     },
     {
       "parameters": {
         "content": "# AI Threat Intelligence: Compose Daily Digest & Viral Topics Reports \n## Process cybersecurity reports into an AI-generated daily threat intelligence digest and viral topic report.\nThis n8n workflow simplifies the process of digesting cybersecurity reports by summarizing, deduplicating, organizing, and identifying viral topics of interest into daily emails. \n\nIt will generate two types of emails:\n- A daily digest with summaries of deduplicated cybersecurity reports organized into various topics.\n- A daily viral topic report with summaries of recurring topics that have been identified over the last seven days. \n\n\n**This workflow template supports threat intelligence analysts digest the high number of cybersecurity reports they must analyse daily by decreasing the noise and tracking topics of importance with additional care, while providing customizability with regards to sources and output format.**\n\n## How it works\nThe workflow follows the threat intelligence lifecycle as labelled by the coloured notes.\n- Every morning, collect news articles from a set of RSS feeds.\n- Merge the feeds output and prepare them for LLM consumption.\n- Task an LLM with writing an intelligence briefing that summarizes, deduplicates, and organizes the topics.\n- Generate and send an email with the daily digest.\n- Collect the daily digests of the last seven days and prepare them for LLM consumption.\n- Task an LLM with writing a report that covers 'viral' topics that have appeared prominently in the news. \n- Store this report and send out over email.\n\n## How to use & customization\n- The workflow will trigger daily at 7am. \n- The workflow can be reused for other types of news as well. The RSS feeds can be swapped out and the AI prompts can easily be altered. \n- The parameters used for the viral topic identification process can easily be changed (number of previous days considered, requirements for a topic to be 'viral').\n\n## Requirements\n- The workflow leverages Gemini (free tier) for email content generation and Baserow for storing generated reports. The viral topic identification relies on the Gemini Pro model because of a higher data quantity and more complex task.\n- An SMTP email account must be provided to send the emails with. This can be through Gmail. ",
-        "height": 1072,
+        "height": 1120,
         "width": 640,
         "color": 7
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
         -592,
-        1344
+        1296
       ],
       "typeVersion": 1,
-      "id": "3fda11d8-6593-4d49-a183-2ed8ad95ec40",
+      "id": "d0f4ecbd-5823-49dc-90f8-a90f092f63c4",
       "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        320,
+        2464
+      ],
+      "id": "75fccadd-fb48-4d3c-9d8a-0332ed143572",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {
+          "ignoreSSL": true
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        320,
+        2608
+      ],
+      "id": "21b5a74b-e7fa-4970-a1cb-227e0a924a77",
+      "name": "RSS Read",
+      "retryOnFail": true,
+      "alwaysOutputData": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        592,
+        2256
+      ],
+      "id": "85630d43-4f0f-4d06-a154-aac3f6ce8c39",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n\t{\n\t\t// BleepingComputer\n\t\tjson: {\n\t\t\turl: 'https://www.bleepingcomputer.com/feed/',\n\t\t}\n\t},\n\t{\n\t\t// SecurityWeek\n\t\tjson: {\n\t\t\turl: 'http://feeds.feedburner.com/Securityweek',\n\t\t}\n\t},\n\t{\n\t\t// The Hacker News\n\t\tjson: {\n\t\t\turl: 'https://feeds.feedburner.com/TheHackersNews',\n\t\t}\n\t},\n\t{\n\t\t// Schneier on Security\n\t\tjson: {\n\t\t\turl: 'https://www.schneier.com/feed/atom/',\n\t\t}\n\t},\n\t{\n\t\t// Dark Reading\n\t\tjson: {\n\t\t\turl: 'https://www.darkreading.com/rss.xml',\n\t\t}\n\t},\n\t{\n\t\t// Kaspersky Securelist\n\t\tjson: {\n\t\t\turl: 'http://www.securelist.com/en/rss/allupdates',\n\t\t}\n\t},\n\t{\n\t\t// Mandiant Blog\n\t\tjson: {\n\t\t\turl: 'https://www.mandiant.com/resources/blog/rss.xml',\n\t\t}\n\t},\n\t{\n\t\t// Microsoft Security Blog\n\t\tjson: {\n\t\t\turl: 'https://www.microsoft.com/en-us/security/blog/feed/',\n\t\t}\n\t},\n\t{\n\t\t// Trend Micro Simply Security\n\t\tjson: {\n\t\t\turl: 'http://feeds.trendmicro.com/TrendMicroSimplySecurity',\n\t\t}\n\t},\n\t{\n\t\t// Recorded Future\n\t\tjson: {\n\t\t\turl: 'https://www.recordedfuture.com/feed/',\n\t\t}\n\t},\n\t{\n\t\t// The DFIR Report\n\t\tjson: {\n\t\t\turl: 'https://thedfirreport.com/feed/',\n\t\t}\n\t},\n\t{\n\t\t// Sophos News\n\t\tjson: {\n\t\t\turl: 'https://news.sophos.com/en-us/feed',\n\t\t}\n\t},\n\t{\n\t\t// Check Point Research\n\t\tjson: {\n\t\t\turl: 'https://research.checkpoint.com/feed',\n\t\t}\n\t},\n\t{\n\t\t// Cisco Talos (Sourcefire VRT blog)\n\t\tjson: {\n\t\t\turl: 'https://blog.talosintelligence.com/rss/',\n\t\t}\n\t},\n\t{\n\t\t// CloudSEK Blog\n\t\tjson: {\n\t\t\turl: 'https://www.cloudsek.com/blog/rss.xml',\n\t\t}\n\t},\n\t{\n\t\t// Coveware Blog\n\t\tjson: {\n\t\t\turl: 'https://www.coveware.com/blog?format=RSS',\n\t\t}\n\t},\n\t{\n\t\t// ESET Blog\n\t\tjson: {\n\t\t\turl: 'https://feeds.feedburner.com/eset/blog?format=xml',\n\t\t}\n\t},\n\t{\n\t\t// Eye Security Blog\n\t\tjson: {\n\t\t\turl: 'https://www.eye.security/blog/rss.xml',\n\t\t}\n\t},\n\t{\n\t\t// Fox-IT Blog\n\t\tjson: {\n\t\t\turl: 'http://blog.fox-it.com/feed/',\n\t\t}\n\t},\n\t{\n\t\t// Google Project Zero\n\t\tjson: {\n\t\t\turl: 'http://googleprojectzero.blogspot.com/feeds/posts/default',\n\t\t}\n\t},\n\t{\n\t\t// Google Threat Analysis Group\n\t\tjson: {\n\t\t\turl: 'https://blog.google/threat-analysis-group/rss',\n\t\t}\n\t},\n\t{\n\t\t// Huntress Blog\n\t\tjson: {\n\t\t\turl: 'https://www.huntress.com/blog/rss.xml',\n\t\t}\n\t},\n\t{\n\t\t// DoublePulsar\n\t\tjson: {\n\t\t\turl: 'https://doublepulsar.com/feed',\n\t\t}\n\t},\n\t{\n\t\t// Proofpoint Threat Insight\n\t\tjson: {\n\t\t\turl: 'https://www.proofpoint.com/us/threat-insight-blog.xml',\n\t\t}\n\t},\n\t{\n\t\t// Rapid7 Detection and Response\n\t\tjson: {\n\t\t\turl: 'https://blog.rapid7.com/tag/detection-and-response/rss/',\n\t\t}\n\t},\n\t{\n\t\t// SentinelOne Labs\n\t\tjson: {\n\t\t\turl: 'https://labs.sentinelone.com/feed/',\n\t\t}\n\t},\n\t{\n\t\t// Unit42 (Palo Alto Networks)\n\t\tjson: {\n\t\t\turl: 'http://feeds.feedburner.com/Unit42',\n\t\t}\n\t},\n\t{\n\t\t// WatchTowr Labs\n\t\tjson: {\n\t\t\turl: 'https://labs.watchtowr.com/rss/',\n\t\t}\n\t},\n\t{\n\t\t// Wiz Blog\n\t\tjson: {\n\t\t\turl: 'https://blog.wiz.io/rss/',\n\t\t}\n\t},\n\t{\n\t\t// Zscaler Research\n\t\tjson: {\n\t\t\turl: 'http://research.zscaler.com/feeds/posts/default',\n\t\t}\n\t},\n    {\n\t\t// Crowdstrike\n\t\tjson: {\n\t\t\turl: 'https://www.crowdstrike.com/blog/feed',\n\t\t}\n\t},\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        272,
+        2256
+      ],
+      "id": "f8df553c-e0b5-4fec-be82-113452d99616",
+      "name": "RSS feeds"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get the current date and time\nconst now = new Date();\n\n// Combine the output from all RSS feed nodes into one array\n// Input structure: [ { \"data\": [ { RSS feed item } ] } ]\nconst allArticles = items.flatMap(item => item.json.data);\n\n// Filter out articles older than 24 hours\nconst filteredArticles = allArticles.filter(item => {\n    const pubDate = new Date(item.pubDate);\n    const diff = (now - pubDate) / (1000 * 60 * 60);\n    return diff <= 24;\n});\n\n// Extract key fields including publish date\nconst articlesText = filteredArticles.map(item => {\n    return `\\nTitle: ${item.title}\\nLink: ${item.link}\\nPublished: ${item.pubDate}\\nText snippet: ${item.contentSnippet}\\n---\\n`;\n}).join('');\n\n// Return the filtered and formatted articles\nreturn [{ json: { articlesText } }];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        800,
+        2256
+      ],
+      "id": "c71a7512-e1e0-4080-adc6-3b7eb2cae0f9",
+      "name": "Precook data"
     }
   ],
   "pinData": {},
   "connections": {
-    "Bleepingcomputer": {
-      "main": [
-        [
-          {
-            "node": "Merge collected articles",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Securityweek": {
-      "main": [
-        [
-          {
-            "node": "Merge collected articles",
-            "type": "main",
-            "index": 1
-          }
-        ]
-      ]
-    },
-    "Schneier on Security": {
-      "main": [
-        [
-          {
-            "node": "Merge collected articles",
-            "type": "main",
-            "index": 3
-          }
-        ]
-      ]
-    },
-    "The Hacker News": {
-      "main": [
-        [
-          {
-            "node": "Merge collected articles",
-            "type": "main",
-            "index": 2
-          }
-        ]
-      ]
-    },
-    "Darkreading": {
-      "main": [
-        [
-          {
-            "node": "Merge collected articles",
-            "type": "main",
-            "index": 4
-          }
-        ]
-      ]
-    },
     "Structured Output Parser": {
       "ai_outputParser": [
         [
           {
             "node": "Write basic digest for today",
             "type": "ai_outputParser",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Precook data": {
-      "main": [
-        [
-          {
-            "node": "Write basic digest for today",
-            "type": "main",
             "index": 0
           }
         ]
@@ -830,61 +561,6 @@
             "node": "7 days ago date",
             "type": "main",
             "index": 0
-          }
-        ]
-      ]
-    },
-    "Kaspersky Securelist": {
-      "main": [
-        [
-          {
-            "node": "Merge collected articles",
-            "type": "main",
-            "index": 5
-          }
-        ]
-      ]
-    },
-    "Google (Mandiant)": {
-      "main": [
-        [
-          {
-            "node": "Merge collected articles",
-            "type": "main",
-            "index": 6
-          }
-        ]
-      ]
-    },
-    "Microsoft Security": {
-      "main": [
-        [
-          {
-            "node": "Merge collected articles",
-            "type": "main",
-            "index": 7
-          }
-        ]
-      ]
-    },
-    "Trend Micro": {
-      "main": [
-        [
-          {
-            "node": "Merge collected articles",
-            "type": "main",
-            "index": 8
-          }
-        ]
-      ]
-    },
-    "Recorded Future": {
-      "main": [
-        [
-          {
-            "node": "Merge collected articles",
-            "type": "main",
-            "index": 9
           }
         ]
       ]
@@ -953,63 +629,7 @@
       "main": [
         [
           {
-            "node": "Bleepingcomputer",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Securityweek",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "The Hacker News",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Schneier on Security",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Darkreading",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Kaspersky Securelist",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Google (Mandiant)",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Microsoft Security",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Trend Micro",
-            "type": "main",
-            "index": 0
-          },
-          {
-            "node": "Recorded Future",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Merge collected articles": {
-      "main": [
-        [
-          {
-            "node": "Precook data",
+            "node": "RSS feeds",
             "type": "main",
             "index": 0
           }
@@ -1074,17 +694,79 @@
           }
         ]
       ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Precook data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS feeds": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Precook data": {
+      "main": [
+        [
+          {
+            "node": "Write basic digest for today",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
-  "active": true,
+  "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "988defe6-75c7-4b1c-b4bd-c606ce18e9ae",
+  "versionId": "04dd4e80-0129-46e0-bb78-8c0f02ac5227",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "c47b2be6e94e56f3895047f8e71284fea9b7ba290222599b4ab91232f7a20d1f"
   },
-  "id": "OrydbZpIiqKkCmmm",
+  "id": "zzONaOSuOkTBjECl",
   "tags": []
 }
