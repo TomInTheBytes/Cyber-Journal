@@ -6,30 +6,30 @@
       
       
       
-        <link rel="canonical" href="https://tominthebytes.github.io/Cyber-Journal/projects/security_lab/">
+        <link rel="canonical" href="https://tominthebytes.github.io/Cyber-Journal/projects/security_lab/research/anyfix/">
       
       
-        <link rel="prev" href="../">
+        <link rel="prev" href="../../sec_onion/">
       
       
-        <link rel="next" href="architecture/">
+        <link rel="next" href="../../../genai/intel_digest_workflow/">
       
       
-      <link rel="icon" href="../../assets/images/favicon.png">
+      <link rel="icon" href="../../../../assets/images/favicon.png">
       <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.20">
     
     <meta name="google-site-verification" content="9L8DSoaW3axOK-OvOrQUNdLF1e2hb0H4z9_7tf1mtuE">
 
     
       
-        <title>Overview - Tom's Cyber Journal</title>
+        <title>AnyFix Technique - Tom's Cyber Journal</title>
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.e53b48f4.min.css">
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.e53b48f4.min.css">
       
         
-        <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.06af60db.min.css">
       
       
   
@@ -113,16 +113,16 @@
       
     
     
-      <link rel="stylesheet" href="../../stylesheets/extra.css">
+      <link rel="stylesheet" href="../../../../stylesheets/extra.css">
     
-    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
       
 
     
     
     
-  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+  <link href="../../../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
             html.glightbox-open { overflow: initial; height: 100%; }
             .gslide-title { margin-top: 0px; user-select: text; }
             .gslide-desc { color: #666; user-select: text; }
@@ -149,7 +149,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#overview" class="md-skip">
+        <a href="#anyfix-technique" class="md-skip">
           Skip to content
         </a>
       
@@ -165,7 +165,7 @@
 
 <header class="md-header md-header--shadow" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href="../.." title="Tom's Cyber Journal" class="md-header__button md-logo" aria-label="Tom's Cyber Journal" data-md-component="logo">
+    <a href="../../../.." title="Tom's Cyber Journal" class="md-header__button md-logo" aria-label="Tom's Cyber Journal" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"></path></svg>
@@ -185,7 +185,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Overview
+              AnyFix Technique
             
           </span>
         </div>
@@ -275,7 +275,7 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../.." title="Tom's Cyber Journal" class="md-nav__button md-logo" aria-label="Tom's Cyber Journal" data-md-component="logo">
+    <a href="../../../.." title="Tom's Cyber Journal" class="md-nav__button md-logo" aria-label="Tom's Cyber Journal" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.0.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M9.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L146.7 256zM224 384h256c17.7 0 32 14.3 32 32s-14.3 32-32 32H224c-17.7 0-32-14.3-32-32s14.3-32 32-32"></path></svg>
@@ -305,7 +305,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../.." class="md-nav__link">
+      <a href="../../../.." class="md-nav__link">
         
   
   
@@ -352,7 +352,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../cheatsheets/" class="md-nav__link ">
+            <a href="../../../../cheatsheets/" class="md-nav__link ">
               
   
   
@@ -387,7 +387,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../cheatsheets/splunk/" class="md-nav__link">
+      <a href="../../../../cheatsheets/splunk/" class="md-nav__link">
         
   
   
@@ -444,7 +444,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../../writeups/" class="md-nav__link ">
+            <a href="../../../../writeups/" class="md-nav__link ">
               
   
   
@@ -479,7 +479,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../writeups/hhc/" class="md-nav__link">
+      <a href="../../../../writeups/hhc/" class="md-nav__link">
         
   
   
@@ -502,7 +502,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../../writeups/splunk_bots/" class="md-nav__link">
+      <a href="../../../../writeups/splunk_bots/" class="md-nav__link">
         
   
   
@@ -561,7 +561,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="../" class="md-nav__link ">
+            <a href="../../../" class="md-nav__link ">
               
   
   
@@ -624,7 +624,7 @@
         
           
           <div class="md-nav__link md-nav__container">
-            <a href="./" class="md-nav__link md-nav__link--active">
+            <a href="../../" class="md-nav__link ">
               
   
   
@@ -637,7 +637,7 @@
             </a>
             
               
-              <label class="md-nav__link md-nav__link--active" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+              <label class="md-nav__link " for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
                 <span class="md-nav__icon md-icon"></span>
               </label>
             
@@ -659,7 +659,7 @@
   
   
     <li class="md-nav__item">
-      <a href="architecture/" class="md-nav__link">
+      <a href="../../architecture/" class="md-nav__link">
         
   
   
@@ -682,7 +682,7 @@
   
   
     <li class="md-nav__item">
-      <a href="sec_onion/" class="md-nav__link">
+      <a href="../../sec_onion/" class="md-nav__link">
         
   
   
@@ -702,8 +702,10 @@
                 
   
   
+    
   
   
+  
     
     
       
@@ -715,11 +717,11 @@
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_4">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_4" checked>
         
           
           <label class="md-nav__link" for="__nav_4_2_4" id="__nav_4_2_4_label" tabindex="0">
@@ -735,7 +737,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_4_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_4_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_4_2_4">
             <span class="md-nav__icon md-icon"></span>
             Research
@@ -746,10 +748,32 @@
                 
   
   
+    
   
   
-    <li class="md-nav__item">
-      <a href="research/anyfix/" class="md-nav__link">
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    AnyFix Technique
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
         
   
   
@@ -760,6 +784,86 @@
   
 
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#threat-intelligence" class="md-nav__link">
+    <span class="md-ellipsis">
+      Threat Intelligence
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attack-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attack Simulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attack Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#atomic-red-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      Atomic Red Team
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulated-phishing-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulated Phishing Page
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection-hunting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detection &amp; Hunting
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
     </li>
   
 
@@ -834,7 +938,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../genai/intel_digest_workflow/" class="md-nav__link">
+      <a href="../../../genai/intel_digest_workflow/" class="md-nav__link">
         
   
   
@@ -857,7 +961,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../genai/intel_rag/" class="md-nav__link">
+      <a href="../../../genai/intel_rag/" class="md-nav__link">
         
   
   
@@ -915,9 +1019,60 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#ideas" class="md-nav__link">
+  <a href="#threat-intelligence" class="md-nav__link">
     <span class="md-ellipsis">
-      ideas
+      Threat Intelligence
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attack-simulation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attack Simulation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Attack Simulation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#atomic-red-team" class="md-nav__link">
+    <span class="md-ellipsis">
+      Atomic Red Team
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simulated-phishing-page" class="md-nav__link">
+    <span class="md-ellipsis">
+      Simulated Phishing Page
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logs" class="md-nav__link">
+    <span class="md-ellipsis">
+      Logs
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#detection-hunting" class="md-nav__link">
+    <span class="md-ellipsis">
+      Detection &amp; Hunting
     </span>
   </a>
   
@@ -942,11 +1097,86 @@
   
 
 
-<h1 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">¶</a></h1>
-<h2 id="ideas">ideas<a class="headerlink" href="#ideas" title="Permanent link">¶</a></h2>
-<p>Linux persistence blog by elastic
-Amsi bypass
-Open source c2 framework</p>
+<!-- https://github.com/SigmaHQ/sigma/blob/1751ef8673365444ae44eb38887d3025982f4794/rules/windows/registry/registry_set/registry_set_runmru_susp_command_execution.yml#L8
+https://github.com/SigmaHQ/sigma/blob/1751ef8673365444ae44eb38887d3025982f4794/rules-threat-hunting/windows/registry/registry_set/registry_set_runmru_command_execution.yml#L8 --><h1 id="anyfix-technique">AnyFix Technique<a class="headerlink" href="#anyfix-technique" title="Permanent link">¶</a></h1>
+<p>This page is a deep dive into the variants of *Fix threats (e.g. ClickFix, FileFix, and PromptFix). This is a procedure for technique <a href="https://attack.mitre.org/techniques/T1204/004/">T1204.004</a>.</p>
+<h2 id="threat-intelligence">Threat Intelligence<a class="headerlink" href="#threat-intelligence" title="Permanent link">¶</a></h2>
+<p>ClickFix emerged in late 2023 as a technique abusing fake error or CAPTCHA dialogs to trick users into pasting malicious code. Initially seen in cybercrime campaigns, it quickly spread to state-sponsored groups through 2024. Attackers leverage trusted interfaces like run dialogs, terminals, and file Explorer paths for execution. Variants evolved into FileFix and PromptFix, with different attack sequences. By 2025 it has become a common cross-platform delivery method for stealers, RATs, ransomware, and custom malware.</p>
+<p>References:</p>
+<ul>
+<li><a href="https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/">(Microsoft) Think before you Click(Fix): Analyzing the ClickFix social engineering technique </a></li>
+<li><a href="https://www.proofpoint.com/us/blog/threat-insight/security-brief-clickfix-social-engineering-technique-floods-threat-landscape">(Proofpoint) Security Brief: ClickFix Social Engineering Technique Floods Threat Landscape</a></li>
+<li><a href="https://kqlquery.com/posts/investigate-clickfix/">(KQLQuery.com) Investigating ClickFix Incidents</a></li>
+<li><a href="https://mrd0x.com/filefix-clickfix-alternative/">(mrd0x.com) FileFix - A ClickFix Alternative</a></li>
+<li><a href="https://www.bleepingcomputer.com/news/security/from-clickfix-to-metastealer-dissecting-evolving-threat-actor-techniques/">(BleepingComputer) From ClickFix to MetaStealer: Dissecting Evolving Threat Actor Techniques</a></li>
+<li><a href="https://blog.sekoia.io/interlock-ransomware-evolving-under-the-radar/">(Sekoia) Interlock ransomware evolving under the radar</a></li>
+<li><a href="https://www.elastic.co/security-labs/a-wretch-client">(Elastic) A Wretch Client: From ClickFix deception to information stealer deployment</a></li>
+</ul>
+<h2 id="attack-simulation">Attack Simulation<a class="headerlink" href="#attack-simulation" title="Permanent link">¶</a></h2>
+<p>We simulate parts of the attack to generate logs for further analysis. There are various options available:</p>
+<h3 id="atomic-red-team">Atomic Red Team<a class="headerlink" href="#atomic-red-team" title="Permanent link">¶</a></h3>
+<p>The <a href="https://github.com/redcanaryco/atomic-red-team">Atomic Red Team</a> project develops small and highly portable detection tests. They have created a <a href="https://github.com/redcanaryco/atomic-red-team/blob/master/atomics/T1204.002/T1204.002.md#atomic-test-12---clickfix-campaign---abuse-runmru-to-launch-mshta-via-powershell">special test</a> for Clickfix as well, where Powershell is used to insert a payload as value for the RunMRU registry key. This simulation focuses on what makes this technique unique only and ignores any other traces a typical attack might leave behind. </p>
+<p><strong><em>Atomic Red Team: T1204.002 Test #12 - ClickFix Campaign - Abuse RunMRU to Launch mshta via PowerShell:</em></strong> <em>Simulates a ClickFix-style campaign by adding a malicious entry to the RunMRU registry key that launches mshta.exe with a remote payload:</em></p>
+<div class="language-ps1 highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nb">Set-ItemProperty</span> <span class="n">-Path</span> <span class="s2">"HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\RunMRU"</span> <span class="n">-Name</span> <span class="s2">"atomictest"</span> <span class="n">-Value</span> <span class="s1">'"C:\Windows\System32\mshta.exe" http://localhost/hello6.hta'</span>
+</span></code></pre></div>
+<h3 id="simulated-phishing-page">Simulated Phishing Page<a class="headerlink" href="#simulated-phishing-page" title="Permanent link">¶</a></h3>
+<p>For a more realistic simulation, a static simulation webpage can be crafted and hosted within the lab for interaction using the victim machine. </p>
+<p>TBD</p>
+<div class="admonition info">
+<p class="admonition-title">Custom ClickFix run dialog payload</p>
+<p>Simulates a user pasting a potentially malicious Powershell command into the Windows run dialog, following a typical ClickFix structure to deceive users.</p>
+<div class="language-ps1 highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">powershell</span> <span class="nb">Invoke-RestMethod</span> <span class="n">-Uri</span> <span class="s2">"https://www.cloudflare.com"</span> <span class="n">-Method</span> <span class="n">GET</span>  <span class="c"># ✅ I am not a robot - Verification ID: 123456 - Press OK</span>
+</span></code></pre></div>
+</div>
+<h2 id="logs">Logs<a class="headerlink" href="#logs" title="Permanent link">¶</a></h2>
+<p>TBD</p>
+<!-- what do we see with ClickFix
+- Command execution (Elastic agent, Symon, Powershell)
+- DNS request (Symon)
+- Registry RunMRU value set (Sysmon)
+
+TODO
+- Powershell logs detection
+- toml -->
+
+<h2 id="detection-hunting">Detection &amp; Hunting<a class="headerlink" href="#detection-hunting" title="Permanent link">¶</a></h2>
+<p>Elastic has published a <a href="https://github.com/elastic/protections-artifacts/blob/main/behavior/rules/windows/execution_suspicious_command_shell_execution_via_windows_run.toml">detection</a> rule for the Elastic Security for Endpoint product. This contains an EQL query that can be adapted to create a detection rule in Kibana, see query below. Lines contain annotations at the beginning to understand the logic used. Note that some elements of the original EQL were removed because of unpopulated fields in Kibana (fields related to threads).</p>
+<p>TBD</p>
+<div class="language-sql highlight"><table class="highlighttable"><tbody><tr><th colspan="2" class="filename"><span class="filename">[EQL] [Elastic Defend + Symon] Suspicious command shell execution via Windows run</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-2-1"> 1</a></span>
+<span class="normal"><a href="#__codelineno-2-2"> 2</a></span>
+<span class="normal"><a href="#__codelineno-2-3"> 3</a></span>
+<span class="normal"><a href="#__codelineno-2-4"> 4</a></span>
+<span class="normal"><a href="#__codelineno-2-5"> 5</a></span>
+<span class="normal"><a href="#__codelineno-2-6"> 6</a></span>
+<span class="normal"><a href="#__codelineno-2-7"> 7</a></span>
+<span class="normal"><a href="#__codelineno-2-8"> 8</a></span>
+<span class="normal"><a href="#__codelineno-2-9"> 9</a></span>
+<span class="normal"><a href="#__codelineno-2-10">10</a></span>
+<span class="normal"><a href="#__codelineno-2-11">11</a></span>
+<span class="normal"><a href="#__codelineno-2-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1"></a><span class="cm">/* (1)! */</span><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">"start"</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">"Process creation"</span><span class="p">)</span><span class="w"> </span><span class="k">and</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2"></a><span class="cm">/* (2)! */</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="ss">"cmd.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"powershell.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"curl.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"msiexec.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"mshta.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"wscript.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"cscript.exe"</span><span class="p">)</span><span class="w"> </span><span class="k">and</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3"></a><span class="cm">/* (3)! */</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">parent</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="ss">"explorer.exe"</span><span class="w"> </span><span class="k">and</span><span class="w"> </span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4"></a><span class="cm">/* (4)! */</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">args_count</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="k">and</span>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5"></a><span class="cm">/* (5)! */</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="ss">"cmd.exe"</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">args</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="ss">"*.bat*"</span><span class="p">,</span><span class="w"> </span><span class="ss">"*.cmd"</span><span class="p">,</span><span class="w"> </span><span class="ss">"dir"</span><span class="p">,</span><span class="w"> </span><span class="ss">"ipconfig"</span><span class="p">,</span><span class="w"> </span><span class="ss">"C:\\WINDOWS\\system32\\sconfig.cmd "</span><span class="p">,</span><span class="w"> </span><span class="ss">"Code\\bin\\code.cmd "</span><span class="p">))</span><span class="w"> </span><span class="k">and</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6"></a><span class="cm">/* (6)! */</span><span class="w">  </span><span class="k">not</span><span class="w"> </span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="ss">"powershell.exe"</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">args</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="ss">"Start-Process powershell -Verb RunAs"</span><span class="p">,</span><span class="w"> </span><span class="ss">"C:\\*.ps1"</span><span class="p">,</span><span class="w"> </span><span class="ss">"-SPLAGroup"</span><span class="p">,</span><span class="w"> </span><span class="ss">"\\\\*\\netlogon\\*.ps1"</span><span class="p">))</span><span class="w"> </span><span class="k">and</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7"></a><span class="cm">/* (7)! */</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="ss">"msiexec.exe"</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">args</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="ss">"?:\\*.msi"</span><span class="p">)</span><span class="w"> </span><span class="k">and</span>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8"></a><span class="cm">/* (8)! */</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">command_line</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="ss">"\"</span><span class="k">C</span><span class="p">:</span><span class="err">\\</span><span class="n">WINDOWS</span><span class="err">\\</span><span class="n">system32</span><span class="err">\\</span><span class="n">cmd</span><span class="p">.</span><span class="n">exe</span><span class="err">\</span><span class="ss">" /k net use"</span><span class="p">,</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9"></a><span class="w">                                </span><span class="ss">"\"</span><span class="k">C</span><span class="p">:</span><span class="err">\\</span><span class="n">WINDOWS</span><span class="err">\\</span><span class="n">system32</span><span class="err">\\</span><span class="n">cmd</span><span class="p">.</span><span class="n">exe</span><span class="err">\</span><span class="ss">" -a"</span><span class="p">,</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10"></a><span class="w">                                </span><span class="ss">"\"</span><span class="k">C</span><span class="p">:</span><span class="err">\\</span><span class="n">Windows</span><span class="err">\\</span><span class="n">system32</span><span class="err">\\</span><span class="n">msiexec</span><span class="p">.</span><span class="n">exe</span><span class="err">\</span><span class="ss">" /regserver"</span><span class="p">,</span>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11"></a><span class="w">                                </span><span class="ss">"\"</span><span class="k">C</span><span class="p">:</span><span class="err">\\</span><span class="n">windows</span><span class="err">\\</span><span class="n">system32</span><span class="err">\\</span><span class="n">WindowsPowerShell</span><span class="err">\\</span><span class="n">v1</span><span class="p">.</span><span class="mi">0</span><span class="err">\\</span><span class="n">PowerShell</span><span class="p">.</span><span class="n">exe</span><span class="err">\</span><span class="ss">" -ep bypass"</span><span class="p">)</span><span class="w"> </span><span class="k">and</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12"></a><span class="cm">/* (9)! */</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="p">(</span><span class="n">process</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="ss">"wscript.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"cscript.exe"</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">args</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="ss">"\\\\*\\MapNetworkDrives.vbs"</span><span class="p">,</span><span class="w"> </span><span class="ss">"?:\\*.js"</span><span class="p">,</span><span class="w"> </span><span class="ss">"?:\\*.vbs"</span><span class="p">))</span>
+</span></code></pre></div></td></tr></tbody></table></div>
+<ol>
+<li><strong>Event action filter:</strong> Only include process creation events (Elastic Defend and Symon respectively).</li>
+<li><strong>Process name filter:</strong> Include high-risk or commonly abused executables.</li>
+<li><strong>Parent process filter:</strong> Restrict to processes launched by Explorer (user-initiated).</li>
+<li><strong>Argument count filter:</strong> Only include processes with two or more arguments, indicating significant execution.</li>
+<li><strong>cmd.exe exclusion</strong>: Filters out typical command prompt scripts and administrative commands.</li>
+<li><strong>powershell.exe exclusion</strong>: Filters normal PowerShell scripts and self-elevating commands.</li>
+<li><strong>msiexec.exe exclusion</strong>: Ignores standard MSI installer executions.</li>
+<li><strong>specific command lines exclusion</strong>: Excludes known safe system commands.</li>
+<li><strong>wscript/cscript exclusion</strong>: Ignores standard Windows Script Host scripts such as network drive mapping.</li>
+</ol>
 
 
 
@@ -967,7 +1197,7 @@ Open source c2 framework</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 12, 2025 17:43:22 UTC">September 12, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 18, 2025 19:55:06 UTC">September 18, 2025</span>
   </span>
 
     
@@ -1022,10 +1252,10 @@ Open source c2 framework</p>
     
     
       
-      <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.instant", "navigation.path", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy", "content.code.annotate", "content.tooltips", "toc.follow"], "search": "../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+      <script id="__config" type="application/json">{"base": "../../../..", "features": ["navigation.instant", "navigation.path", "navigation.indexes", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy", "content.code.annotate", "content.tooltips", "toc.follow"], "search": "../../../../assets/javascripts/workers/search.973d3a69.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
     
     
-      <script src="../../assets/javascripts/bundle.f55a23d4.min.js"></script>
+      <script src="../../../../assets/javascripts/bundle.f55a23d4.min.js"></script>
       
     
   
