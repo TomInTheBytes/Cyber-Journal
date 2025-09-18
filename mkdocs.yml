@@ -87,7 +87,8 @@ nav:
       - projects/security_lab/index.md
       - Lab Architecture: projects/security_lab/architecture.md
       - Security Onion Overview: projects/security_lab/sec_onion.md
-      - Clickfix: projects/security_lab/research/clickfix.md
+      - Research:
+        - AnyFix Technique: projects/security_lab/research/anyfix.md
     - Generative AI:
       - Daily Intelligence Digest Automation (n8n): projects/genai/intel_digest_workflow.md
       - Threat Actor RAG and Assessment: projects/genai/intel_rag.md

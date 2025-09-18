@@ -1,17 +1,22 @@
-https://www.elastic.co/security-labs/a-wretch-client
-https://github.com/Bert-JanP/Hunting-Queries-Detection-Rules/blob/main/Defender%20For%20Endpoint/SuspiciousRUNMRUEntry.md
-https://kqlquery.com/posts/investigate-clickfix/
-https://github.com/SigmaHQ/sigma/blob/1751ef8673365444ae44eb38887d3025982f4794/rules/windows/registry/registry_set/registry_set_runmru_susp_command_execution.yml#L8
-https://github.com/SigmaHQ/sigma/blob/1751ef8673365444ae44eb38887d3025982f4794/rules-threat-hunting/windows/registry/registry_set/registry_set_runmru_command_execution.yml#L8
-https://www.picussecurity.com/resource/blog/interlock-clickfix-ransomware-healthcare-attack
-https://github.com/elastic/protections-artifacts/blob/main/behavior/rules/windows/execution_suspicious_command_shell_execution_via_windows_run.toml
-https://github.com/redcanaryco/atomic-red-team/blob/f745504cf0393d8334375d34d30b27e182574fb2/atomics/T1204.002/T1204.002.md#atomic-test-12---clickfix-campaign---abuse-runmru-to-launch-mshta-via-powershell
-https://mrd0x.com/filefix-clickfix-alternative/
 
-# Clickfix
-This page is a deep dive into the Clickfix threat and its variations.
+<!-- https://github.com/SigmaHQ/sigma/blob/1751ef8673365444ae44eb38887d3025982f4794/rules/windows/registry/registry_set/registry_set_runmru_susp_command_execution.yml#L8
+https://github.com/SigmaHQ/sigma/blob/1751ef8673365444ae44eb38887d3025982f4794/rules-threat-hunting/windows/registry/registry_set/registry_set_runmru_command_execution.yml#L8 -->
+
+# AnyFix Technique
+This page is a deep dive into the variants of *Fix threats (e.g. ClickFix, FileFix, and PromptFix). This is a procedure for technique [T1204.004](https://attack.mitre.org/techniques/T1204/004/).
 
 ## Threat Intelligence
+ClickFix emerged in late 2023 as a technique abusing fake error or CAPTCHA dialogs to trick users into pasting malicious code. Initially seen in cybercrime campaigns, it quickly spread to state-sponsored groups through 2024. Attackers leverage trusted interfaces like run dialogs, terminals, and file Explorer paths for execution. Variants evolved into FileFix and PromptFix, with different attack sequences. By 2025 it has become a common cross-platform delivery method for stealers, RATs, ransomware, and custom malware.
+
+References:
+
+- [(Microsoft) Think before you Click(Fix): Analyzing the ClickFix social engineering technique ](https://www.microsoft.com/en-us/security/blog/2025/08/21/think-before-you-clickfix-analyzing-the-clickfix-social-engineering-technique/)
+- [(Proofpoint) Security Brief: ClickFix Social Engineering Technique Floods Threat Landscape](https://www.proofpoint.com/us/blog/threat-insight/security-brief-clickfix-social-engineering-technique-floods-threat-landscape)
+- [(KQLQuery.com) Investigating ClickFix Incidents](https://kqlquery.com/posts/investigate-clickfix/)
+- [(mrd0x.com) FileFix - A ClickFix Alternative](https://mrd0x.com/filefix-clickfix-alternative/)
+- [(BleepingComputer) From ClickFix to MetaStealer: Dissecting Evolving Threat Actor Techniques](https://www.bleepingcomputer.com/news/security/from-clickfix-to-metastealer-dissecting-evolving-threat-actor-techniques/)
+- [(Sekoia) Interlock ransomware evolving under the radar](https://blog.sekoia.io/interlock-ransomware-evolving-under-the-radar/)
+- [(Elastic) A Wretch Client: From ClickFix deception to information stealer deployment](https://www.elastic.co/security-labs/a-wretch-client)
 
 ## Attack Simulation
 We simulate parts of the attack to generate logs for further analysis. There are various options available:
@@ -26,8 +31,11 @@ Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer
 ```
 
 ### Simulated Phishing Page
+For a more realistic simulation, a static simulation webpage can be crafted and hosted within the lab for interaction using the victim machine. 
 
-!!! info "Custom ClickFix-like run dialog payload"
+TBD
+
+!!! info "Custom ClickFix run dialog payload"
     Simulates a user pasting a potentially malicious Powershell command into the Windows run dialog, following a typical ClickFix structure to deceive users.
 
     ``` ps1
@@ -36,19 +44,23 @@ Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer
 
 
 ## Logs
+TBD
 
-what do we see with ClickFix
+<!-- what do we see with ClickFix
 - Command execution (Elastic agent, Symon, Powershell)
 - DNS request (Symon)
 - Registry RunMRU value set (Sysmon)
 
 TODO
 - Powershell logs detection
+- toml -->
 
 
 ## Detection & Hunting
 
-from Github page, ext thread removed because not populated fields (not sure why)
+Elastic has published a [detection](https://github.com/elastic/protections-artifacts/blob/main/behavior/rules/windows/execution_suspicious_command_shell_execution_via_windows_run.toml) rule for the Elastic Security for Endpoint product. This contains an EQL query that can be adapted to create a detection rule in Kibana, see query below. Lines contain annotations at the beginning to understand the logic used. Note that some elements of the original EQL were removed because of unpopulated fields in Kibana (fields related to threads).
+
+TBD
 
 ``` sql linenums="1" title="[EQL] [Elastic Defend + Symon] Suspicious command shell execution via Windows run"
 /* (1)! */ process where (event.action == "start" or event.action == "Process creation") and
