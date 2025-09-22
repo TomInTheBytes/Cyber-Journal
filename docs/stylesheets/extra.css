@@ -1,4 +1,10 @@
 :root {
   --md-primary-fg-color:#bf9002;
   --md-accent-fg-color: #bb2528;
+  
 }
+
+.md-header {
+    background: linear-gradient(45deg, #ffc105 0%, #d46700 100%);
+}
+

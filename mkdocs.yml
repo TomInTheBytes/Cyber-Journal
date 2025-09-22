@@ -78,13 +78,13 @@ nav:
   - Cheatsheets: 
     - cheatsheets/index.md
     - Splunk: cheatsheets/splunk.md
-  - CTF write-ups: 
+  - Write-ups: 
     - writeups/index.md
     - writeups/hhc.md
     - writeups/splunk_bots.md
   - Projects:
     - projects/index.md
-    - Security lab:
+    - Security Lab:
       - projects/security_lab/index.md
       - Lab Architecture: projects/security_lab/architecture.md
       - Security Onion Overview: projects/security_lab/sec_onion.md

@@ -1,0 +1,25 @@
+<html>
+  <head>
+    <hta:application
+      id="OpenCalc"
+      applicationname="OpenCalc"
+      border="thin"
+      caption="yes"
+      showintaskbar="yes"
+      maximizebutton="no"
+      minimizebutton="no"
+      sysmenu="yes"
+      windowstate="normal" />
+    <title>Open Calc</title>
+    <script language="VBScript">
+      Sub Window_OnLoad()
+        Dim sh
+        Set sh = CreateObject("WScript.Shell")
+        sh.Run "calc.exe", 1, False
+        window.Close
+      End Sub
+    </script>
+  </head>
+  <body>
+  </body>
+</html>

