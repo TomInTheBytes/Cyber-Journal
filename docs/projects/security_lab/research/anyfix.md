@@ -59,7 +59,7 @@ We use simple HTML with JavaScript to copy the payload to the user's clipboard w
         Embedded code from the 'projects' folder in the GitHub repository. Contains example payload.
 
         ``` html linenums="1"
-        --8<-- "./projects/security_lab/research/anyfix/clickfix.html"
+        --8<-- "./projects/security_lab/research/anyfix/simulation/clickfix.html"
         ```
 
     ??? note "Hosting malicious webpage on Kali"
@@ -97,7 +97,7 @@ We use simple HTML with JavaScript to copy the payload to the user's clipboard w
         Embedded code from the 'projects' folder in the GitHub repository. Contains example payload.
 
         ``` html linenums="1"
-        --8<-- "./projects/security_lab/research/anyfix/filefix.html"
+        --8<-- "./projects/security_lab/research/anyfix/simulation/filefix.html"
         ```
 
     ![filefix_lure](../../../media/lab/anyfix/filefix_lure.png){ align=left }
@@ -126,7 +126,7 @@ There is a large variety of payloads that can be used for these techniques as ca
             Embedded code from the 'projects' folder in the GitHub repository. Contains payload to open Windows Calculator.
 
             ``` html linenums="1"
-            --8<-- "./projects/security_lab/research/anyfix/open_calc.hta"
+            --8<-- "./projects/security_lab/research/anyfix/simulation/open_calc.hta"
             ```
 
     !!! note "[Extra] Powershell payload"   
@@ -214,25 +214,27 @@ TODO
 ## Detection & Hunting
 None of the default Elastic rules were triggered during the simulated attack sequence. This underscores the evasive nature of user-initiated execution.
 
-Elastic has published a [detection rule](https://github.com/elastic/protections-artifacts/blob/main/behavior/rules/windows/execution_suspicious_command_shell_execution_via_windows_run.toml) for this behavior. Below is an adapted version of the EQL query that can be used for creating a detection rule or for threat hunting in Kibana. The original query has been modified to include our findings and remove fields that may not be populated in all environments.
+Elastic has published an Elastic Defend [detection rule](https://github.com/elastic/protections-artifacts/blob/main/behavior/rules/windows/execution_suspicious_command_shell_execution_via_windows_run.toml) for similar behavior. Below is an adapted version of the EQL query that can be used for creating a detection rule or for threat hunting in Kibana. The original query has been modified to include our findings and remove fields that may not be populated in all environments.
+
+Also see the custom detection rule published in the repository. 
 
 ``` sql linenums="1" title="[CUSTOM] [EQL] Execution of Suspicious Commands in Combination with AnyFix Registry Entry"
 sequence by host.id with maxspan=1m
   [ 
 /* (1)! */ process where (event.action == "start" or event.action == "Process creation") and
 /* (2)! */ process.name : ("cmd.exe", "powershell.exe", "curl.exe", "msiexec.exe", "mshta.exe", "wscript.exe", "cscript.exe") and
-/* (3)! */ process.parent.name : "explorer.exe" and 
+/* (3)! */ process.parent.name : ("explorer.exe", "msedge.exe") and 
 /* (4)! */ process.args_count >= 2 ]
 /* (5)! */  [ registry where event.action == "RegistryEvent (Value Set)" and
-    registry.path : "*RunMRU*" and
+    registry.path : ("*RunMRU*", "*TypedPaths*") and
     registry.data.strings : ("*cmd*", "*powershell*", "*curl*", "*mshta*") ]
 ```
 
-1. **Event action filter:** Only include process creation events (Elastic Defend and Symon respectively).
-2. **Process name filter:** Include high-risk or commonly abused executables.
-3. **Parent process filter:** Restrict to processes launched by Explorer (user-initiated).
+1. **Event action filter:** Include process creation events (Elastic Defend and Symon respectively).
+2. **Process name filter:** Include high-risk or commonly abused executables used in AnyFix attacks.
+3. **Parent process filter:** Restrict to processes launched by Explorer (user-initiated) or a browser (add more browser executables when needed).
 4. **Argument count filter:** Only include processes with two or more arguments, indicating significant execution.
-5. **Registry modification:** RunMRU written then process start (ClickFix).
+5. **Registry modification:** RunMRU (ClickFix) or TypedPaths (FileFix) registry keys written to then process starts.
 
 
 
