@@ -16,7 +16,7 @@
       
       
       <link rel="icon" href="../../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.22">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.23">
     
     <meta name="google-site-verification" content="9L8DSoaW3axOK-OvOrQUNdLF1e2hb0H4z9_7tf1mtuE">
 
@@ -2015,55 +2015,7 @@ Serving HTTP on 0.0.0.0 port 80 (http://0.0.0.0:80/) ...
 <details class="note">
 <summary>Code for simulated .HTA payload file</summary>
 <p>Embedded code from the 'projects' folder in the GitHub repository. Contains payload to open Windows Calculator.</p>
-<div class="language-html highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1"> 1</a></span>
-<span class="normal"><a href="#__codelineno-9-2"> 2</a></span>
-<span class="normal"><a href="#__codelineno-9-3"> 3</a></span>
-<span class="normal"><a href="#__codelineno-9-4"> 4</a></span>
-<span class="normal"><a href="#__codelineno-9-5"> 5</a></span>
-<span class="normal"><a href="#__codelineno-9-6"> 6</a></span>
-<span class="normal"><a href="#__codelineno-9-7"> 7</a></span>
-<span class="normal"><a href="#__codelineno-9-8"> 8</a></span>
-<span class="normal"><a href="#__codelineno-9-9"> 9</a></span>
-<span class="normal"><a href="#__codelineno-9-10">10</a></span>
-<span class="normal"><a href="#__codelineno-9-11">11</a></span>
-<span class="normal"><a href="#__codelineno-9-12">12</a></span>
-<span class="normal"><a href="#__codelineno-9-13">13</a></span>
-<span class="normal"><a href="#__codelineno-9-14">14</a></span>
-<span class="normal"><a href="#__codelineno-9-15">15</a></span>
-<span class="normal"><a href="#__codelineno-9-16">16</a></span>
-<span class="normal"><a href="#__codelineno-9-17">17</a></span>
-<span class="normal"><a href="#__codelineno-9-18">18</a></span>
-<span class="normal"><a href="#__codelineno-9-19">19</a></span>
-<span class="normal"><a href="#__codelineno-9-20">20</a></span>
-<span class="normal"><a href="#__codelineno-9-21">21</a></span>
-<span class="normal"><a href="#__codelineno-9-22">22</a></span>
-<span class="normal"><a href="#__codelineno-9-23">23</a></span>
-<span class="normal"><a href="#__codelineno-9-24">24</a></span>
-<span class="normal"><a href="#__codelineno-9-25">25</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a><span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
-</span><span id="__span-9-2"><a id="__codelineno-9-2" name="__codelineno-9-2"></a>  <span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
-</span><span id="__span-9-3"><a id="__codelineno-9-3" name="__codelineno-9-3"></a>    <span class="p">&lt;</span><span class="nt">hta:application</span>
-</span><span id="__span-9-4"><a id="__codelineno-9-4" name="__codelineno-9-4"></a>      <span class="na">id</span><span class="o">=</span><span class="s">"OpenCalc"</span>
-</span><span id="__span-9-5"><a id="__codelineno-9-5" name="__codelineno-9-5"></a>      <span class="na">applicationname</span><span class="o">=</span><span class="s">"OpenCalc"</span>
-</span><span id="__span-9-6"><a id="__codelineno-9-6" name="__codelineno-9-6"></a>      <span class="na">border</span><span class="o">=</span><span class="s">"thin"</span>
-</span><span id="__span-9-7"><a id="__codelineno-9-7" name="__codelineno-9-7"></a>      <span class="na">caption</span><span class="o">=</span><span class="s">"yes"</span>
-</span><span id="__span-9-8"><a id="__codelineno-9-8" name="__codelineno-9-8"></a>      <span class="na">showintaskbar</span><span class="o">=</span><span class="s">"yes"</span>
-</span><span id="__span-9-9"><a id="__codelineno-9-9" name="__codelineno-9-9"></a>      <span class="na">maximizebutton</span><span class="o">=</span><span class="s">"no"</span>
-</span><span id="__span-9-10"><a id="__codelineno-9-10" name="__codelineno-9-10"></a>      <span class="na">minimizebutton</span><span class="o">=</span><span class="s">"no"</span>
-</span><span id="__span-9-11"><a id="__codelineno-9-11" name="__codelineno-9-11"></a>      <span class="na">sysmenu</span><span class="o">=</span><span class="s">"yes"</span>
-</span><span id="__span-9-12"><a id="__codelineno-9-12" name="__codelineno-9-12"></a>      <span class="na">windowstate</span><span class="o">=</span><span class="s">"normal"</span> <span class="p">/&gt;</span>
-</span><span id="__span-9-13"><a id="__codelineno-9-13" name="__codelineno-9-13"></a>    <span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Open Calc<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
-</span><span id="__span-9-14"><a id="__codelineno-9-14" name="__codelineno-9-14"></a>    <span class="p">&lt;</span><span class="nt">script</span> <span class="na">language</span><span class="o">=</span><span class="s">"VBScript"</span><span class="p">&gt;</span>
-</span><span id="__span-9-15"><a id="__codelineno-9-15" name="__codelineno-9-15"></a><span class="w">      </span><span class="nx">Sub</span><span class="w"> </span><span class="nx">Window_OnLoad</span><span class="p">()</span>
-</span><span id="__span-9-16"><a id="__codelineno-9-16" name="__codelineno-9-16"></a><span class="w">        </span><span class="nx">Dim</span><span class="w"> </span><span class="nx">sh</span>
-</span><span id="__span-9-17"><a id="__codelineno-9-17" name="__codelineno-9-17"></a><span class="w">        </span><span class="nb">Set</span><span class="w"> </span><span class="nx">sh</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">CreateObject</span><span class="p">(</span><span class="s2">"WScript.Shell"</span><span class="p">)</span>
-</span><span id="__span-9-18"><a id="__codelineno-9-18" name="__codelineno-9-18"></a><span class="w">        </span><span class="nx">sh</span><span class="p">.</span><span class="nx">Run</span><span class="w"> </span><span class="s2">"calc.exe"</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">False</span>
-</span><span id="__span-9-19"><a id="__codelineno-9-19" name="__codelineno-9-19"></a><span class="w">        </span><span class="nb">window</span><span class="p">.</span><span class="nx">Close</span>
-</span><span id="__span-9-20"><a id="__codelineno-9-20" name="__codelineno-9-20"></a><span class="w">      </span><span class="nx">End</span><span class="w"> </span><span class="nx">Sub</span>
-</span><span id="__span-9-21"><a id="__codelineno-9-21" name="__codelineno-9-21"></a><span class="w">    </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
-</span><span id="__span-9-22"><a id="__codelineno-9-22" name="__codelineno-9-22"></a>  <span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
-</span><span id="__span-9-23"><a id="__codelineno-9-23" name="__codelineno-9-23"></a>  <span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
-</span><span id="__span-9-24"><a id="__codelineno-9-24" name="__codelineno-9-24"></a>  <span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
-</span><span id="__span-9-25"><a id="__codelineno-9-25" name="__codelineno-9-25"></a><span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+<div class="language-html highlight"><table class="highlighttable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-9-1">1</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-9-1"><a id="__codelineno-9-1" name="__codelineno-9-1"></a>
 </span></code></pre></div></td></tr></tbody></table></div>
 </details>
 </div>
@@ -2125,7 +2077,8 @@ TODO
 
 <h2 id="detection-hunting">Detection &amp; Hunting<a class="headerlink" href="#detection-hunting" title="Permanent link">¶</a></h2>
 <p>None of the default Elastic rules were triggered during the simulated attack sequence. This underscores the evasive nature of user-initiated execution.</p>
-<p>Elastic has published a <a href="https://github.com/elastic/protections-artifacts/blob/main/behavior/rules/windows/execution_suspicious_command_shell_execution_via_windows_run.toml">detection rule</a> for this behavior. Below is an adapted version of the EQL query that can be used for creating a detection rule or for threat hunting in Kibana. The original query has been modified to include our findings and remove fields that may not be populated in all environments.</p>
+<p>Elastic has published an Elastic Defend <a href="https://github.com/elastic/protections-artifacts/blob/main/behavior/rules/windows/execution_suspicious_command_shell_execution_via_windows_run.toml">detection rule</a> for similar behavior. Below is an adapted version of the EQL query that can be used for creating a detection rule or for threat hunting in Kibana. The original query has been modified to include our findings and remove fields that may not be populated in all environments.</p>
+<p>Also see the custom detection rule published in the repository. </p>
 <div class="language-sql highlight"><table class="highlighttable"><tbody><tr><th colspan="2" class="filename"><span class="filename">[CUSTOM] [EQL] Execution of Suspicious Commands in Combination with AnyFix Registry Entry</span></th></tr><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-11-1">1</a></span>
 <span class="normal"><a href="#__codelineno-11-2">2</a></span>
 <span class="normal"><a href="#__codelineno-11-3">3</a></span>
@@ -2138,18 +2091,18 @@ TODO
 </span><span id="__span-11-2"><a id="__codelineno-11-2" name="__codelineno-11-2"></a><span class="w">  </span><span class="p">[</span><span class="w"> </span>
 </span><span id="__span-11-3"><a id="__codelineno-11-3" name="__codelineno-11-3"></a><span class="cm">/* (1)! */</span><span class="w"> </span><span class="n">process</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="p">(</span><span class="n">event</span><span class="p">.</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">"start"</span><span class="w"> </span><span class="k">or</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">"Process creation"</span><span class="p">)</span><span class="w"> </span><span class="k">and</span>
 </span><span id="__span-11-4"><a id="__codelineno-11-4" name="__codelineno-11-4"></a><span class="cm">/* (2)! */</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="ss">"cmd.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"powershell.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"curl.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"msiexec.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"mshta.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"wscript.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"cscript.exe"</span><span class="p">)</span><span class="w"> </span><span class="k">and</span>
-</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="cm">/* (3)! */</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">parent</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="ss">"explorer.exe"</span><span class="w"> </span><span class="k">and</span><span class="w"> </span>
+</span><span id="__span-11-5"><a id="__codelineno-11-5" name="__codelineno-11-5"></a><span class="cm">/* (3)! */</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">parent</span><span class="p">.</span><span class="n">name</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="ss">"explorer.exe"</span><span class="p">,</span><span class="w"> </span><span class="ss">"msedge.exe"</span><span class="p">)</span><span class="w"> </span><span class="k">and</span><span class="w"> </span>
 </span><span id="__span-11-6"><a id="__codelineno-11-6" name="__codelineno-11-6"></a><span class="cm">/* (4)! */</span><span class="w"> </span><span class="n">process</span><span class="p">.</span><span class="n">args_count</span><span class="w"> </span><span class="o">&gt;=</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="p">]</span>
 </span><span id="__span-11-7"><a id="__codelineno-11-7" name="__codelineno-11-7"></a><span class="cm">/* (5)! */</span><span class="w">  </span><span class="p">[</span><span class="w"> </span><span class="n">registry</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">event</span><span class="p">.</span><span class="n">action</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="ss">"RegistryEvent (Value Set)"</span><span class="w"> </span><span class="k">and</span>
-</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="w">    </span><span class="n">registry</span><span class="p">.</span><span class="n">path</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="ss">"*RunMRU*"</span><span class="w"> </span><span class="k">and</span>
+</span><span id="__span-11-8"><a id="__codelineno-11-8" name="__codelineno-11-8"></a><span class="w">    </span><span class="n">registry</span><span class="p">.</span><span class="n">path</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="ss">"*RunMRU*"</span><span class="p">,</span><span class="w"> </span><span class="ss">"*TypedPaths*"</span><span class="p">)</span><span class="w"> </span><span class="k">and</span>
 </span><span id="__span-11-9"><a id="__codelineno-11-9" name="__codelineno-11-9"></a><span class="w">    </span><span class="n">registry</span><span class="p">.</span><span class="k">data</span><span class="p">.</span><span class="n">strings</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="p">(</span><span class="ss">"*cmd*"</span><span class="p">,</span><span class="w"> </span><span class="ss">"*powershell*"</span><span class="p">,</span><span class="w"> </span><span class="ss">"*curl*"</span><span class="p">,</span><span class="w"> </span><span class="ss">"*mshta*"</span><span class="p">)</span><span class="w"> </span><span class="p">]</span>
 </span></code></pre></div></td></tr></tbody></table></div>
 <ol>
-<li><strong>Event action filter:</strong> Only include process creation events (Elastic Defend and Symon respectively).</li>
-<li><strong>Process name filter:</strong> Include high-risk or commonly abused executables.</li>
-<li><strong>Parent process filter:</strong> Restrict to processes launched by Explorer (user-initiated).</li>
+<li><strong>Event action filter:</strong> Include process creation events (Elastic Defend and Symon respectively).</li>
+<li><strong>Process name filter:</strong> Include high-risk or commonly abused executables used in AnyFix attacks.</li>
+<li><strong>Parent process filter:</strong> Restrict to processes launched by Explorer (user-initiated) or a browser (add more browser executables when needed).</li>
 <li><strong>Argument count filter:</strong> Only include processes with two or more arguments, indicating significant execution.</li>
-<li><strong>Registry modification:</strong> RunMRU written then process start (ClickFix).</li>
+<li><strong>Registry modification:</strong> RunMRU (ClickFix) or TypedPaths (FileFix) registry keys written to then process starts.</li>
 </ol>
 
 
@@ -2171,7 +2124,7 @@ TODO
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 31, 2025 11:54:03 UTC">October 31, 2025</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="November 2, 2025 15:13:28 UTC">November 2, 2025</span>
   </span>
 
     
