@@ -9,7 +9,8 @@ theme:
     primary: amber
     accent: amber
   icon:
-    logo: fontawesome/solid/terminal
+    # logo: fontawesome/solid/terminal
+    logo: material/rocket-launch
     admonition:
       note: fontawesome/solid/note-sticky
       abstract: fontawesome/solid/book
@@ -74,9 +75,9 @@ markdown_extensions:
   - def_list
   - tables
 nav:
-  - Welcome: index.md
+  - Home: index.md
   - Cheatsheets: 
-    - cheatsheets/index.md
+    # - cheatsheets/index.md
     - Splunk: cheatsheets/splunk.md
   - Write-ups: 
     - writeups/index.md
@@ -85,7 +86,7 @@ nav:
   - Projects:
     - projects/index.md
     - Security Lab:
-      - projects/security_lab/index.md
+      # - projects/security_lab/index.md
       - Lab Architecture: projects/security_lab/architecture.md
       - Security Onion Overview: projects/security_lab/sec_onion.md
       - Research:
