@@ -78,6 +78,7 @@ nav:
   - Home: index.md
   - Cheatsheets: 
     # - cheatsheets/index.md
+    - OSCP: cheatsheets/oscp.md
     - Splunk: cheatsheets/splunk.md
   - Write-ups: 
     - writeups/index.md
