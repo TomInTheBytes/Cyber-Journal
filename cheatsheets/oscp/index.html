@@ -9,6 +9,10 @@
         <link rel="canonical" href="https://tominthebytes.github.io/Cyber-Journal/cheatsheets/oscp/">
       
       
+        <link rel="prev" href="../..">
+      
+      
+        <link rel="next" href="../splunk/">
       
       
         
@@ -21,7 +25,7 @@
 
     
       
-        <title>OSCP Cheatsheet - Tom's Cyber Journal</title>
+        <title>OSCP - Tom's Cyber Journal</title>
       
     
     
@@ -181,7 +185,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              OSCP Cheatsheet
+              OSCP
             
           </span>
         </div>
@@ -283,11 +287,13 @@
   
   
   
+    
+  
   
     
     
-      <li class="md-tabs__item">
-        <a href="../splunk/" class="md-tabs__link">
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="./" class="md-tabs__link">
           
   
   
@@ -421,10 +427,14 @@
       
   
   
+    
   
   
+  
     
     
+      
+        
       
         
       
@@ -432,19 +442,22 @@
     
     
       
+        
+        
+      
       
         
       
     
     
-    <li class="md-nav__item md-nav__item--nested">
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
-        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2">
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked="">
         
           
-          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
             
   
   
@@ -462,7 +475,7 @@
             <span class="md-nav__icon md-icon"></span>
           </label>
         
-        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
           <label class="md-nav__title" for="__nav_2">
             <span class="md-nav__icon md-icon"></span>
             
@@ -472,6 +485,641 @@
 
           </label>
           <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSCP
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#general" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        General
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="General">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#vpn" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VPN
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ssh-tip" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSH tip
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#rdp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RDP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-cli-clients" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP CLI Clients
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#protocols" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocols
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protocols">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#ssh-tcp-22" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SSH (TCP: 22)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#whois-tcp-43" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        WHOIS (TCP: 43)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dns-tcp-53" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DNS (TCP: 53)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smb-tcp-139-445" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMB (TCP: 139, 445)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SMB (TCP: 139, 445)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#nmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nmap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nbtscan" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        nbtscan
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enum4linux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        enum4linux
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smbmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        smbmap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smbclient" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        smbclient
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#impacket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Impacket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#responder" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Responder
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#smtp-tcp-25" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SMTP (TCP: 25)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#snmp-udp-161" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SNMP (UDP: 161)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scanning-ports-vulns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scanning (ports / vulns)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Scanning (ports / vulns)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#netcat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Netcat
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nikto" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nikto
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nmap_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nmap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#nuclei" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Nuclei
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#powershell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PowerShell
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#subdomains" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Subdomains
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#http-tcp-80" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        HTTP (TCP: 80)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="HTTP (TCP: 80)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#enumeration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Enumeration
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#directories" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Directories
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exploitation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exploitation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exploitation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exploits" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exploits
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#command-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Command Injection
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sql-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SQL Injection
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SQL Injection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mysql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MySQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mssql" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MSSQL
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#payloads" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Payloads
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sqlmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sqlmap
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#password-attacks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Password Attacks
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Password Attacks">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#brute-force" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Brute Force
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#cracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cracking
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#privilege-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privilege Escalation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#reverse-shell" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Reverse Shell
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#windows-authentication" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Windows Authentication
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Windows Authentication">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mimikatz" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mimikatz
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#misc" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Misc.
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#kali-setup" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Kali Setup
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
             
               
                 
@@ -1661,6 +2309,46 @@
 
   
 
+
+  <nav class="md-path" aria-label="Navigation">
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="./" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cheatsheets
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
 
               
               <article class="md-content__inner md-typeset">
