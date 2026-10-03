@@ -84,6 +84,44 @@ nav:
     - writeups/index.md
     - writeups/hhc.md
     - writeups/splunk_bots.md
+    - OSCP:
+      - Proving Grounds:
+        - Access: writeups/offsec/proving_grounds/access.md
+        - Algernon: writeups/offsec/proving_grounds/algernon.md
+        - Astronaut: writeups/offsec/proving_grounds/astronaut.md
+        - Authby: writeups/offsec/proving_grounds/authby.md
+        - Blackgate: writeups/offsec/proving_grounds/blackgate.md
+        - Boolean: writeups/offsec/proving_grounds/boolean.md
+        - Clue: writeups/offsec/proving_grounds/clue.md
+        - Cockpit: writeups/offsec/proving_grounds/cockpit.md
+        - Codo: writeups/offsec/proving_grounds/codo.md
+        - Craft: writeups/offsec/proving_grounds/craft.md
+        - Crane: writeups/offsec/proving_grounds/crane.md
+        - Dvr4: writeups/offsec/proving_grounds/dvr4.md
+        - Exfiltrated: writeups/offsec/proving_grounds/exfiltrated.md
+        - Extplorer: writeups/offsec/proving_grounds/extplorer.md
+        - Fired: writeups/offsec/proving_grounds/fired.md
+        - Heist: writeups/offsec/proving_grounds/heist.md
+        - Hepet: writeups/offsec/proving_grounds/hepet.md
+        - Hub: writeups/offsec/proving_grounds/hub.md
+        - Hutch: writeups/offsec/proving_grounds/hutch.md
+        - Image: writeups/offsec/proving_grounds/image.md
+        - Internal: writeups/offsec/proving_grounds/internal.md
+        - Jacko: writeups/offsec/proving_grounds/jacko.md
+        - Kevin: writeups/offsec/proving_grounds/kevin.md
+        - Lavita: writeups/offsec/proving_grounds/lavita.md
+        - Law: writeups/offsec/proving_grounds/law.md
+        - Levram: writeups/offsec/proving_grounds/levram.md
+        - Muddy: writeups/offsec/proving_grounds/muddy.md
+        - Nickel: writeups/offsec/proving_grounds/nickel.md
+        - Pc: writeups/offsec/proving_grounds/pc.md
+        - Pelican: writeups/offsec/proving_grounds/pelican.md
+        - Press: writeups/offsec/proving_grounds/press.md
+        - Resourced: writeups/offsec/proving_grounds/resourced.md
+        - Scrutiny: writeups/offsec/proving_grounds/scrutiny.md
+        - Shenzi: writeups/offsec/proving_grounds/shenzi.md
+        - Squid: writeups/offsec/proving_grounds/squid.md
+        - Twiggy: writeups/offsec/proving_grounds/twiggy.md
   - Projects:
     - projects/index.md
     - Security Lab:

